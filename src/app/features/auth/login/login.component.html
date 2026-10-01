@@ -2,68 +2,76 @@
   <div class="login-wrapper">
     <div class="login-card">
       <div class="login-header">
-        <h1 class="login-title">Welcome Back</h1>
-        <p class="login-subtitle">Sign in to your account to continue</p>
+        <div class="logo-area">
+          <h1 class="login-title">Angular Base</h1>
+        </div>
+        <h2 class="login-subtitle">Welcome Back</h2>
+        <p class="login-description">Sign in to your account to continue</p>
       </div>
 
-      <form [formGroup]="form" (ngSubmit)="onLogin()">
+      <form [formGroup]="form" (ngSubmit)="onLogin()" class="login-form">
         <div class="form-group">
-          <label nz-label>Username</label>
+          <label>Email Address <span class="required">*</span></label>
           <input
-            nz-input
-            type="text"
+            type="email"
             formControlName="username"
-            placeholder="Enter your username"
-            [ngClass]="{ 'ant-input-status-error': form.get('username')?.invalid && form.get('username')?.touched }"
+            placeholder="demo@example.com"
+            class="form-input"
+            [class.error]="form.get('username')?.invalid && form.get('username')?.touched"
           />
           <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched" class="error-text">
-            Username is required
+            {{ form.get('username')?.hasError('required') ? 'Email is required' : 'Invalid email' }}
           </div>
         </div>
 
         <div class="form-group">
-          <label nz-label>Password</label>
+          <label>Password <span class="required">*</span></label>
           <input
-            nz-input
             type="password"
             formControlName="password"
             placeholder="Enter your password"
-            [ngClass]="{ 'ant-input-status-error': form.get('password')?.invalid && form.get('password')?.touched }"
+            class="form-input"
+            [class.error]="form.get('password')?.invalid && form.get('password')?.touched"
           />
           <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="error-text">
             Password is required
           </div>
         </div>
 
-        <div class="form-remember">
-          <label nz-checkbox formControlName="rememberMe">
-            Remember me
+        <div class="form-actions">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="rememberMe" class="checkbox-input" />
+            <span>Remember me</span>
           </label>
+          <a href="#" class="forgot-link">Forgot password?</a>
         </div>
 
         <button
-          nz-button
-          nzType="primary"
-          nzSize="large"
-          [disabled]="form.invalid || loading"
-          [nzLoading]="loading"
-          class="login-button"
           type="submit"
+          [disabled]="form.invalid || loading"
+          class="login-button"
+          [class.loading]="loading"
         >
-          Sign In
+          {{ loading ? 'Signing in...' : 'Sign In' }}
         </button>
 
-        <div class="login-footer">
-          <button nz-button nzType="text" (click)="getDemoCredentials()" type="button">
-            Use Demo Credentials
-          </button>
+        <div class="divider">
+          <span>or</span>
         </div>
+
+        <button
+          type="button"
+          (click)="getDemoCredentials()"
+          class="demo-button"
+        >
+          👤 Use Demo Credentials
+        </button>
       </form>
 
       <div class="login-info">
-        <p><strong>Demo Credentials:</strong></p>
-        <p>Username: <code>admin</code></p>
-        <p>Password: <code>password123</code></p>
+        <p class="info-title">Demo Access</p>
+        <p class="info-text">Email: <strong>admin</strong></p>
+        <p class="info-text">Password: <strong>password123</strong></p>
       </div>
     </div>
 
