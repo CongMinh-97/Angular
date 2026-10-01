@@ -1,20 +1,23 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
-import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
 import { finalize } from 'rxjs';
 import { DEPARTMENTS, USER_ROLES, USER_STATUSES, UserPayload, UserRole, UserStatus } from '@models/user.model';
 import { UserService } from '@services/user.service';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
+import {
+  UiAlertComponent,
+  UiButtonComponent,
+  UiDialogService,
+  UiOption,
+  UiSelectComponent,
+  UiSwitchComponent,
+  UiTagComponent,
+  UiUploadComponent,
+  UiUploadFile,
+} from '@ui';
 import { SAMPLE_CSV, parseCsv } from './csv';
 
 interface TargetField {
@@ -39,30 +42,27 @@ const TARGETS: TargetField[] = [
   { key: 'status', label: 'Status', required: false, aliases: ['status', 'trạng thái', 'state'] },
 ];
 
-const MAX_BYTES = 2 * 1024 * 1024;
-
 @Component({
   selector: 'app-import',
   standalone: true,
   imports: [
-    FormsModule,
     RouterLink,
     NzStepsModule,
-    NzUploadModule,
-    NzButtonModule,
     NzIconModule,
-    NzSelectModule,
     NzTableModule,
-    NzSwitchModule,
-    NzAlertModule,
-    NzToolTipModule,
     PageHeaderComponent,
+    UiButtonComponent,
+    UiUploadComponent,
+    UiSelectComponent,
+    UiSwitchComponent,
+    UiAlertComponent,
+    UiTagComponent,
   ],
   templateUrl: './import.component.html',
   styleUrls: ['./import.component.scss'],
 })
 export class ImportComponent {
-  private message = inject(NzMessageService);
+  private dialog = inject(UiDialogService);
   private users = inject(UserService);
 
   readonly targets = TARGETS;
@@ -96,19 +96,13 @@ export class ImportComponent {
   errorCount = computed(() => this.review().length - this.validCount());
   visibleRows = computed(() => (this.onlyErrors() ? this.review().filter(r => r.errors.length) : this.review()));
 
-  beforeUpload = (file: NzUploadFile): boolean => {
-    const raw = file as unknown as File;
-    if (!/\.csv$/i.test(raw.name)) {
-      this.message.error('Choose a .csv file. Export from Excel with “Save as → CSV UTF-8”.');
-      return false;
-    }
-    if (raw.size > MAX_BYTES) {
-      this.message.error('The file is larger than 2 MB. Split it into smaller files.');
-      return false;
-    }
-    raw.text().then(text => this.load(raw.name, raw.size, text));
-    return false;
-  };
+  headerOptions = computed<UiOption<number>[]>(() => this.headers().map((h, i) => ({ label: h || `Column ${i + 1}`, value: i })));
+
+  /** ui-upload already enforces .csv and 2 MB; read the text and parse it. */
+  onFile(files: UiUploadFile[] | null): void {
+    const f = files?.[0]?.file;
+    if (f) f.text().then(text => this.load(f.name, f.size, text));
+  }
 
   useSample(): void {
     this.load('sample-users.csv', new Blob([SAMPLE_CSV]).size, SAMPLE_CSV);
@@ -124,7 +118,7 @@ export class ImportComponent {
   private load(name: string, size: number, text: string): void {
     const rows = parseCsv(text);
     if (rows.length < 2) {
-      this.message.error('The file needs a header row and at least one data row.');
+      this.dialog.error('The file needs a header row and at least one data row.');
       return;
     }
     const [head, ...body] = rows;

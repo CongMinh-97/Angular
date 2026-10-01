@@ -6,28 +6,10 @@
   gap: 16px;
 }
 
-.panel {
-  min-width: 0;
-}
-
 .span-2 {
   grid-column: 1 / -1;
 }
 
-.stack {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-}
-
-// Palette
 .palette {
   display: flex;
   flex-wrap: wrap;
@@ -51,7 +33,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 2px;
-  width: 104px;
+  width: 112px;
   padding: 0;
   border: 0;
   background: none;
@@ -64,9 +46,15 @@
     font-size: 12.5px;
   }
 
-  span.mono {
+  .mono {
     font-size: 11.5px;
     color: var(--text-3);
+  }
+
+  .use {
+    font-size: 11.5px;
+    color: var(--text-2);
+    line-height: 1.35;
   }
 
   &:hover .chip {
@@ -76,7 +64,7 @@
 }
 
 .chip {
-  width: 104px;
+  width: 112px;
   height: 64px;
   border-radius: var(--radius);
   box-shadow: inset 0 0 0 1px rgba(18, 23, 41, 0.08);
@@ -91,7 +79,6 @@
   }
 }
 
-// Type
 .type {
   display: flex;
   flex-direction: column;
@@ -127,75 +114,92 @@
 
 .type-sample {
   color: var(--text);
-  letter-spacing: -0.01em;
   line-height: 1.25;
   min-width: 0;
   overflow-wrap: anywhere;
 }
 
-// Progress
-.progress-list {
+.tokens {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 14px;
+}
+
+.tok {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 
   div {
-    display: grid;
-    grid-template-columns: 96px minmax(0, 1fr);
-    align-items: center;
-    gap: 12px;
-    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  span {
+    font-size: 12.5px;
     color: var(--text-2);
   }
 }
 
-// Form controls
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+code {
+  font-family: $font-mono;
+  font-size: 12.5px;
+  color: var(--text);
 }
 
-.fld {
+.radius-box {
+  flex: none;
+  width: 56px;
+  height: 40px;
+  background: var(--jade-50);
+  border: 1.5px solid var(--jade-500);
+}
+
+.shadow-box {
+  flex: none;
+  width: 56px;
+  height: 40px;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.heights {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin: 0;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 24px 40px;
 
-  > span:first-child {
-    font-size: 13px;
-    font-weight: 600;
-  }
+  .height {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
 
-  &.inline {
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    grid-column: 1 / -1;
+    div {
+      display: flex;
+      flex-direction: column;
+    }
 
-    > span {
-      font-weight: 500;
+    span:not(.bar) {
+      font-size: 12.5px;
       color: var(--text-2);
     }
   }
 
-  .err {
-    font-size: 12.5px;
-    color: var(--danger);
+  .bar {
+    width: 48px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--jade-700);
+    background: var(--jade-50);
+    box-shadow: inset 0 0 0 1px var(--jade-100);
   }
 }
 
-// Stats
-.stats {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-}
-
-@include below($breakpoint-xl) {
-  .stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+.note {
+  margin-top: 20px;
 }
 
 @include below($breakpoint-lg) {
@@ -205,11 +209,6 @@
 }
 
 @include below($breakpoint-md) {
-  .form-grid,
-  .stats {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .type-row {
     grid-template-columns: minmax(0, 1fr);
     gap: 4px;

@@ -1,4 +1,4 @@
-import { Component, HostListener, computed, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
@@ -10,6 +10,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { filter, map } from 'rxjs';
 import { environment } from '@environments/environment';
 import { AuthService } from '@services/auth.service';
+import { UiAvatarComponent } from '@ui';
 import { LogoComponent } from '../logo/logo.component';
 
 interface NavItem {
@@ -27,7 +28,7 @@ interface NavGroup {
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, NzIconModule, NzButtonModule, NzDropDownModule, NzMenuModule, NzBadgeModule, NzToolTipModule, LogoComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, NzIconModule, NzButtonModule, NzDropDownModule, NzMenuModule, NzBadgeModule, NzToolTipModule, LogoComponent, UiAvatarComponent],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
 })
@@ -39,14 +40,6 @@ export class LayoutComponent {
   readonly appName = environment.appName;
   readonly mockApi = environment.mockApi;
   readonly user = this.auth.user;
-  readonly initials = computed(() =>
-    (this.user()?.fullName ?? 'U')
-      .split(' ')
-      .slice(-2)
-      .map(p => p[0])
-      .join('')
-      .toUpperCase(),
-  );
 
   collapsed = signal(this.readCollapsed());
   mobileOpen = signal(false);
@@ -61,7 +54,13 @@ export class LayoutComponent {
       ],
     },
     { title: 'Content', items: [{ label: 'Article editor', icon: 'edit', link: '/editor' }] },
-    { title: 'System', items: [{ label: 'UI kit', icon: 'appstore', link: '/ui-kit' }] },
+    {
+      title: 'Design system',
+      items: [
+        { label: 'Components', icon: 'build', link: '/components' },
+        { label: 'Foundations', icon: 'bg-colors', link: '/ui-kit' },
+      ],
+    },
   ];
 
   readonly notifications = [

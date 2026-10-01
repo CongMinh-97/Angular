@@ -1,28 +1,31 @@
 <div class="dt">
   <div class="toolbar">
-    <nz-input-group class="search" [nzPrefix]="searchIcon">
-      <input nz-input type="search" [placeholder]="searchPlaceholder()" [(ngModel)]="search" (ngModelChange)="onSearch($event)" aria-label="Search table" />
-    </nz-input-group>
+    <ui-input
+      class="search"
+      type="search"
+      prefixIcon="search"
+      clearable
+      [placeholder]="searchPlaceholder()"
+      [debounce]="300"
+      (debounced)="onSearch($event)"
+      inputId="table-search"
+    />
 
     <div class="toolbar-extra"><ng-content select="[toolbar]" /></div>
 
     <div class="toolbar-right">
-      <button nz-button nz-tooltip nzTooltipTitle="Reload" (click)="reload.emit()" aria-label="Reload">
-        <span nz-icon nzType="reload" [nzSpin]="loading()"></span>
-      </button>
+      <button ui-button icon="reload" iconOnly nz-tooltip nzTooltipTitle="Reload" (click)="reload.emit()" aria-label="Reload"></button>
       <button
-        nz-button
+        ui-button
+        iconOnly
+        [icon]="size() === 'middle' ? 'column-height' : 'vertical-align-middle'"
         nz-tooltip
         [nzTooltipTitle]="size() === 'middle' ? 'Compact rows' : 'Comfortable rows'"
         (click)="size.set(size() === 'middle' ? 'small' : 'middle')"
         aria-label="Toggle row density"
-      >
-        <span nz-icon [nzType]="size() === 'middle' ? 'menu-fold' : 'menu-unfold'" [nzRotate]="90"></span>
-      </button>
-      <button nz-button nz-dropdown [nzDropdownMenu]="colMenu" nzTrigger="click" nzPlacement="bottomRight">
-        <span nz-icon nzType="setting"></span>
-        Columns
-        <span class="count num">{{ visibleColumns().length }}/{{ columns().length }}</span>
+      ></button>
+      <button ui-button icon="setting" nz-dropdown [nzDropdownMenu]="colMenu" nzTrigger="click" nzPlacement="bottomRight">
+        Columns <span class="count num">{{ visibleColumns().length }}/{{ columns().length }}</span>
       </button>
     </div>
   </div>
@@ -30,14 +33,14 @@
   @if (selected().size) {
     <div class="bulkbar">
       <span><strong class="num">{{ selected().size }}</strong> selected</span>
-      <button nz-button nzType="link" nzSize="small" (click)="clearSelection()">Clear</button>
+      <button ui-button variant="link" size="sm" (click)="clearSelection()">Clear</button>
       <div class="bulk-actions"><ng-content select="[bulk]" /></div>
     </div>
   }
 
   <nz-table
     #table
-    class="table"
+    class="dt-table"
     [nzData]="data()"
     [nzTotal]="total()"
     [nzPageIndex]="query().page"
@@ -55,7 +58,7 @@
     <thead>
       <tr>
         @if (selectable()) {
-          <th nzWidth="48px" nzLeft [nzChecked]="allChecked()" [nzIndeterminate]="someChecked()" (nzCheckedChange)="toggleAll($event)" aria-label="Select page"></th>
+          <th nzWidth="48px" [nzLeft]="pinLeft()" [nzChecked]="allChecked()" [nzIndeterminate]="someChecked()" (nzCheckedChange)="toggleAll($event)" aria-label="Select page"></th>
         }
         @for (col of visibleColumns(); track col.key) {
           @if (col.filters) {
@@ -63,7 +66,7 @@
               [nzColumnKey]="col.key"
               [nzWidth]="col.width ?? null"
               [nzAlign]="col.align ?? null"
-              [nzLeft]="col.fixed === 'left'"
+              [nzLeft]="pinLeft(col)"
               [nzRight]="col.fixed === 'right'"
               [nzSortFn]="col.sortable ? true : null"
               [nzFilters]="col.filters"
@@ -77,7 +80,7 @@
               [nzColumnKey]="col.key"
               [nzWidth]="col.width ?? null"
               [nzAlign]="col.align ?? null"
-              [nzLeft]="col.fixed === 'left'"
+              [nzLeft]="pinLeft(col)"
               [nzRight]="col.fixed === 'right'"
               [nzSortFn]="col.sortable ? true : null"
             >
@@ -91,10 +94,10 @@
       @for (row of table.data; track row.id; let i = $index) {
         <tr [class.is-selected]="selected().has(row.id)">
           @if (selectable()) {
-            <td nzLeft [nzChecked]="selected().has(row.id)" (nzCheckedChange)="toggleRow(row.id, $event)" [attr.aria-label]="'Select row ' + (i + 1)"></td>
+            <td [nzLeft]="pinLeft()" [nzChecked]="selected().has(row.id)" (nzCheckedChange)="toggleRow(row.id, $event)" [attr.aria-label]="'Select row ' + (i + 1)"></td>
           }
           @for (col of visibleColumns(); track col.key) {
-            <td [nzAlign]="col.align ?? null" [nzLeft]="col.fixed === 'left'" [nzRight]="col.fixed === 'right'">
+            <td [nzAlign]="col.align ?? null" [nzLeft]="pinLeft(col)" [nzRight]="col.fixed === 'right'">
               @if (cells().get(col.key); as tpl) {
                 <ng-container [ngTemplateOutlet]="tpl" [ngTemplateOutletContext]="{ $implicit: row, index: i }" />
               } @else {
@@ -108,25 +111,20 @@
   </nz-table>
 </div>
 
-<ng-template #searchIcon><span nz-icon nzType="search"></span></ng-template>
 <ng-template #totalTpl let-total let-range="range">{{ rangeLabel(total, range) }}</ng-template>
 <ng-template #emptyTpl>
-  <div class="empty">
-    <span nz-icon nzType="inbox"></span>
-    <strong>No {{ itemLabel() }} match</strong>
-    <p>Try a different search or clear the filters.</p>
-  </div>
+  <ui-empty size="sm" icon="search" [heading]="'No ' + itemLabel() + ' match'" description="Try a different search or clear the filters." />
 </ng-template>
 
 <nz-dropdown-menu #colMenu="nzDropdownMenu">
   <div class="col-menu">
     <div class="col-head">
       <span class="eyebrow">Show columns</span>
-      <button nz-button nzType="link" nzSize="small" (click)="resetColumns()">Reset</button>
+      <button ui-button variant="link" size="sm" (click)="resetColumns()">Reset</button>
     </div>
     @for (col of columns(); track col.key) {
       <label nz-checkbox [ngModel]="!hiddenKeys().has(col.key)" (ngModelChange)="toggleColumn(col.key, $event)" [nzDisabled]="!!col.locked">
-        {{ col.title || col.key }}
+        {{ col.title || 'Actions' }}
       </label>
     }
   </div>

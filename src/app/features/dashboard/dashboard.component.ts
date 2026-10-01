@@ -1,17 +1,13 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ChartData, ChartOptions } from 'chart.js';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { AuthService } from '@services/auth.service';
 import { ChartComponent, SERIES, SERIES_LIST, alpha, areaGradient } from '@shared/components/chart/chart.component';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { StatCardComponent, Tone } from '@shared/components/stat-card/stat-card.component';
+import { UiAvatarComponent, UiButtonComponent, UiCardComponent, UiDialogService, UiOption, UiRadioGroupComponent, UiTagComponent, UiTone } from '@ui';
 
 type Range = '7D' | '30D' | '12M';
 
@@ -37,14 +33,15 @@ const RANGE_DATA: Record<Range, { labels: string[]; current: number[]; previous:
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    FormsModule,
     RouterLink,
     CurrencyPipe,
     DatePipe,
-    NzButtonModule,
-    NzIconModule,
-    NzSegmentedModule,
     NzTableModule,
+    UiButtonComponent,
+    UiCardComponent,
+    UiTagComponent,
+    UiAvatarComponent,
+    UiRadioGroupComponent,
     ChartComponent,
     StatCardComponent,
     PageHeaderComponent,
@@ -54,7 +51,7 @@ const RANGE_DATA: Record<Range, { labels: string[]; current: number[]; previous:
 })
 export class DashboardComponent {
   private auth = inject(AuthService);
-  private message = inject(NzMessageService);
+  private dialog = inject(UiDialogService);
 
   readonly today = new Date();
   readonly greeting = computed(() => {
@@ -63,7 +60,11 @@ export class DashboardComponent {
     return `${h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'}, ${name}`;
   });
 
-  readonly ranges: Range[] = ['7D', '30D', '12M'];
+  readonly rangeOptions: UiOption<Range>[] = [
+    { label: '7D', value: '7D' },
+    { label: '30D', value: '30D' },
+    { label: '12M', value: '12M' },
+  ];
   range = signal<Range>('12M');
 
   readonly kpis: { label: string; value: string; delta: number; icon: string; tone: Tone; series: number[]; hint?: string }[] = [
@@ -227,14 +228,14 @@ export class DashboardComponent {
   latencyOptions: ChartOptions<'line'> = { scales: { y: { ticks: { callback: v => `${v} ms` } } } };
 
   readonly orders = [
-    { id: 'HB-10482', customer: 'Công ty TNHH Sao Mai', initials: 'SM', amount: 48500000, status: 'Paid', date: '2026-09-30T09:12:00' },
-    { id: 'HB-10481', customer: 'Lê Thảo Vy', initials: 'LV', amount: 3250000, status: 'Processing', date: '2026-09-30T08:40:00' },
-    { id: 'HB-10480', customer: 'Bếp Nhà Mây', initials: 'BM', amount: 12800000, status: 'Paid', date: '2026-09-29T17:05:00' },
-    { id: 'HB-10479', customer: 'Phạm Quốc Huy', initials: 'PH', amount: 980000, status: 'Refunded', date: '2026-09-29T14:22:00' },
-    { id: 'HB-10478', customer: 'Studio Ánh Dương', initials: 'AD', amount: 22400000, status: 'Overdue', date: '2026-09-28T10:51:00' },
+    { id: 'HB-10482', customer: 'Công ty TNHH Sao Mai', amount: 48500000, status: 'Paid', date: '2026-09-30T09:12:00' },
+    { id: 'HB-10481', customer: 'Lê Thảo Vy', amount: 3250000, status: 'Processing', date: '2026-09-30T08:40:00' },
+    { id: 'HB-10480', customer: 'Bếp Nhà Mây', amount: 12800000, status: 'Paid', date: '2026-09-29T17:05:00' },
+    { id: 'HB-10479', customer: 'Phạm Quốc Huy', amount: 980000, status: 'Refunded', date: '2026-09-29T14:22:00' },
+    { id: 'HB-10478', customer: 'Studio Ánh Dương', amount: 22400000, status: 'Overdue', date: '2026-09-28T10:51:00' },
   ];
 
-  readonly statusClass: Record<string, string> = { Paid: 'is-success', Processing: 'is-info', Refunded: 'is-neutral', Overdue: 'is-danger' };
+  readonly statusTone: Record<string, UiTone> = { Paid: 'success', Processing: 'info', Refunded: 'neutral', Overdue: 'danger' };
 
   readonly activity = [
     { who: 'Trần Linh', what: 'invited 4 people to Marketing', when: '8 min ago', tone: 'jade' },
@@ -245,6 +246,6 @@ export class DashboardComponent {
   ];
 
   export(): void {
-    this.message.success('Report queued. You will get an email when it is ready.');
+    this.dialog.success('Report queued. You will get an email when it is ready.');
   }
 }

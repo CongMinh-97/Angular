@@ -17,12 +17,6 @@
 .span-6 { grid-column: span 6; }
 .span-8 { grid-column: span 8; }
 
-.panel {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
 .donut {
   position: relative;
 }
@@ -30,7 +24,7 @@
 .donut-center {
   position: absolute;
   left: 50%;
-  top: calc(16px + 118px);
+  top: 118px;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
@@ -50,10 +44,6 @@
   }
 }
 
-.table-body {
-  padding: 12px 0 4px;
-}
-
 .order-id {
   font-size: 12.5px;
   color: var(--text-2);
@@ -65,19 +55,6 @@
   gap: 10px;
   font-weight: 600;
   min-width: 0;
-}
-
-.mini-avatar {
-  flex: none;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 11px;
-  font-weight: 800;
-  color: var(--ink-700);
-  background: #e8ebf3;
 }
 
 .muted {

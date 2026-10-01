@@ -87,7 +87,7 @@
         </button>
 
         <button class="me" type="button" nz-dropdown [nzDropdownMenu]="userMenu" nzTrigger="click" nzPlacement="bottomRight">
-          <span class="avatar">{{ initials() }}</span>
+          <ui-avatar [name]="user()?.fullName ?? ''" />
           <span class="me-text">
             <strong>{{ user()?.fullName }}</strong>
             <span>{{ user()?.roles?.[0] }}</span>
@@ -107,7 +107,7 @@
   <div class="notif-panel">
     <div class="notif-head">
       <strong>Notifications</strong>
-      <span class="status is-info">3 new</span>
+      <span class="new-count">3 new</span>
     </div>
     @for (n of notifications; track n.text) {
       <div class="notif-row">

@@ -1,7 +1,10 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   Directive,
+  ElementRef,
+  OnDestroy,
   TemplateRef,
   computed,
   contentChildren,
@@ -13,17 +16,13 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTableModule, NzTableQueryParams, NzTableSize } from 'ng-zorro-antd/table';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ListQuery } from '@models/user.model';
+import { UiButtonComponent, UiEmptyComponent, UiInputComponent } from '@ui';
 
 export interface TableColumn {
   key: string;
@@ -57,18 +56,18 @@ export class CellDefDirective {
     NgTemplateOutlet,
     FormsModule,
     NzTableModule,
-    NzButtonModule,
     NzIconModule,
-    NzInputModule,
     NzDropDownModule,
     NzCheckboxModule,
     NzToolTipModule,
-    NzEmptyModule,
+    UiInputComponent,
+    UiButtonComponent,
+    UiEmptyComponent,
   ],
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.scss'],
 })
-export class DataTableComponent<T extends { id: number | string }> {
+export class DataTableComponent<T extends { id: number | string }> implements AfterViewInit, OnDestroy {
   columns = input.required<TableColumn[]>();
   data = input<T[]>([]);
   total = input(0);
@@ -88,7 +87,10 @@ export class DataTableComponent<T extends { id: number | string }> {
   hiddenKeys = signal<Set<string>>(new Set());
   visibleColumns = computed(() => this.columns().filter(c => !this.hiddenKeys().has(c.key)));
   size = signal<NzTableSize>('middle');
-  search = '';
+  /** Under 640 px the left-pinned columns would eat the scroll area, so only the action column stays pinned. */
+  narrow = signal(false);
+  private host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private resizeObserver?: ResizeObserver;
 
   scrollX = computed(() => {
     const px = this.visibleColumns().reduce((sum, c) => sum + (parseInt(c.width ?? '', 10) || 160), this.selectable() ? 48 : 0);
@@ -99,8 +101,6 @@ export class DataTableComponent<T extends { id: number | string }> {
   allChecked = computed(() => this.pageIds().length > 0 && this.pageIds().every(id => this.selected().has(id)));
   someChecked = computed(() => !this.allChecked() && this.pageIds().some(id => this.selected().has(id)));
 
-  private search$ = new Subject<string>();
-
   constructor() {
     effect(
       () => {
@@ -108,14 +108,25 @@ export class DataTableComponent<T extends { id: number | string }> {
       },
       { allowSignalWrites: true },
     );
+  }
 
-    this.search$.pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed()).subscribe(search => {
-      this.query.update(q => ({ ...q, search, page: 1 }));
-    });
+  ngAfterViewInit(): void {
+    this.resizeObserver = new ResizeObserver(([entry]) => this.narrow.set(entry.contentRect.width < 640));
+    this.resizeObserver.observe(this.host.nativeElement);
+  }
+
+  ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
+  }
+
+  pinLeft(col?: TableColumn): boolean {
+    return !this.narrow() && (!col || col.fixed === 'left');
   }
 
   onSearch(value: string): void {
-    this.search$.next(value.trim());
+    const search = value.trim();
+    if (search === (this.query().search ?? '')) return;
+    this.query.update(q => ({ ...q, search, page: 1 }));
   }
 
   onQueryParams(p: NzTableQueryParams): void {

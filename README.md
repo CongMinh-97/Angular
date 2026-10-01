@@ -21,26 +21,58 @@ npm run build        # production build → dist/angular-base
 
 | Area | Where | Notes |
 | --- | --- | --- |
+| UI kit | `shared/ui` (import from `@ui`) | Every control and display element, see below and on the **/components** page |
 | HTTP interceptor | `core/interceptors/http.interceptor.ts` | Adds `Authorization: Bearer …`; leaves `Content-Type` to HttpClient so uploads keep multipart boundaries |
 | Error interceptor | `core/interceptors/error.interceptor.ts` | 401 → sign out and redirect with `returnUrl`; other errors → toast |
-| Mock backend | `core/mock/` | Interceptor that serves `/api/*` (login, users CRUD, bulk delete, import, image upload). Remove it from `app.config.ts` when the real API is ready |
+| Mock backend | `core/mock/` | Serves `/api/*` (login, users CRUD, bulk delete, import, image upload). Remove it from `app.config.ts` when the real API is ready |
 | Guards | `core/guards/auth.guard.ts` | `authGuard` for the app shell, `guestGuard` for `/login` |
-| Auth state | `core/services/auth.service.ts` | Signals; "Keep me signed in" chooses localStorage vs sessionStorage |
-| App shell | `shared/components/layout` | Collapsible sidebar (remembered), breadcrumb, Ctrl K search focus, notifications, user menu, mobile drawer |
-| Data table | `shared/components/data-table` | Server-side sort / filter / pagination, debounced search, column visibility, density, row selection + bulk bar, custom cells via `<ng-template appCell="key">` |
-| Form builder | `shared/components/dynamic-form` | `buildForm(fields)` + `<app-dynamic-form>`; validators and error messages come from the field config |
-| Rich text editor | `shared/components/rich-text-editor` | CKEditor 5 (GPL, free plugins only), image upload through HttpClient, custom "Insert date" button with its own icon, word count. Its stylesheet is a lazy bundle |
-| Charts | `shared/components/chart` | `<app-chart type data options>` wrapper with brand theme and series palette |
-| Stat card | `shared/components/stat-card` | KPI tile with delta and sparkline |
+| Data table | `shared/components/data-table` | Always full width; long rows scroll inside the table while the action column stays pinned right. Server-side sort / filter / pagination, debounced search, column visibility, density, selection + bulk bar, custom cells via `<ng-template appCell="key">` |
+| Form builder | `shared/components/dynamic-form` | `buildForm(fields)` + `<app-dynamic-form>` renders ui-* controls from a field config |
+| Rich text editor | `shared/components/rich-text-editor` | CKEditor 5 (GPL, free plugins), image upload through HttpClient, custom "Insert date" button |
+| Charts | `shared/components/chart` | `<app-chart>` wrapper over Chart.js with the brand palette |
+
+### UI kit (`@ui`)
+
+Form controls, all usable three ways:
+
+```html
+<ui-input formControlName="email" label="Email" type="email" />   <!-- reactive form -->
+<ui-input name="email" [(ngModel)]="email" label="Email" required />  <!-- template form -->
+<ui-input [(value)]="query" type="search" [debounce]="300" (debounced)="load($event)" />  <!-- standalone -->
+```
+
+Inside a form the control reads its validators: the required mark appears automatically and the first error is shown once the field is touched or the form is submitted. Override messages per field with `[errorMessages]`, or app-wide with the `UI_ERROR_MESSAGES` token (e.g. for Vietnamese). Outside a form pass `[error]` yourself.
+
+| Control | Value |
+| --- | --- |
+| `ui-input` (text, email, password, tel, url, search; icons, addons, clear, counter, debounce) | `string` |
+| `ui-textarea` (autosize, counter) | `string` |
+| `ui-number` (plain, thousands, currency, percent, unit) | `number` |
+| `ui-select` (search, groups, icons, descriptions, remote search) | `T` |
+| `ui-multi-select` (select all, create tags, max selected) | `T[]` |
+| `ui-date-picker` (date, week, month, quarter, year, time, min/max, past/future) | `Date` |
+| `ui-date-range-picker` (presets, max days) | `[Date, Date]` |
+| `ui-time-picker` | `Date` |
+| `ui-checkbox`, `ui-checkbox-group` (columns, select all) | `boolean`, `T[]` |
+| `ui-radio-group` (default, button, card) | `T` |
+| `ui-switch` | `boolean` |
+| `ui-slider` (single or range) | `number \| [number, number]` |
+| `ui-upload` (dropzone, button, image grid; type / size / count checks) | `UiUploadFile[]` |
+| `ui-field` | Label + hint + error shell for your own controls |
+
+Common inputs: `label`, `hint`, `tooltip`, `placeholder`, `size` (sm 30 / md 38 / lg 46 px), `layout` (vertical / horizontal), `required`, `disabled`, `readonly`, `error`, `errorMessages`, `inputId`. Validators for arrays and ranges: `minSelected`, `maxSelected`, `validDateRange`.
+
+Display: `button[ui-button]` (8 variants, 3 sizes, icon, icon-only, loading, block), `ui-tag`, `ui-avatar` / `ui-avatar-group`, `ui-card`, `ui-alert`, `ui-empty`, `ui-modal` (form dialogs; Cancel/OK footer or custom), and `UiDialogService` (`confirm()` returning a Promise, toasts).
 
 ### Pages
 
-- **/login**: split-screen sign-in, inline errors, password toggle
-- **/dashboard**: KPI tiles and 11 chart types (area, doughnut, stacked bar, mixed bar + line, radar, polar area, pie, bubble, horizontal bar, scatter, multi-line), recent orders, activity
-- **/users**: CRUD template (table + create/edit drawer + delete confirm + bulk delete + CSV export)
-- **/import**: import flow template (upload CSV → match columns → review with row validation → result)
-- **/editor**: article composer with CKEditor, publishing options, cover upload
-- **/ui-kit**: palette, type scale, buttons, status, form controls, feedback
+- **/login**: split-screen sign-in
+- **/dashboard**: KPI tiles and 11 chart types, recent orders, activity
+- **/users**: CRUD template (table + add/edit **modal** + delete confirm + bulk delete + CSV export)
+- **/import**: import flow (upload CSV → match columns → review with row validation → result)
+- **/editor**: article composer with CKEditor, publishing options, cover image
+- **/components**: every ui-* component with variants, states, API tables and copy-ready code, plus a live demo of the same controls in a reactive form, a template form and standalone
+- **/ui-kit** (Foundations): colours, type, radius, elevation, control heights
 
 ## Theming
 
@@ -58,6 +90,8 @@ Fonts: Plus Jakarta Sans (UI) and JetBrains Mono (IDs, codes), loaded in `src/in
 ## Adding a CRUD page
 
 1. Add a service like `core/services/user.service.ts` that accepts a `ListQuery`.
-2. Describe columns (`TableColumn[]`) and form fields (`FieldConfig[]`).
+2. Describe columns (`TableColumn[]`, give the actions column `fixed: 'right'`) and form fields (`FieldConfig[]`).
 3. Copy `features/users` and swap the service, columns and fields.
 4. Register the route as a child of the shell in `app.routes.ts`.
+
+> Naming note: ui-input / ui-textarea use `maxChars`, not `maxlength`. An input named `maxlength` would also match Angular's built-in `MaxLengthValidator` directive and add a validator to the form control.

@@ -23,17 +23,42 @@
       "dom"
     ],
     "paths": {
-      "@app/*": ["src/app/*"],
-      "@core/*": ["src/app/core/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@components/*": ["src/app/shared/components/*"],
-      "@services/*": ["src/app/core/services/*"],
-      "@models/*": ["src/app/core/models/*"],
-      "@interceptors/*": ["src/app/core/interceptors/*"],
-      "@guards/*": ["src/app/core/guards/*"],
-      "@utils/*": ["src/app/core/utils/*"],
-      "@assets/*": ["src/assets/*"],
-      "@environments/*": ["src/environments/*"]
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@core/*": [
+        "src/app/core/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+      "@components/*": [
+        "src/app/shared/components/*"
+      ],
+      "@services/*": [
+        "src/app/core/services/*"
+      ],
+      "@models/*": [
+        "src/app/core/models/*"
+      ],
+      "@interceptors/*": [
+        "src/app/core/interceptors/*"
+      ],
+      "@guards/*": [
+        "src/app/core/guards/*"
+      ],
+      "@utils/*": [
+        "src/app/core/utils/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@environments/*": [
+        "src/environments/*"
+      ],
+      "@ui": [
+        "src/app/shared/ui/index.ts"
+      ]
     }
   },
   "angularCompilerOptions": {

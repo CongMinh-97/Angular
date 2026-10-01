@@ -376,17 +376,6 @@
   }
 }
 
-.avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 13px;
-  font-weight: 800;
-  color: #fff;
-  background: linear-gradient(135deg, var(--jade-600), var(--ink-700));
-}
 
 .me-text {
   display: flex;
@@ -396,6 +385,7 @@
   strong {
     font-size: 13px;
     color: var(--text);
+    white-space: nowrap;
   }
 
   span {
@@ -426,6 +416,12 @@
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border);
   padding: 6px;
+}
+
+.new-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--info);
 }
 
 .notif-head {

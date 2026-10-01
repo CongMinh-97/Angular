@@ -40,9 +40,15 @@ export const routes: Routes = [
         loadComponent: () => import('./features/editor/editor-page.component').then(m => m.EditorPageComponent),
       },
       {
+        path: 'components',
+        title: 'Components · Harbor',
+        data: { breadcrumb: 'Components' },
+        loadComponent: () => import('./features/components/components-page.component').then(m => m.ComponentsPageComponent),
+      },
+      {
         path: 'ui-kit',
-        title: 'UI Kit · Harbor',
-        data: { breadcrumb: 'UI kit' },
+        title: 'Foundations · Harbor',
+        data: { breadcrumb: 'Foundations' },
         loadComponent: () => import('./features/ui-kit/ui-kit.component').then(m => m.UiKitComponent),
       },
     ],

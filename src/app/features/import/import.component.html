@@ -1,5 +1,5 @@
 <app-page-header eyebrow="Management" title="Import users" subtitle="Add many people at once from a CSV file. Nothing is saved until you confirm on the review step.">
-  <button nz-button (click)="downloadTemplate()"><span nz-icon nzType="file-excel"></span>Download template</button>
+  <button ui-button icon="file-excel" (click)="downloadTemplate()">Download template</button>
 </app-page-header>
 
 <div class="panel wizard">
@@ -16,16 +16,18 @@
     @switch (step()) {
       <!-- 1. Upload -->
       @case (0) {
-        <nz-upload nzType="drag" nzAccept=".csv,text/csv" [nzBeforeUpload]="beforeUpload" [nzShowUploadList]="false" class="drop">
-          <div class="drop-inner">
-            <span class="drop-icon"><span nz-icon nzType="cloud-upload"></span></span>
-            <strong>Drop a CSV file here, or click to browse</strong>
-            <span>UTF-8 CSV, up to 2 MB. The first row must contain column names.</span>
-          </div>
-        </nz-upload>
+        <ui-upload
+          inputId="csv-file"
+          accept=".csv"
+          [maxFiles]="1"
+          [maxSizeMb]="2"
+          [preview]="false"
+          hint="UTF-8 CSV. The first row must contain column names."
+          (valueChange)="onFile($event)"
+        />
         <div class="upload-alt">
           <span>No file handy?</span>
-          <button nz-button nzType="link" (click)="useSample()">Try the sample file (10 rows, 4 with problems)</button>
+          <button ui-button variant="link" (click)="useSample()">Try the sample file (10 rows, 3 with problems)</button>
         </div>
 
         <div class="tips">
@@ -43,7 +45,7 @@
             <strong>{{ fileName() }}</strong>
             <span>{{ formatSize(fileSize()) }} · {{ dataRows().length }} rows · {{ headers().length }} columns</span>
           </div>
-          <button nz-button nzType="text" nzSize="small" (click)="reset()">Replace</button>
+          <button ui-button variant="ghost" size="sm" (click)="reset()">Replace</button>
         </div>
 
         <h3 class="stage-title">Match your columns to user fields</h3>
@@ -63,25 +65,26 @@
                   <em>Required</em>
                 }
               </span>
-              <nz-select [ngModel]="mapping()[t.key]" (ngModelChange)="setMapping(t.key, $event)" nzPlaceHolder="Don't import" nzAllowClear>
-                @for (h of headers(); track $index) {
-                  <nz-option [nzLabel]="h" [nzValue]="$index" />
-                }
-              </nz-select>
+              <ui-select
+                [inputId]="'map-' + t.key"
+                [options]="headerOptions()"
+                [value]="mapping()[t.key]"
+                (valueChange)="setMapping(t.key, $any($event))"
+                placeholder="Don't import"
+                clearable
+              />
               <span class="preview">{{ sampleFor(mapping()[t.key]) }}</span>
             </div>
           }
         </div>
 
         @if (unmappedRequired().length) {
-          <nz-alert nzType="warning" nzShowIcon [nzMessage]="'Match ' + unmappedRequired().length + ' more required field(s) to continue.'" class="gap" />
+          <ui-alert tone="warning" class="gap">Match {{ unmappedRequired().length }} more required {{ unmappedRequired().length === 1 ? 'field' : 'fields' }} to continue.</ui-alert>
         }
 
         <div class="nav-row">
-          <button nz-button (click)="reset()"><span nz-icon nzType="arrow-left"></span>Back</button>
-          <button nz-button nzType="primary" [disabled]="unmappedRequired().length > 0" (click)="step.set(2)">
-            Review {{ dataRows().length }} rows<span nz-icon nzType="arrow-right"></span>
-          </button>
+          <button ui-button icon="arrow-left" (click)="reset()">Back</button>
+          <button ui-button variant="primary" iconRight="arrow-right" [disabled]="unmappedRequired().length > 0" (click)="step.set(2)">Review {{ dataRows().length }} rows</button>
         </div>
       }
 
@@ -96,10 +99,7 @@
             <span nz-icon nzType="warning"></span>
             <div><strong class="num">{{ errorCount() }}</strong><span>need fixing, will be skipped</span></div>
           </div>
-          <label class="only-errors">
-            <nz-switch [ngModel]="onlyErrors()" (ngModelChange)="onlyErrors.set($event)" nzSize="small" />
-            Show only rows with problems
-          </label>
+          <ui-switch class="only-errors" size="sm" text="Show only rows with problems" [value]="onlyErrors()" (valueChange)="onlyErrors.set(!!$event)" />
         </div>
 
         <nz-table #rt [nzData]="visibleRows()" [nzPageSize]="8" nzSize="small" [nzScroll]="{ x: '900px' }" class="review-table">
@@ -127,7 +127,7 @@
                       }
                     </ul>
                   } @else {
-                    <span class="status is-success">Ready</span>
+                    <ui-tag tone="success" dot>Ready</ui-tag>
                   }
                 </td>
               </tr>
@@ -136,10 +136,8 @@
         </nz-table>
 
         <div class="nav-row">
-          <button nz-button (click)="step.set(1)"><span nz-icon nzType="arrow-left"></span>Back to mapping</button>
-          <button nz-button nzType="primary" [disabled]="!validCount()" [nzLoading]="importing()" (click)="runImport()">
-            <span nz-icon nzType="cloud-upload"></span>Import {{ validCount() }} users
-          </button>
+          <button ui-button icon="arrow-left" (click)="step.set(1)">Back to mapping</button>
+          <button ui-button variant="primary" icon="cloud-upload" [disabled]="!validCount()" [loading]="importing()" (click)="runImport()">Import {{ validCount() }} users</button>
         </div>
       }
 
@@ -156,8 +154,8 @@
               <div><strong class="num">{{ r.invalid }}</strong><span>had errors</span></div>
             </div>
             <div class="nav-row center">
-              <button nz-button (click)="reset()">Import another file</button>
-              <a nz-button nzType="primary" routerLink="/users">View users<span nz-icon nzType="arrow-right"></span></a>
+              <button ui-button (click)="reset()">Import another file</button>
+              <a ui-button variant="primary" iconRight="arrow-right" routerLink="/users">View users</a>
             </div>
           </div>
         }

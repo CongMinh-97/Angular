@@ -1,6 +1,6 @@
 <app-page-header [eyebrow]="(today | date: 'EEEE, d MMMM y') ?? ''" [title]="greeting()" subtitle="Here is how the business is tracking. Figures update every 15 minutes.">
-  <button nz-button (click)="export()"><span nz-icon nzType="download"></span>Export report</button>
-  <a nz-button nzType="primary" routerLink="/users"><span nz-icon nzType="user-add"></span>Invite people</a>
+  <button ui-button icon="download" (click)="export()">Export report</button>
+  <a ui-button variant="primary" icon="user-add" routerLink="/users">Invite people</a>
 </app-page-header>
 
 <section class="kpis">
@@ -11,165 +11,72 @@
 
 <section class="grid">
   <!-- Area line -->
-  <article class="panel span-8">
-    <div class="panel-head">
-      <div>
-        <h3>Revenue</h3>
-        <p>Area line · current vs previous period</p>
-      </div>
-      <nz-segmented [nzOptions]="ranges" [ngModel]="ranges.indexOf(range())" (ngModelChange)="range.set(ranges[$event])" nzSize="small" />
-    </div>
-    <div class="panel-body">
-      <app-chart type="line" [data]="revenueData()" [options]="revenueOptions()" [height]="300" label="Revenue trend" />
-    </div>
-  </article>
+  <ui-card class="span-8" heading="Revenue" subtitle="Area line · current vs previous period">
+    <ui-radio-group uiCardActions variant="button" size="sm" [options]="rangeOptions" [value]="range()" (valueChange)="range.set($any($event))" />
+    <app-chart type="line" [data]="revenueData()" [options]="revenueOptions()" [height]="300" label="Revenue trend" />
+  </ui-card>
 
   <!-- Doughnut -->
-  <article class="panel span-4">
-    <div class="panel-head">
-      <div>
-        <h3>Revenue by channel</h3>
-        <p>Doughnut · share of total, %</p>
-      </div>
-    </div>
-    <div class="panel-body donut">
-      <app-chart type="doughnut" [data]="channelData" [options]="channelOptions" [height]="300" label="Revenue by channel" />
+  <ui-card class="span-4" heading="Revenue by channel" subtitle="Doughnut · share of total, %">
+    <div class="donut">
+    <app-chart type="doughnut" [data]="channelData" [options]="channelOptions" [height]="300" label="Revenue by channel" />
       <div class="donut-center">
         <strong class="num">46%</strong>
         <span>Online store</span>
       </div>
     </div>
-  </article>
+  </ui-card>
 
   <!-- Stacked bar -->
-  <article class="panel span-6">
-    <div class="panel-head">
-      <div>
-        <h3>Orders by city</h3>
-        <p>Stacked bar · customer type</p>
-      </div>
-    </div>
-    <div class="panel-body">
-      <app-chart type="bar" [data]="regionData" [options]="stackedOptions" [height]="280" label="Orders by city" />
-    </div>
-  </article>
+  <ui-card class="span-6" heading="Orders by city" subtitle="Stacked bar · customer type">
+    <app-chart type="bar" [data]="regionData" [options]="stackedOptions" [height]="280" label="Orders by city" />
+  </ui-card>
 
   <!-- Mixed -->
-  <article class="panel span-6">
-    <div class="panel-head">
-      <div>
-        <h3>Sign-ups and conversion</h3>
-        <p>Mixed bar + line · dual axis</p>
-      </div>
-    </div>
-    <div class="panel-body">
-      <app-chart type="bar" [data]="mixedData" [options]="mixedOptions" [height]="280" label="Sign-ups and conversion" />
-    </div>
-  </article>
+  <ui-card class="span-6" heading="Sign-ups and conversion" subtitle="Mixed bar + line · dual axis">
+    <app-chart type="bar" [data]="mixedData" [options]="mixedOptions" [height]="280" label="Sign-ups and conversion" />
+  </ui-card>
 
   <!-- Radar -->
-  <article class="panel span-4">
-    <div class="panel-head">
-      <div>
-        <h3>Team performance</h3>
-        <p>Radar · score out of 100</p>
-      </div>
-    </div>
-    <div class="panel-body">
-      <app-chart type="radar" [data]="radarData" [height]="280" label="Team performance" />
-    </div>
-  </article>
+  <ui-card class="span-4" heading="Team performance" subtitle="Radar · score out of 100">
+    <app-chart type="radar" [data]="radarData" [height]="280" label="Team performance" />
+  </ui-card>
 
   <!-- Polar -->
-  <article class="panel span-4">
-    <div class="panel-head">
-      <div>
-        <h3>Tickets by topic</h3>
-        <p>Polar area · open tickets</p>
-      </div>
-    </div>
-    <div class="panel-body">
-      <app-chart type="polarArea" [data]="polarData" [options]="polarOptions" [height]="280" label="Tickets by topic" />
-    </div>
-  </article>
+  <ui-card class="span-4" heading="Tickets by topic" subtitle="Polar area · open tickets">
+    <app-chart type="polarArea" [data]="polarData" [options]="polarOptions" [height]="280" label="Tickets by topic" />
+  </ui-card>
 
   <!-- Pie -->
-  <article class="panel span-4">
-    <div class="panel-head">
-      <div>
-        <h3>Traffic sources</h3>
-        <p>Pie · sessions, %</p>
-      </div>
-    </div>
-    <div class="panel-body">
-      <app-chart type="pie" [data]="pieData" [options]="pieOptions" [height]="280" label="Traffic sources" />
-    </div>
-  </article>
+  <ui-card class="span-4" heading="Traffic sources" subtitle="Pie · sessions, %">
+    <app-chart type="pie" [data]="pieData" [options]="pieOptions" [height]="280" label="Traffic sources" />
+  </ui-card>
 
   <!-- Bubble -->
-  <article class="panel span-6">
-    <div class="panel-head">
-      <div>
-        <h3>Pipeline deals</h3>
-        <p>Bubble · bubble size = seats</p>
-      </div>
-    </div>
-    <div class="panel-body">
-      <app-chart type="bubble" [data]="bubbleData" [options]="bubbleOptions" [height]="280" label="Pipeline deals" />
-    </div>
-  </article>
+  <ui-card class="span-6" heading="Pipeline deals" subtitle="Bubble · bubble size = seats">
+    <app-chart type="bubble" [data]="bubbleData" [options]="bubbleOptions" [height]="280" label="Pipeline deals" />
+  </ui-card>
 
   <!-- Horizontal bar -->
-  <article class="panel span-6">
-    <div class="panel-head">
-      <div>
-        <h3>Top products</h3>
-        <p>Horizontal bar · revenue, ₫ million</p>
-      </div>
-    </div>
-    <div class="panel-body">
-      <app-chart type="bar" [data]="productData" [options]="productOptions" [height]="280" label="Top products" />
-    </div>
-  </article>
+  <ui-card class="span-6" heading="Top products" subtitle="Horizontal bar · revenue, ₫ million">
+    <app-chart type="bar" [data]="productData" [options]="productOptions" [height]="280" label="Top products" />
+  </ui-card>
 
   <!-- Scatter -->
-  <article class="panel span-6">
-    <div class="panel-head">
-      <div>
-        <h3>Account health</h3>
-        <p>Scatter · tickets vs health score</p>
-      </div>
-    </div>
-    <div class="panel-body">
-      <app-chart type="scatter" [data]="scatterData" [options]="scatterOptions" [height]="260" label="Account health" />
-    </div>
-  </article>
+  <ui-card class="span-6" heading="Account health" subtitle="Scatter · tickets vs health score">
+    <app-chart type="scatter" [data]="scatterData" [options]="scatterOptions" [height]="260" label="Account health" />
+  </ui-card>
 
   <!-- Multi line -->
-  <article class="panel span-6">
-    <div class="panel-head">
-      <div>
-        <h3>API latency</h3>
-        <p>Multi-line · percentiles, last 24 h</p>
-      </div>
-      <span class="status is-success">Healthy</span>
-    </div>
-    <div class="panel-body">
-      <app-chart type="line" [data]="latencyData" [options]="latencyOptions" [height]="260" label="API latency" />
-    </div>
-  </article>
+  <ui-card class="span-6" heading="API latency" subtitle="Multi-line · percentiles, last 24 h">
+    <ui-tag uiCardActions tone="success" dot>Healthy</ui-tag>
+    <app-chart type="line" [data]="latencyData" [options]="latencyOptions" [height]="260" label="API latency" />
+  </ui-card>
 
   <!-- Recent orders -->
-  <article class="panel span-8">
-    <div class="panel-head">
-      <div>
-        <h3>Recent orders</h3>
-        <p>Latest 5 across all channels</p>
-      </div>
-      <a nz-button nzType="text" nzSize="small" routerLink="/users">View all <span nz-icon nzType="arrow-right"></span></a>
-    </div>
-    <div class="panel-body table-body">
-      <nz-table #ordersTable [nzData]="orders" [nzShowPagination]="false" [nzScroll]="{ x: '720px' }" nzSize="middle">
+  <ui-card class="span-8" padding="none" heading="Recent orders" subtitle="Latest 5 across all channels">
+    <a uiCardActions ui-button variant="ghost" size="sm" iconRight="arrow-right" routerLink="/users">View all</a>
+    <nz-table #ordersTable [nzData]="orders" [nzShowPagination]="false" [nzScroll]="{ x: '720px' }" nzSize="middle">
         <thead>
           <tr>
             <th nzWidth="110px">Order</th>
@@ -185,30 +92,22 @@
               <td class="mono order-id">{{ o.id }}</td>
               <td>
                 <div class="who">
-                  <span class="mini-avatar">{{ o.initials }}</span>
+                  <ui-avatar [name]="o.customer" size="sm" />
                   {{ o.customer }}
                 </div>
               </td>
               <td class="muted">{{ o.date | date: 'd MMM, HH:mm' }}</td>
               <td nzAlign="right" class="num strong">{{ o.amount | currency: 'VND' : 'symbol-narrow' : '1.0-0' }}</td>
-              <td><span class="status" [class]="statusClass[o.status]">{{ o.status }}</span></td>
+              <td><ui-tag [tone]="statusTone[o.status]" dot>{{ o.status }}</ui-tag></td>
             </tr>
           }
         </tbody>
       </nz-table>
-    </div>
-  </article>
+  </ui-card>
 
   <!-- Activity -->
-  <article class="panel span-4">
-    <div class="panel-head">
-      <div>
-        <h3>Activity</h3>
-        <p>What your team did recently</p>
-      </div>
-    </div>
-    <div class="panel-body">
-      <ol class="timeline">
+  <ui-card class="span-4" heading="Activity" subtitle="What your team did recently">
+    <ol class="timeline">
         @for (a of activity; track a.what) {
           <li [attr.data-tone]="a.tone">
             <p><strong>{{ a.who }}</strong> {{ a.what }}</p>
@@ -216,6 +115,5 @@
           </li>
         }
       </ol>
-    </div>
-  </article>
+  </ui-card>
 </section>

@@ -1,93 +1,88 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { RouterLink } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { NzProgressModule } from 'ng-zorro-antd/progress';
-import { NzRadioModule } from 'ng-zorro-antd/radio';
-import { NzSegmentedModule } from 'ng-zorro-antd/segmented';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzSliderModule } from 'ng-zorro-antd/slider';
-import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
-import { StatCardComponent } from '@shared/components/stat-card/stat-card.component';
+import { UiAlertComponent, UiButtonComponent, UiCardComponent, UiDialogService } from '@ui';
 
 @Component({
   selector: 'app-ui-kit',
   standalone: true,
-  imports: [
-    FormsModule,
-    NzButtonModule,
-    NzModalModule,
-    NzIconModule,
-    NzInputModule,
-    NzSelectModule,
-    NzDatePickerModule,
-    NzSwitchModule,
-    NzCheckboxModule,
-    NzRadioModule,
-    NzSliderModule,
-    NzSegmentedModule,
-    NzAlertModule,
-    NzProgressModule,
-    NzTabsModule,
-    NzToolTipModule,
-    PageHeaderComponent,
-    StatCardComponent,
-  ],
+  imports: [RouterLink, NzIconModule, PageHeaderComponent, UiCardComponent, UiAlertComponent, UiButtonComponent],
   templateUrl: './ui-kit.component.html',
   styleUrls: ['./ui-kit.component.scss'],
 })
 export class UiKitComponent {
-  private message = inject(NzMessageService);
-  private modal = inject(NzModalService);
-  private notification = inject(NzNotificationService);
+  private dialog = inject(UiDialogService);
 
   readonly palette = [
-    { group: 'Brand', items: [
-      { name: 'Ink 950', token: '--ink-950', hex: '#0F1324', dark: true },
-      { name: 'Ink 700', token: '--ink-700', hex: '#2D3E63', dark: true },
-      { name: 'Jade 600', token: '--jade-600', hex: '#0D8A74', dark: true },
-      { name: 'Jade 300', token: '--jade-300', hex: '#2FD3B0' },
-      { name: 'Coral 500', token: '--coral-500', hex: '#F2643A', dark: true },
-    ] },
-    { group: 'Chart series', items: [
-      { name: 'Violet 500', token: '--violet-500', hex: '#7B61FF', dark: true },
-      { name: 'Amber 500', token: '--amber-500', hex: '#F5A524' },
-      { name: 'Sky 500', token: '--sky-500', hex: '#3A8EF6', dark: true },
-    ] },
-    { group: 'Neutrals', items: [
-      { name: 'Text', token: '--text', hex: '#121729', dark: true },
-      { name: 'Text 2', token: '--text-2', hex: '#586178', dark: true },
-      { name: 'Border', token: '--border', hex: '#E3E7EF' },
-      { name: 'Canvas', token: '--bg', hex: '#F3F5F9' },
-    ] },
+    {
+      group: 'Brand',
+      items: [
+        { name: 'Ink 950', token: '--ink-950', hex: '#0F1324', dark: true, use: 'Sidebar, dark surfaces' },
+        { name: 'Ink 700', token: '--ink-700', hex: '#2D3E63', dark: true, use: 'Secondary series' },
+        { name: 'Jade 600', token: '--jade-600', hex: '#0D8A74', dark: true, use: 'Primary actions, focus' },
+        { name: 'Jade 300', token: '--jade-300', hex: '#2FD3B0', use: 'Accents on dark' },
+        { name: 'Coral 500', token: '--coral-500', hex: '#F2643A', dark: true, use: 'Highlights' },
+      ],
+    },
+    {
+      group: 'Chart series',
+      items: [
+        { name: 'Violet 500', token: '--violet-500', hex: '#7B61FF', dark: true, use: 'Series 3' },
+        { name: 'Amber 500', token: '--amber-500', hex: '#F5A524', use: 'Series 4' },
+        { name: 'Sky 500', token: '--sky-500', hex: '#3A8EF6', dark: true, use: 'Series 6' },
+      ],
+    },
+    {
+      group: 'Semantic',
+      items: [
+        { name: 'Success', token: '--success', hex: '#1E9E62', dark: true, use: 'Done, active' },
+        { name: 'Warning', token: '--warning', hex: '#C27C00', dark: true, use: 'Needs attention' },
+        { name: 'Danger', token: '--danger', hex: '#E5484D', dark: true, use: 'Errors, destructive' },
+        { name: 'Info', token: '--info', hex: '#3A7BF7', dark: true, use: 'Neutral notices' },
+      ],
+    },
+    {
+      group: 'Neutrals',
+      items: [
+        { name: 'Text', token: '--text', hex: '#121729', dark: true, use: 'Body text' },
+        { name: 'Text 2', token: '--text-2', hex: '#586178', dark: true, use: 'Secondary text' },
+        { name: 'Text 3', token: '--text-3', hex: '#8A92A6', dark: true, use: 'Hints, captions' },
+        { name: 'Border', token: '--border', hex: '#E3E7EF', use: 'Dividers, cards' },
+        { name: 'Canvas', token: '--bg', hex: '#F3F5F9', use: 'Page background' },
+      ],
+    },
   ];
 
   readonly typeScale = [
     { label: 'Display', size: 30, weight: 800, sample: 'Every team, one calm place' },
     { label: 'Page title', size: 26, weight: 800, sample: 'Users' },
-    { label: 'Section', size: 16, weight: 700, sample: 'Revenue by channel' },
+    { label: 'Section', size: 22, weight: 800, sample: 'Date range picker' },
+    { label: 'Card title', size: 15, weight: 700, sample: 'Revenue by channel' },
     { label: 'Body', size: 14, weight: 500, sample: 'Invite people, change their role, or remove access.' },
     { label: 'Caption', size: 12.5, weight: 500, sample: 'Figures update every 15 minutes' },
+    { label: 'Eyebrow', size: 11, weight: 700, sample: 'MANAGEMENT' },
   ];
 
-  text = 'Nguyễn Minh Anh';
-  role = 'Editor';
-  date: Date | null = new Date();
-  notify = true;
-  agree = true;
-  plan = 'team';
-  seats = 24;
-  view = 1; // nz-segmented binds the option index
+  readonly radii = [
+    { token: '--radius-sm', px: 6, use: 'Small buttons, tags' },
+    { token: '--radius', px: 10, use: 'Inputs, buttons' },
+    { token: '--radius-lg', px: 14, use: 'Cards, tables' },
+    { token: '--radius-xl', px: 20, use: 'Modals' },
+  ];
+
+  readonly shadows = [
+    { token: '--shadow-xs', use: 'Resting cards' },
+    { token: '--shadow-md', use: 'Hover, dropdowns' },
+    { token: '--shadow-lg', use: 'Modals' },
+  ];
+
+  readonly heights = [
+    { size: 'sm', px: 30, use: 'Dense toolbars, table actions' },
+    { size: 'md', px: 38, use: 'Default for every control' },
+    { size: 'lg', px: 46, use: 'Sign-in, hero forms' },
+  ];
+
   copied = signal<string | null>(null);
 
   copy(hex: string): void {
@@ -96,27 +91,7 @@ export class UiKitComponent {
         this.copied.set(hex);
         setTimeout(() => this.copied.set(null), 1200);
       },
-      () => this.message.info(hex),
+      () => this.dialog.info(hex),
     );
-  }
-
-  toast(type: 'success' | 'info' | 'warning' | 'error'): void {
-    const text = { success: 'Changes saved', info: 'Sync starts in 5 minutes', warning: 'Your trial ends in 3 days', error: 'Could not reach the server' }[type];
-    this.message[type](text);
-  }
-
-  confirm(): void {
-    this.modal.confirm({
-      nzTitle: 'Remove Lê Thảo Vy from the workspace?',
-      nzContent: 'She will lose access to all projects immediately. You can invite her again later.',
-      nzOkText: 'Remove',
-      nzOkDanger: true,
-      nzCancelText: 'Cancel',
-      nzOnOk: () => this.message.success('Lê Thảo Vy was removed'),
-    });
-  }
-
-  notifyMe(): void {
-    this.notification.success('Import finished', '42 users were added and invited. 2 rows were skipped because the email already exists.');
   }
 }
