@@ -17,19 +17,62 @@ npm run build        # production build → dist/angular-base
 
 > The production build sets `mockApi: false` (`src/environments/environment.prod.ts`). Turn it on there if you want to deploy the demo without a backend.
 
+## Folder structure
+
+Shared code lives in folders starting with `_`; business code lives in `modules/`, grouped by layout.
+
+```text
+src/app/
+├── app.component.ts · app.config.ts · app.routes.ts   # routes: /login + admin layout (lazy loadComponent)
+├── _core/
+│   └── _helpers/
+│       ├── token.interceptor.ts      # Bearer token
+│       ├── error.interceptor.ts      # 401 → login, other errors → toast
+│       ├── guard/                    # auth.guard.ts, no-auth.guard.ts
+│       └── mock-backend/             # in-browser /api for development (mock-backend.interceptor.ts, mock-db.ts)
+├── _layouts/
+│   └── admin-layout/                 # admin-layout.component.* (shell)
+│       └── components/               # aside/ (sidebar menu), header/ (breadcrumb, search, notifications, user menu)
+├── _models/
+│   ├── general/                      # api-response.model.ts, auth.model.ts
+│   └── layout-admin/                 # user.model.ts
+├── _services/
+│   ├── auth.service.ts
+│   └── layout-admin/                 # user.service.ts
+├── _shared/
+│   ├── components/                   # chart, data-table, dynamic-form, logo, page-header, rich-text-editor, stat-card
+│   │   └── ui/                       # UI kit (@ui): core/ forms/ display/
+│   ├── constants/                    # icons.ts, menu.const.ts
+│   └── routing/                      # admin-routing.ts (children of the admin layout)
+├── _store/
+│   └── global.store.ts               # sidebar collapsed, mobile menu (signals)
+└── modules/
+    ├── auth/                         # auth.route.ts, login/
+    ├── layout-admin/
+    │   ├── dashboard-admin/          # dashboard-admin.route.ts, dashboard-admin.component.*
+    │   ├── user-admin/               # user-admin.route.ts, component, constants/, modals/user-form-modal/
+    │   ├── import-user-admin/        # import-user-admin.route.ts, component, constants/, utils/csv.ts
+    │   └── article-admin/            # article-admin.route.ts, component
+    └── design-system/                # design-system.route.ts, ui-components/ (+ sections/), foundations/
+```
+
+Path aliases (`tsconfig.json`): `@core/*`, `@helpers/*`, `@guards/*`, `@layouts/*`, `@models/*`, `@services/*`, `@shared/*`, `@store/*`, `@modules/*`, `@ui`, `@environments/*`.
+
+Adding a page: create `modules/layout-admin/<feature>-admin/` with `<feature>-admin.route.ts` and the component, then add one line to `_shared/routing/admin-routing.ts` and one menu entry to `_shared/constants/menu.const.ts`.
+
 ## What's inside
 
 | Area | Where | Notes |
 | --- | --- | --- |
-| UI kit | `shared/ui` (import from `@ui`) | Every control and display element, see below and on the **/components** page |
-| HTTP interceptor | `core/interceptors/http.interceptor.ts` | Adds `Authorization: Bearer …`; leaves `Content-Type` to HttpClient so uploads keep multipart boundaries |
-| Error interceptor | `core/interceptors/error.interceptor.ts` | 401 → sign out and redirect with `returnUrl`; other errors → toast |
-| Mock backend | `core/mock/` | Serves `/api/*` (login, users CRUD, bulk delete, import, image upload). Remove it from `app.config.ts` when the real API is ready |
-| Guards | `core/guards/auth.guard.ts` | `authGuard` for the app shell, `guestGuard` for `/login` |
-| Data table | `shared/components/data-table` | Always full width; long rows scroll inside the table while the action column stays pinned right. Server-side sort / filter / pagination, debounced search, column visibility, density, selection + bulk bar, custom cells via `<ng-template appCell="key">` |
-| Form builder | `shared/components/dynamic-form` | `buildForm(fields)` + `<app-dynamic-form>` renders ui-* controls from a field config |
-| Rich text editor | `shared/components/rich-text-editor` | CKEditor 5 (GPL, free plugins), image upload through HttpClient, custom "Insert date" button |
-| Charts | `shared/components/chart` | `<app-chart>` wrapper over Chart.js with the brand palette |
+| UI kit | `_shared/components/ui` (import from `@ui`) | Every control and display element, see below and on the **/components** page |
+| Token interceptor | `_core/_helpers/token.interceptor.ts` | Adds `Authorization: Bearer …`; leaves `Content-Type` to HttpClient so uploads keep multipart boundaries |
+| Error interceptor | `_core/_helpers/error.interceptor.ts` | 401 → sign out and redirect with `returnUrl`; other errors → toast |
+| Mock backend | `_core/_helpers/mock-backend/` | Serves `/api/*` (login, users CRUD, bulk delete, import, image upload). Remove it from `app.config.ts` when the real API is ready |
+| Guards | `_core/_helpers/guard/` | `authGuard` for the admin layout, `noAuthGuard` for `/login` |
+| Data table | `_shared/components/data-table` | Always full width; long rows scroll inside the table while the action column stays pinned right. Server-side sort / filter / pagination, debounced search, column visibility, density, selection + bulk bar, custom cells via `<ng-template appCell="key">` |
+| Form builder | `_shared/components/dynamic-form` | `buildForm(fields)` + `<app-dynamic-form>` renders ui-* controls from a field config |
+| Rich text editor | `_shared/components/rich-text-editor` | CKEditor 5 (GPL, free plugins), image upload through HttpClient, custom "Insert date" button |
+| Charts | `_shared/components/chart` | `<app-chart>` wrapper over Chart.js with the brand palette |
 
 ### UI kit (`@ui`)
 
@@ -89,9 +132,9 @@ Fonts: Plus Jakarta Sans (UI) and JetBrains Mono (IDs, codes), loaded in `src/in
 
 ## Adding a CRUD page
 
-1. Add a service like `core/services/user.service.ts` that accepts a `ListQuery`.
-2. Describe columns (`TableColumn[]`, give the actions column `fixed: 'right'`) and form fields (`FieldConfig[]`).
-3. Copy `features/users` and swap the service, columns and fields.
-4. Register the route as a child of the shell in `app.routes.ts`.
+1. Add a service like `_services/layout-admin/user.service.ts` that accepts a `ListQuery`, and its model in `_models/layout-admin/`.
+2. Describe columns (`TableColumn[]`, give the actions column `fixed: 'right'`) and form fields (`FieldConfig[]`) in the module's `constants/`.
+3. Copy `modules/layout-admin/user-admin` (list page + `modals/user-form-modal`) and swap the service, columns and fields.
+4. Add the route to `_shared/routing/admin-routing.ts` and the menu item to `_shared/constants/menu.const.ts`.
 
 > Naming note: ui-input / ui-textarea use `maxChars`, not `maxlength`. An input named `maxlength` would also match Angular's built-in `MaxLengthValidator` directive and add a validator to the form control.

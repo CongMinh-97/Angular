@@ -1,0 +1,75 @@
+<header class="topbar">
+  <button nz-button nzType="text" class="menu-btn" (click)="store.openMobileMenu()" aria-label="Open navigation">
+    <span nz-icon nzType="menu"></span>
+  </button>
+
+  <div class="crumbs">
+    <span class="crumb-root">{{ appName }}</span>
+    <span nz-icon nzType="right" class="crumb-sep"></span>
+    <span class="crumb-current">{{ crumb() }}</span>
+  </div>
+
+  <label class="search" for="global-search">
+    <span nz-icon nzType="search"></span>
+    <input id="global-search" type="search" placeholder="Search people, pages, settings" autocomplete="off" />
+    <kbd>Ctrl K</kbd>
+  </label>
+
+  <div class="top-actions">
+    <button
+      nz-button
+      nzType="text"
+      class="icon-btn"
+      nz-dropdown
+      [nzDropdownMenu]="notifMenu"
+      nzTrigger="click"
+      nzPlacement="bottomRight"
+      aria-label="Notifications"
+    >
+      <nz-badge [nzDot]="true" [nzOffset]="[-2, 4]">
+        <span nz-icon nzType="bell" class="bell"></span>
+      </nz-badge>
+    </button>
+
+    <button class="me" type="button" nz-dropdown [nzDropdownMenu]="userMenu" nzTrigger="click" nzPlacement="bottomRight">
+      <ui-avatar [name]="user()?.fullName ?? ''" />
+      <span class="me-text">
+        <strong>{{ user()?.fullName }}</strong>
+        <span>{{ user()?.roles?.[0] }}</span>
+      </span>
+      <span nz-icon nzType="down" class="me-caret"></span>
+    </button>
+  </div>
+</header>
+
+<nz-dropdown-menu #notifMenu="nzDropdownMenu">
+  <div class="notif-panel">
+    <div class="notif-head">
+      <strong>Notifications</strong>
+      <span class="new-count">3 new</span>
+    </div>
+    @for (n of notifications; track n.text) {
+      <div class="notif-row">
+        <span class="notif-icon" [attr.data-tone]="n.tone"><span nz-icon [nzType]="n.icon"></span></span>
+        <div>
+          <p>{{ n.text }}</p>
+          <span>{{ n.time }}</span>
+        </div>
+      </div>
+    }
+  </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #userMenu="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item class="menu-identity" nzDisabled>
+      <strong>{{ user()?.fullName }}</strong>
+      <span>{{ user()?.email }}</span>
+    </li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item routerLink="/users"><span nz-icon nzType="user"></span>&nbsp; My profile</li>
+    <li nz-menu-item routerLink="/ui-kit"><span nz-icon nzType="setting"></span>&nbsp; Settings</li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item nzDanger (click)="logout()"><span nz-icon nzType="logout"></span>&nbsp; Sign out</li>
+  </ul>
+</nz-dropdown-menu>

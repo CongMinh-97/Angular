@@ -1,0 +1,60 @@
+<aside
+  class="sidebar"
+  aria-label="Main navigation"
+  [class.is-collapsed]="store.sidebarCollapsed()"
+  [class.is-open]="store.mobileMenuOpen()"
+>
+  <div class="brand">
+    <app-logo [size]="34" />
+    <div class="brand-text">
+      <strong>{{ appName }}</strong>
+      <span>Admin console</span>
+    </div>
+  </div>
+
+  <nav class="nav">
+    @for (group of menu; track group.title) {
+      <div class="nav-group">
+        <div class="nav-title">{{ group.title }}</div>
+        @for (item of group.items; track item.link) {
+          <a
+            class="nav-item"
+            [routerLink]="item.link"
+            routerLinkActive="is-active"
+            (click)="store.closeMobileMenu()"
+            nz-tooltip
+            [nzTooltipTitle]="store.sidebarCollapsed() ? item.label : null"
+            nzTooltipPlacement="right"
+          >
+            <span nz-icon [nzType]="item.icon" class="nav-icon"></span>
+            <span class="nav-label">{{ item.label }}</span>
+            @if (item.badge) {
+              <span class="nav-badge num">{{ item.badge }}</span>
+            }
+          </a>
+        }
+      </div>
+    }
+  </nav>
+
+  <div class="sidebar-foot">
+    @if (mockApi) {
+      <div class="env-card">
+        <span class="env-dot"></span>
+        <div>
+          <strong>Mock API on</strong>
+          <span>Data resets on reload</span>
+        </div>
+      </div>
+    }
+    <button
+      class="collapse-btn"
+      type="button"
+      (click)="store.toggleSidebar()"
+      [attr.aria-label]="store.sidebarCollapsed() ? 'Expand sidebar' : 'Collapse sidebar'"
+    >
+      <span nz-icon [nzType]="store.sidebarCollapsed() ? 'menu-unfold' : 'menu-fold'"></span>
+      <span class="nav-label">Collapse</span>
+    </button>
+  </div>
+</aside>

@@ -1,0 +1,44 @@
+@use 'styles/tokens' as *;
+
+:host {
+  display: block;
+}
+
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.scrim {
+  display: none;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  padding: 28px;
+  width: 100%;
+  max-width: 1480px;
+  margin: 0 auto;
+}
+
+@include below($breakpoint-lg) {
+  .scrim.is-visible {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+    background: rgba(15, 19, 36, 0.45);
+    backdrop-filter: blur(2px);
+  }
+
+  .content {
+    padding: 20px 16px;
+  }
+}

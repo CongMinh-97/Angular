@@ -27,37 +27,40 @@
         "src/app/*"
       ],
       "@core/*": [
-        "src/app/core/*"
+        "src/app/_core/*"
       ],
-      "@shared/*": [
-        "src/app/shared/*"
-      ],
-      "@components/*": [
-        "src/app/shared/components/*"
-      ],
-      "@services/*": [
-        "src/app/core/services/*"
-      ],
-      "@models/*": [
-        "src/app/core/models/*"
-      ],
-      "@interceptors/*": [
-        "src/app/core/interceptors/*"
+      "@helpers/*": [
+        "src/app/_core/_helpers/*"
       ],
       "@guards/*": [
-        "src/app/core/guards/*"
+        "src/app/_core/_helpers/guard/*"
       ],
-      "@utils/*": [
-        "src/app/core/utils/*"
+      "@layouts/*": [
+        "src/app/_layouts/*"
+      ],
+      "@models/*": [
+        "src/app/_models/*"
+      ],
+      "@services/*": [
+        "src/app/_services/*"
+      ],
+      "@shared/*": [
+        "src/app/_shared/*"
+      ],
+      "@store/*": [
+        "src/app/_store/*"
+      ],
+      "@modules/*": [
+        "src/app/modules/*"
+      ],
+      "@ui": [
+        "src/app/_shared/components/ui/index.ts"
       ],
       "@assets/*": [
         "src/assets/*"
       ],
       "@environments/*": [
         "src/environments/*"
-      ],
-      "@ui": [
-        "src/app/shared/ui/index.ts"
       ]
     }
   },
