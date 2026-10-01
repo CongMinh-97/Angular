@@ -1,0 +1,11 @@
+<div class="chart-wrapper">
+  <div class="chart-container" [style.height]="height">
+    <canvas
+      #canvas
+      [type]="chartType"
+      [data]="chartData"
+      [options]="chartOptions"
+      baseChart
+    ></canvas>
+  </div>
+</div>

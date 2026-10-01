@@ -1,0 +1,184 @@
+@import '../../../styles/variables';
+
+.editor-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  background: $bg-white;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  border: 1px solid $border-color;
+
+  .editor-container {
+    width: 100%;
+    border: 1px solid $border-color;
+    border-radius: $radius-md;
+    background: $bg-white;
+    overflow: hidden;
+
+    .editor-instance {
+      ::ng-deep {
+        .ck-editor__main {
+          .ck-editor__editable {
+            padding: $spacing-lg;
+            font-size: $font-size-base;
+            font-family: $font-family;
+            color: $text-primary;
+            line-height: $line-height-base;
+
+            &:focus {
+              outline: none;
+            }
+
+            p {
+              margin-bottom: $spacing-md;
+            }
+
+            ul,
+            ol {
+              margin-left: $spacing-lg;
+              margin-bottom: $spacing-md;
+
+              li {
+                margin-bottom: $spacing-sm;
+              }
+            }
+
+            a {
+              color: $accent-main;
+              text-decoration: underline;
+
+              &:hover {
+                color: $accent-dark;
+              }
+            }
+
+            strong {
+              font-weight: $font-weight-bold;
+            }
+
+            em {
+              font-style: italic;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+              font-weight: $font-weight-bold;
+              margin-top: $spacing-lg;
+              margin-bottom: $spacing-md;
+              color: $text-primary;
+            }
+
+            h1 {
+              font-size: $font-size-3xl;
+            }
+
+            h2 {
+              font-size: $font-size-2xl;
+            }
+
+            h3 {
+              font-size: $font-size-xl;
+            }
+
+            blockquote {
+              border-left: 4px solid $accent-main;
+              padding-left: $spacing-lg;
+              margin-left: 0;
+              color: $text-secondary;
+              font-style: italic;
+            }
+
+            img {
+              max-width: 100%;
+              height: auto;
+              border-radius: $radius-md;
+              margin: $spacing-lg 0;
+            }
+          }
+        }
+
+        .ck-toolbar {
+          background: linear-gradient(to bottom, $bg-neutral, $bg-light);
+          border: none;
+          border-bottom: 1px solid $border-color;
+          padding: $spacing-md;
+          display: flex;
+          gap: $spacing-sm;
+          flex-wrap: wrap;
+          align-items: center;
+
+          .ck-toolbar__separator {
+            background: $border-color;
+            width: 1px;
+            height: 24px;
+            margin: 0 $spacing-xs;
+          }
+
+          .ck-toolbar__grouped-dropdown {
+            gap: $spacing-xs;
+          }
+
+          .ck-button {
+            border-radius: $radius-sm;
+            transition: all $transition-fast;
+
+            &:hover,
+            &.ck-on {
+              background-color: rgba(0, 212, 168, 0.1);
+              color: $accent-main;
+            }
+          }
+
+          .ck-dropdown__button {
+            &:after {
+              border-top-color: $text-secondary;
+            }
+          }
+        }
+
+        .ck-balloon-panel {
+          border-radius: $radius-lg;
+          box-shadow: $shadow-heavy;
+        }
+
+        .ck-autocomplete {
+          border-radius: $radius-lg;
+          box-shadow: $shadow-medium;
+        }
+      }
+    }
+  }
+
+  .editor-actions {
+    display: flex;
+    gap: $spacing-md;
+    justify-content: flex-end;
+
+    .upload-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: $spacing-sm;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .editor-wrapper {
+    padding: $spacing-md;
+
+    ::ng-deep {
+      .ck-editor__main .ck-editor__editable {
+        padding: $spacing-md;
+      }
+
+      .ck-toolbar {
+        padding: $spacing-sm;
+      }
+    }
+  }
+}

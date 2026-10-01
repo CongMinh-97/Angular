@@ -1,0 +1,76 @@
+<div class="login-container">
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="login-header">
+        <h1 class="login-title">Welcome Back</h1>
+        <p class="login-subtitle">Sign in to your account to continue</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onLogin()">
+        <div class="form-group">
+          <label nz-label>Username</label>
+          <input
+            nz-input
+            type="text"
+            formControlName="username"
+            placeholder="Enter your username"
+            [ngClass]="{ 'ant-input-status-error': form.get('username')?.invalid && form.get('username')?.touched }"
+          />
+          <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched" class="error-text">
+            Username is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label nz-label>Password</label>
+          <input
+            nz-input
+            type="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            [ngClass]="{ 'ant-input-status-error': form.get('password')?.invalid && form.get('password')?.touched }"
+          />
+          <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="error-text">
+            Password is required
+          </div>
+        </div>
+
+        <div class="form-remember">
+          <label nz-checkbox formControlName="rememberMe">
+            Remember me
+          </label>
+        </div>
+
+        <button
+          nz-button
+          nzType="primary"
+          nzSize="large"
+          [disabled]="form.invalid || loading"
+          [nzLoading]="loading"
+          class="login-button"
+          type="submit"
+        >
+          Sign In
+        </button>
+
+        <div class="login-footer">
+          <button nz-button nzType="text" (click)="getDemoCredentials()" type="button">
+            Use Demo Credentials
+          </button>
+        </div>
+      </form>
+
+      <div class="login-info">
+        <p><strong>Demo Credentials:</strong></p>
+        <p>Username: <code>admin</code></p>
+        <p>Password: <code>password123</code></p>
+      </div>
+    </div>
+
+    <div class="login-decoration">
+      <div class="decoration-circle decoration-circle-1"></div>
+      <div class="decoration-circle decoration-circle-2"></div>
+      <div class="decoration-circle decoration-circle-3"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,271 @@
+@import './variables';
+
+// ===========================
+// Light Theme (Default)
+// ===========================
+.light-theme {
+  --bg-primary: #{$bg-light};
+  --bg-secondary: #{$bg-white};
+  --bg-tertiary: #{$bg-neutral};
+
+  --text-primary: #{$text-primary};
+  --text-secondary: #{$text-secondary};
+  --text-tertiary: #{$text-tertiary};
+
+  --border-color: #{$border-color};
+  --shadow: #{$shadow-medium};
+}
+
+// ===========================
+// Dark Theme
+// ===========================
+.dark-theme {
+  --bg-primary: #{$bg-dark};
+  --bg-secondary: #2d3748;
+  --bg-tertiary: #1f2937;
+
+  --text-primary: #f8f9fa;
+  --text-secondary: #d0d7de;
+  --text-tertiary: #8fa3b0;
+
+  --border-color: #424a52;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+// ===========================
+// Global Theme Styles
+// ===========================
+html {
+  font-family: $font-family;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: $text-primary;
+  background-color: $bg-light;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+}
+
+// ===========================
+// Ant Design Theme Override
+// ===========================
+::ng-deep {
+  .ant-btn-primary {
+    @include gradient-primary;
+    border: none;
+    font-weight: $font-weight-semibold;
+
+    &:hover {
+      @include gradient-primary;
+      opacity: 0.85;
+    }
+
+    &:active {
+      @include gradient-primary;
+      opacity: 0.95;
+    }
+  }
+
+  .ant-btn-default,
+  .ant-btn-text {
+    border-color: $border-color;
+    color: $text-primary;
+
+    &:hover {
+      border-color: $primary-main;
+      color: $primary-main;
+    }
+  }
+
+  .ant-input,
+  .ant-input-number,
+  .ant-select-selector,
+  .ant-picker {
+    border-color: $border-color !important;
+    border-radius: $radius-lg !important;
+    transition: all $transition-base;
+
+    &:hover {
+      border-color: $primary-light !important;
+    }
+
+    &:focus-within {
+      border-color: $accent-main !important;
+      box-shadow: 0 0 0 3px rgba(0, 212, 168, 0.1) !important;
+    }
+  }
+
+  .ant-form-item {
+    margin-bottom: $spacing-lg;
+  }
+
+  .ant-form-item-label > label {
+    color: $text-primary;
+    font-weight: $font-weight-medium;
+  }
+
+  .ant-table {
+    background: $bg-white;
+    border-radius: $radius-lg;
+    overflow: hidden;
+
+    .ant-table-thead > tr > th {
+      background-color: $bg-neutral;
+      color: $text-primary;
+      font-weight: $font-weight-semibold;
+      border-bottom-color: $border-color;
+    }
+
+    .ant-table-tbody > tr {
+      &:hover > td {
+        background-color: rgba(0, 212, 168, 0.05);
+      }
+    }
+  }
+
+  .ant-card {
+    border-radius: $radius-lg;
+    border-color: $border-light;
+    @include card-shadow;
+
+    .ant-card-head {
+      background-color: transparent;
+      border-bottom-color: $border-light;
+    }
+  }
+
+  .ant-modal-content {
+    border-radius: $radius-lg;
+  }
+
+  .ant-message-notice-content {
+    border-radius: $radius-lg;
+    box-shadow: $shadow-medium;
+  }
+
+  .ant-notification-notice {
+    border-radius: $radius-lg;
+  }
+
+  .ant-tag {
+    border-radius: $radius-md;
+    font-weight: $font-weight-medium;
+  }
+
+  .ant-tag-success {
+    background-color: $success-light;
+    color: $success;
+    border-color: $success;
+  }
+
+  .ant-tag-warning {
+    background-color: $warning-light;
+    color: $warning;
+    border-color: $warning;
+  }
+
+  .ant-tag-error {
+    background-color: $error-light;
+    color: $error;
+    border-color: $error;
+  }
+
+  .ant-tag-processing {
+    background-color: $info-light;
+    color: $info;
+  }
+
+  // Pagination
+  .ant-pagination-item-active {
+    border-color: $accent-main;
+    background-color: $accent-main;
+
+    a {
+      color: white;
+    }
+  }
+
+  // Progress
+  .ant-progress-inner {
+    background-color: $bg-neutral;
+  }
+
+  .ant-progress-success-bg {
+    background-color: $success;
+  }
+
+  // Spin
+  .ant-spin {
+    color: $accent-main;
+  }
+
+  // Slider
+  .ant-slider-track {
+    background-color: $accent-main;
+  }
+
+  .ant-slider-handle {
+    border-color: $accent-main;
+
+    &:focus {
+      box-shadow: 0 0 0 5px rgba(0, 212, 168, 0.2);
+    }
+  }
+}
+
+// ===========================
+// Custom Scrollbar
+// ===========================
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg-light;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $border-color;
+  border-radius: $radius-full;
+
+  &:hover {
+    background: $text-tertiary;
+  }
+}
+
+// ===========================
+// Selection
+// ===========================
+::selection {
+  background-color: $accent-main;
+  color: white;
+}
+
+::-moz-selection {
+  background-color: $accent-main;
+  color: white;
+}
+
+// ===========================
+// Links
+// ===========================
+a {
+  color: $accent-main;
+  text-decoration: none;
+  transition: color $transition-base;
+
+  &:hover {
+    color: $accent-dark;
+    text-decoration: underline;
+  }
+
+  &:focus {
+    @include focus-ring;
+  }
+}

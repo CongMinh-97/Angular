@@ -1,0 +1,134 @@
+@import '../../styles/variables';
+
+.dashboard-container {
+  padding: $spacing-lg;
+  background: $bg-light;
+  min-height: calc(100vh - 128px);
+
+  .dashboard-header {
+    margin-bottom: $spacing-2xl;
+
+    h1 {
+      font-size: $font-size-3xl;
+      font-weight: $font-weight-bold;
+      color: $text-primary;
+      margin: 0 0 $spacing-sm 0;
+    }
+
+    p {
+      font-size: $font-size-lg;
+      color: $text-secondary;
+      margin: 0;
+    }
+  }
+
+  .stats-row {
+    margin-bottom: $spacing-2xl;
+
+    .stat-card {
+      border-left: 4px solid $accent-main;
+      border-radius: $radius-lg;
+      @include card-shadow;
+      transition: all $transition-base;
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 212, 168, 0.15);
+      }
+
+      .stat-content {
+        display: flex;
+        align-items: center;
+        gap: $spacing-lg;
+
+        .stat-icon {
+          font-size: 32px;
+          opacity: 0.8;
+        }
+
+        .stat-info {
+          .stat-label {
+            font-size: $font-size-sm;
+            color: $text-secondary;
+            margin: 0;
+            font-weight: $font-weight-medium;
+          }
+
+          .stat-value {
+            font-size: $font-size-2xl;
+            color: $text-primary;
+            margin: $spacing-xs 0 0 0;
+            font-weight: $font-weight-bold;
+          }
+        }
+      }
+
+      ::ng-deep {
+        .ant-card-body {
+          padding: $spacing-lg;
+        }
+      }
+    }
+  }
+
+  .charts-row {
+    margin-bottom: $spacing-lg;
+
+    .chart-card {
+      border-radius: $radius-lg;
+      @include card-shadow;
+      transition: all $transition-base;
+
+      &:hover {
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+      }
+
+      h3 {
+        font-size: $font-size-lg;
+        color: $text-primary;
+        margin: 0;
+        font-weight: $font-weight-semibold;
+      }
+
+      ::ng-deep {
+        .ant-card-head {
+          border-bottom: 1px solid $border-light;
+          background: transparent;
+          padding: $spacing-lg;
+
+          .ant-card-extra {
+            a {
+              color: $accent-main;
+              text-decoration: none;
+              font-size: $font-size-sm;
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+
+        .ant-card-body {
+          padding: $spacing-lg;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: $spacing-md;
+
+    .dashboard-header {
+      h1 {
+        font-size: $font-size-2xl;
+      }
+
+      p {
+        font-size: $font-size-base;
+      }
+    }
+  }
+}

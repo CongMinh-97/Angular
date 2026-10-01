@@ -1,0 +1,132 @@
+@import '../../../styles/variables';
+
+.data-table-wrapper {
+  background: $bg-white;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  @include card-shadow;
+
+  .table-controls {
+    display: flex;
+    gap: $spacing-md;
+    margin-bottom: $spacing-lg;
+    padding-bottom: $spacing-lg;
+    border-bottom: 1px solid $border-color;
+
+    .column-toggle {
+      color: $text-secondary;
+
+      &:hover {
+        color: $accent-main;
+      }
+    }
+  }
+
+  .modern-table {
+    ::ng-deep {
+      .ant-table {
+        background: transparent;
+      }
+
+      .ant-table-thead > tr > th {
+        background: linear-gradient(to bottom, $bg-neutral, $bg-light);
+        color: $text-primary;
+        font-weight: $font-weight-semibold;
+        border-bottom: 2px solid $border-color;
+        padding: $spacing-md $spacing-lg;
+        transition: all $transition-base;
+
+        &:hover {
+          background: linear-gradient(to bottom, darken($bg-neutral, 5%), $bg-neutral);
+        }
+      }
+
+      .ant-table-tbody > tr {
+        border-bottom-color: $border-light;
+        transition: all $transition-base;
+
+        &:hover {
+          background-color: rgba(0, 212, 168, 0.03);
+
+          td {
+            color: $text-primary;
+          }
+        }
+
+        td {
+          padding: $spacing-md $spacing-lg;
+          color: $text-secondary;
+          transition: color $transition-fast;
+        }
+
+        &.ant-table-row-selected {
+          background-color: rgba(0, 212, 168, 0.08);
+        }
+      }
+
+      .ant-table-pagination {
+        margin-top: $spacing-lg;
+      }
+
+      .ant-pagination {
+        .ant-pagination-item {
+          border-radius: $radius-md;
+          border-color: $border-color;
+
+          &-active {
+            background-color: $accent-main;
+            border-color: $accent-main;
+
+            a {
+              color: white;
+            }
+          }
+
+          a {
+            color: $text-secondary;
+
+            &:hover {
+              color: $accent-main;
+            }
+          }
+        }
+
+        .ant-pagination-prev,
+        .ant-pagination-next {
+          .ant-pagination-item-link {
+            border-color: $border-color;
+            color: $text-secondary;
+
+            &:hover {
+              color: $accent-main;
+              border-color: $accent-main;
+            }
+          }
+        }
+      }
+    }
+
+    .row-number {
+      font-weight: $font-weight-semibold;
+      color: $text-tertiary;
+      width: 50px;
+    }
+  }
+
+  .empty-state {
+    padding: $spacing-2xl;
+  }
+}
+
+@media (max-width: 768px) {
+  .data-table-wrapper {
+    padding: $spacing-md;
+
+    ::ng-deep {
+      .ant-table-thead > tr > th,
+      .ant-table-tbody > tr > td {
+        padding: $spacing-sm $spacing-md;
+      }
+    }
+  }
+}

@@ -1,0 +1,102 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p>Welcome to your dashboard. Here's what's happening with your business.</p>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div nz-row [nzGutter]="[16, 16]" class="stats-row">
+    <div nz-col [nzXs]="24" [nzSm]="12" [nzMd]="6" *ngFor="let stat of stats">
+      <nz-card class="stat-card" [ngStyle]="{ borderLeftColor: stat.color }">
+        <div class="stat-content">
+          <span nz-icon [nzType]="stat.icon" class="stat-icon" [ngStyle]="{ color: stat.color }"></span>
+          <div class="stat-info">
+            <p class="stat-label">{{ stat.label }}</p>
+            <p class="stat-value">{{ stat.value }}</p>
+          </div>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+
+  <!-- Charts Row 1 -->
+  <div nz-row [nzGutter]="[16, 16]" class="charts-row">
+    <div nz-col [nzXs]="24" [nzMd]="12">
+      <nz-card class="chart-card">
+        <ng-template #cardTitle>
+          <h3>Line Chart - Trends Over Time</h3>
+        </ng-template>
+        <ng-template #cardExtra>
+          <a href="#">More</a>
+        </ng-template>
+        <app-chart-container [config]="lineChartConfig" height="350px"></app-chart-container>
+      </nz-card>
+    </div>
+
+    <div nz-col [nzXs]="24" [nzMd]="12">
+      <nz-card class="chart-card">
+        <ng-template #cardTitle>
+          <h3>Bar Chart - Sales by Category</h3>
+        </ng-template>
+        <ng-template #cardExtra>
+          <a href="#">More</a>
+        </ng-template>
+        <app-chart-container [config]="barChartConfig" height="350px"></app-chart-container>
+      </nz-card>
+    </div>
+  </div>
+
+  <!-- Charts Row 2 -->
+  <div nz-row [nzGutter]="[16, 16]" class="charts-row">
+    <div nz-col [nzXs]="24" [nzMd]="12">
+      <nz-card class="chart-card">
+        <ng-template #cardTitle>
+          <h3>Pie Chart - Market Distribution</h3>
+        </ng-template>
+        <ng-template #cardExtra>
+          <a href="#">More</a>
+        </ng-template>
+        <app-chart-container [config]="pieChartConfig" height="350px"></app-chart-container>
+      </nz-card>
+    </div>
+
+    <div nz-col [nzXs]="24" [nzMd]="12">
+      <nz-card class="chart-card">
+        <ng-template #cardTitle>
+          <h3>Doughnut Chart - Quarterly Revenue</h3>
+        </ng-template>
+        <ng-template #cardExtra>
+          <a href="#">More</a>
+        </ng-template>
+        <app-chart-container [config]="doughnutChartConfig" height="350px"></app-chart-container>
+      </nz-card>
+    </div>
+  </div>
+
+  <!-- Charts Row 3 -->
+  <div nz-row [nzGutter]="[16, 16]" class="charts-row">
+    <div nz-col [nzXs]="24" [nzMd]="12">
+      <nz-card class="chart-card">
+        <ng-template #cardTitle>
+          <h3>Radar Chart - Performance Metrics</h3>
+        </ng-template>
+        <ng-template #cardExtra>
+          <a href="#">More</a>
+        </ng-template>
+        <app-chart-container [config]="radarChartConfig" height="350px"></app-chart-container>
+      </nz-card>
+    </div>
+
+    <div nz-col [nzXs]="24" [nzMd]="12">
+      <nz-card class="chart-card">
+        <ng-template #cardTitle>
+          <h3>Polar Chart - Data Distribution</h3>
+        </ng-template>
+        <ng-template #cardExtra>
+          <a href="#">More</a>
+        </ng-template>
+        <app-chart-container [config]="polarChartConfig" height="350px"></app-chart-container>
+      </nz-card>
+    </div>
+  </div>
+</div>
