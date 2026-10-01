@@ -1,0 +1,58 @@
+<div nz-form nzLayout="vertical" [formGroup]="form()" class="grid">
+  @for (f of fields(); track f.key) {
+    <nz-form-item [class.span-24]="(f.span ?? 24) === 24">
+      <nz-form-label [nzFor]="idPrefix() + '-' + f.key" [nzNoColon]="true">
+        {{ f.label }}@if (f.required) {<span class="req" aria-hidden="true">*</span>}
+      </nz-form-label>
+      <nz-form-control [nzErrorTip]="errorFor(f)">
+        @switch (f.type) {
+          @case ('textarea') {
+            <textarea nz-input [id]="idPrefix() + '-' + f.key" [formControlName]="f.key" [placeholder]="f.placeholder ?? ''" [nzAutosize]="{ minRows: 3, maxRows: 8 }"></textarea>
+          }
+          @case ('number') {
+            <nz-input-number [nzId]="idPrefix() + '-' + f.key" [formControlName]="f.key" [nzMin]="f.min ?? minNum" [nzMax]="f.max ?? maxNum" [nzPlaceHolder]="f.placeholder ?? ''" />
+          }
+          @case ('select') {
+            <nz-select [nzId]="idPrefix() + '-' + f.key" [formControlName]="f.key" [nzPlaceHolder]="f.placeholder ?? 'Select'" nzShowSearch>
+              @for (o of f.options ?? []; track o.value) {
+                <nz-option [nzLabel]="o.label" [nzValue]="o.value" />
+              }
+            </nz-select>
+          }
+          @case ('multiselect') {
+            <nz-select [nzId]="idPrefix() + '-' + f.key" nzMode="multiple" [formControlName]="f.key" [nzPlaceHolder]="f.placeholder ?? 'Select one or more'">
+              @for (o of f.options ?? []; track o.value) {
+                <nz-option [nzLabel]="o.label" [nzValue]="o.value" />
+              }
+            </nz-select>
+          }
+          @case ('radio') {
+            <nz-radio-group [formControlName]="f.key" nzButtonStyle="solid">
+              @for (o of f.options ?? []; track o.value) {
+                <label nz-radio-button [nzValue]="o.value">{{ o.label }}</label>
+              }
+            </nz-radio-group>
+          }
+          @case ('switch') {
+            <nz-switch [formControlName]="f.key" [nzId]="idPrefix() + '-' + f.key" />
+          }
+          @case ('date') {
+            <nz-date-picker [nzId]="idPrefix() + '-' + f.key" [formControlName]="f.key" nzFormat="dd/MM/yyyy" class="w-full" />
+          }
+          @default {
+            @if (f.icon) {
+              <nz-input-group [nzPrefixIcon]="f.icon">
+                <input nz-input [id]="idPrefix() + '-' + f.key" [type]="f.type" [formControlName]="f.key" [placeholder]="f.placeholder ?? ''" />
+              </nz-input-group>
+            } @else {
+              <input nz-input [id]="idPrefix() + '-' + f.key" [type]="f.type" [formControlName]="f.key" [placeholder]="f.placeholder ?? ''" />
+            }
+          }
+        }
+        @if (f.hint) {
+          <div class="hint">{{ f.hint }}</div>
+        }
+      </nz-form-control>
+    </nz-form-item>
+  }
+</div>

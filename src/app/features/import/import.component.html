@@ -1,0 +1,167 @@
+<app-page-header eyebrow="Management" title="Import users" subtitle="Add many people at once from a CSV file. Nothing is saved until you confirm on the review step.">
+  <button nz-button (click)="downloadTemplate()"><span nz-icon nzType="file-excel"></span>Download template</button>
+</app-page-header>
+
+<div class="panel wizard">
+  <div class="steps-wrap">
+    <nz-steps [nzCurrent]="step()" nzSize="small" nzLabelPlacement="vertical">
+      <nz-step nzTitle="Upload file" />
+      <nz-step nzTitle="Match columns" />
+      <nz-step nzTitle="Review" />
+      <nz-step nzTitle="Done" />
+    </nz-steps>
+  </div>
+
+  <div class="stage">
+    @switch (step()) {
+      <!-- 1. Upload -->
+      @case (0) {
+        <nz-upload nzType="drag" nzAccept=".csv,text/csv" [nzBeforeUpload]="beforeUpload" [nzShowUploadList]="false" class="drop">
+          <div class="drop-inner">
+            <span class="drop-icon"><span nz-icon nzType="cloud-upload"></span></span>
+            <strong>Drop a CSV file here, or click to browse</strong>
+            <span>UTF-8 CSV, up to 2 MB. The first row must contain column names.</span>
+          </div>
+        </nz-upload>
+        <div class="upload-alt">
+          <span>No file handy?</span>
+          <button nz-button nzType="link" (click)="useSample()">Try the sample file (10 rows, 4 with problems)</button>
+        </div>
+
+        <div class="tips">
+          <div><span nz-icon nzType="check-circle"></span>Required columns: full name, email, role, department</div>
+          <div><span nz-icon nzType="check-circle"></span>Roles: Admin, Manager, Editor, Viewer</div>
+          <div><span nz-icon nzType="check-circle"></span>People whose email already exists are skipped, not overwritten</div>
+        </div>
+      }
+
+      <!-- 2. Map -->
+      @case (1) {
+        <div class="file-chip">
+          <span nz-icon nzType="file-text"></span>
+          <div>
+            <strong>{{ fileName() }}</strong>
+            <span>{{ formatSize(fileSize()) }} · {{ dataRows().length }} rows · {{ headers().length }} columns</span>
+          </div>
+          <button nz-button nzType="text" nzSize="small" (click)="reset()">Replace</button>
+        </div>
+
+        <h3 class="stage-title">Match your columns to user fields</h3>
+        <p class="stage-lead">We matched what we could from the header names. Check each one and fix any that are wrong.</p>
+
+        <div class="map-table">
+          <div class="map-row map-head">
+            <span>User field</span>
+            <span>Column in your file</span>
+            <span>Preview (first 3 rows)</span>
+          </div>
+          @for (t of targets; track t.key) {
+            <div class="map-row" [class.is-missing]="t.required && mapping()[t.key] == null">
+              <span class="field">
+                {{ t.label }}
+                @if (t.required) {
+                  <em>Required</em>
+                }
+              </span>
+              <nz-select [ngModel]="mapping()[t.key]" (ngModelChange)="setMapping(t.key, $event)" nzPlaceHolder="Don't import" nzAllowClear>
+                @for (h of headers(); track $index) {
+                  <nz-option [nzLabel]="h" [nzValue]="$index" />
+                }
+              </nz-select>
+              <span class="preview">{{ sampleFor(mapping()[t.key]) }}</span>
+            </div>
+          }
+        </div>
+
+        @if (unmappedRequired().length) {
+          <nz-alert nzType="warning" nzShowIcon [nzMessage]="'Match ' + unmappedRequired().length + ' more required field(s) to continue.'" class="gap" />
+        }
+
+        <div class="nav-row">
+          <button nz-button (click)="reset()"><span nz-icon nzType="arrow-left"></span>Back</button>
+          <button nz-button nzType="primary" [disabled]="unmappedRequired().length > 0" (click)="step.set(2)">
+            Review {{ dataRows().length }} rows<span nz-icon nzType="arrow-right"></span>
+          </button>
+        </div>
+      }
+
+      <!-- 3. Review -->
+      @case (2) {
+        <div class="summary">
+          <div class="sum-card is-ok">
+            <span nz-icon nzType="check-circle"></span>
+            <div><strong class="num">{{ validCount() }}</strong><span>ready to import</span></div>
+          </div>
+          <div class="sum-card is-bad">
+            <span nz-icon nzType="warning"></span>
+            <div><strong class="num">{{ errorCount() }}</strong><span>need fixing, will be skipped</span></div>
+          </div>
+          <label class="only-errors">
+            <nz-switch [ngModel]="onlyErrors()" (ngModelChange)="onlyErrors.set($event)" nzSize="small" />
+            Show only rows with problems
+          </label>
+        </div>
+
+        <nz-table #rt [nzData]="visibleRows()" [nzPageSize]="8" nzSize="small" [nzScroll]="{ x: '900px' }" class="review-table">
+          <thead>
+            <tr>
+              <th nzWidth="64px">Row</th>
+              @for (t of targets; track t.key) {
+                <th>{{ t.label }}</th>
+              }
+              <th nzWidth="260px">Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (r of rt.data; track r.line) {
+              <tr [class.row-bad]="r.errors.length">
+                <td class="num muted">{{ r.line }}</td>
+                @for (t of targets; track t.key) {
+                  <td>{{ r.values[t.key] || '—' }}</td>
+                }
+                <td>
+                  @if (r.errors.length) {
+                    <ul class="errs">
+                      @for (e of r.errors; track e) {
+                        <li>{{ e }}</li>
+                      }
+                    </ul>
+                  } @else {
+                    <span class="status is-success">Ready</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </nz-table>
+
+        <div class="nav-row">
+          <button nz-button (click)="step.set(1)"><span nz-icon nzType="arrow-left"></span>Back to mapping</button>
+          <button nz-button nzType="primary" [disabled]="!validCount()" [nzLoading]="importing()" (click)="runImport()">
+            <span nz-icon nzType="cloud-upload"></span>Import {{ validCount() }} users
+          </button>
+        </div>
+      }
+
+      <!-- 4. Done -->
+      @case (3) {
+        @if (result(); as r) {
+          <div class="done">
+            <span class="done-icon"><span nz-icon nzType="check"></span></span>
+            <h3>Import finished</h3>
+            <p>{{ fileName() }} was processed. New users were sent an invitation email.</p>
+            <div class="done-stats">
+              <div><strong class="num">{{ r.inserted }}</strong><span>added</span></div>
+              <div><strong class="num">{{ r.skipped }}</strong><span>already existed</span></div>
+              <div><strong class="num">{{ r.invalid }}</strong><span>had errors</span></div>
+            </div>
+            <div class="nav-row center">
+              <button nz-button (click)="reset()">Import another file</button>
+              <a nz-button nzType="primary" routerLink="/users">View users<span nz-icon nzType="arrow-right"></span></a>
+            </div>
+          </div>
+        }
+      }
+    }
+  </div>
+</div>

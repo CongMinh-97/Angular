@@ -1,83 +1,74 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject, input, signal } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { finalize } from 'rxjs';
+import { environment } from '@environments/environment';
 import { AuthService } from '@services/auth.service';
+import { LogoComponent } from '@shared/components/logo/logo.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    NzFormModule,
-    NzInputModule,
-    NzButtonModule,
-    NzCheckboxModule,
-    NzCardModule,
-    NzIconModule,
-  ],
+  imports: [ReactiveFormsModule, NzFormModule, NzInputModule, NzButtonModule, NzCheckboxModule, NzIconModule, NzAlertModule, LogoComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
-  form!: FormGroup;
-  loading = false;
-  rememberMe = false;
+export class LoginComponent {
+  private fb = inject(NonNullableFormBuilder);
+  private auth = inject(AuthService);
+  private router = inject(Router);
+  private message = inject(NzMessageService);
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private message: NzMessageService
-  ) {}
+  returnUrl = input<string>();
 
-  ngOnInit(): void {
-    this.buildForm();
-  }
+  readonly appName = environment.appName;
+  readonly year = new Date().getFullYear();
+  loading = signal(false);
+  showPassword = signal(false);
+  error = signal<string | null>(null);
 
-  buildForm(): void {
-    this.form = this.fb.group({
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-      rememberMe: [false],
-    });
-  }
+  form = this.fb.group({
+    username: ['', [Validators.required]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    remember: [true],
+  });
 
-  onLogin(): void {
+  submit(): void {
     if (this.form.invalid) {
+      Object.values(this.form.controls).forEach(c => {
+        c.markAsDirty();
+        c.updateValueAndValidity();
+      });
       return;
     }
-
-    this.loading = true;
-    const { username, password } = this.form.value;
-
-    this.authService.login({ username, password }).subscribe({
-      next: () => {
-        this.message.success('Login successful!');
-        this.router.navigate(['/dashboard']);
-      },
-      error: (error) => {
-        this.loading = false;
-        this.message.error(error.error?.message || 'Login failed');
-      },
-      complete: () => {
-        this.loading = false;
-      },
-    });
+    this.error.set(null);
+    this.loading.set(true);
+    const { username, password, remember } = this.form.getRawValue();
+    this.auth
+      .login({ username, password }, remember)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: res => {
+          this.message.success(`Welcome back, ${res.user.fullName.split(' ').pop()}`);
+          this.router.navigateByUrl(this.returnUrl() || '/dashboard');
+        },
+        error: err => this.error.set(err.error?.message ?? 'Sign in failed. Try again.'),
+      });
   }
 
-  getDemoCredentials(): void {
-    this.form.patchValue({
-      username: 'admin',
-      password: 'password123',
-    });
+  fillDemo(): void {
+    this.form.patchValue({ username: 'admin@harbor.vn', password: 'password123' });
+    this.error.set(null);
+  }
+
+  sso(provider: string): void {
+    this.message.info(`${provider} sign-in is not configured in this demo.`);
   }
 }

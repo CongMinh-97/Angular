@@ -1,84 +1,136 @@
-<nz-layout class="app-layout">
-  <!-- Header -->
-  <nz-header class="app-header">
-    <div class="header-content">
-      <div class="header-left">
-        <div class="logo-section">
-          <span class="logo-text">🚀 Angular Base</span>
-        </div>
-      </div>
-
-      <div class="header-right">
-        <div class="user-section">
-          <div class="avatar-circle">👤</div>
-          <div class="user-info">
-            <span class="user-name">{{ user?.fullName || 'User' }}</span>
-          </div>
-          <button
-            nz-button
-            nzType="text"
-            (click)="logout()"
-            class="logout-link"
-            title="Logout"
-          >
-            <span>↪</span>
-          </button>
-        </div>
+<div class="shell" [class.is-collapsed]="collapsed()" [class.is-mobile-open]="mobileOpen()">
+  <aside class="sidebar" aria-label="Main navigation">
+    <div class="brand">
+      <app-logo [size]="34" />
+      <div class="brand-text">
+        <strong>{{ appName }}</strong>
+        <span>Admin console</span>
       </div>
     </div>
-  </nz-header>
 
-  <nz-layout class="main-container">
-    <!-- Sidebar -->
-    <nz-sider
-      class="app-sidebar"
-      [nzCollapsible]="true"
-      [nzCollapsed]="isCollapsed"
-      [nzWidth]="240"
-      [nzCollapsedWidth]="64"
-      [nzBreakpoint]="'lg'"
-      [nzCollapsedWidth]="0"
-    >
-      <div class="sidebar-menu">
-        <ul nz-menu [nzMode]="'vertical'" [nzTheme]="'light'" [nzInlineIndent]="16">
-          <li nz-menu-item nzMatchRouter routerLink="/dashboard" class="menu-item">
-            <span nz-icon nzType="dashboard" nzTheme="outline"></span>
-            <span>📊 Dashboard</span>
-          </li>
-          <li nz-submenu class="menu-item">
-            <span nz-title>
-              <span nz-icon nzType="team" nzTheme="outline"></span>
-              <span>👥 Management</span>
-            </span>
-            <ul>
-              <li nz-menu-item nzMatchRouter routerLink="/users">
-                <span>Users</span>
-              </li>
-              <li nz-menu-item nzMatchRouter routerLink="/products">
-                <span>Products</span>
-              </li>
-            </ul>
-          </li>
-          <li nz-menu-item class="menu-item">
-            <span nz-icon nzType="file" nzTheme="outline"></span>
-            <span>📋 Reports</span>
-          </li>
-          <li nz-menu-item class="menu-item">
-            <span nz-icon nzType="setting" nzTheme="outline"></span>
-            <span>⚙️ Settings</span>
-          </li>
-        </ul>
+    <nav class="nav">
+      @for (group of nav; track group.title) {
+        <div class="nav-group">
+          <div class="nav-title">{{ group.title }}</div>
+          @for (item of group.items; track item.link) {
+            <a
+              class="nav-item"
+              [routerLink]="item.link"
+              routerLinkActive="is-active"
+              (click)="closeMobile()"
+              nz-tooltip
+              [nzTooltipTitle]="collapsed() ? item.label : null"
+              nzTooltipPlacement="right"
+            >
+              <span nz-icon [nzType]="item.icon" class="nav-icon"></span>
+              <span class="nav-label">{{ item.label }}</span>
+              @if (item.badge) {
+                <span class="nav-badge num">{{ item.badge }}</span>
+              }
+            </a>
+          }
+        </div>
+      }
+    </nav>
+
+    <div class="sidebar-foot">
+      @if (mockApi) {
+        <div class="env-card">
+          <span class="env-dot"></span>
+          <div>
+            <strong>Mock API on</strong>
+            <span>Data resets on reload</span>
+          </div>
+        </div>
+      }
+      <button class="collapse-btn" type="button" (click)="toggleCollapsed()" [attr.aria-label]="collapsed() ? 'Expand sidebar' : 'Collapse sidebar'">
+        <span nz-icon [nzType]="collapsed() ? 'menu-unfold' : 'menu-fold'"></span>
+        <span class="nav-label">Collapse</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="scrim" (click)="closeMobile()"></div>
+
+  <div class="main">
+    <header class="topbar">
+      <button nz-button nzType="text" class="menu-btn" (click)="mobileOpen.set(true)" aria-label="Open navigation">
+        <span nz-icon nzType="menu"></span>
+      </button>
+
+      <div class="crumbs">
+        <span class="crumb-root">{{ appName }}</span>
+        <span nz-icon nzType="right" class="crumb-sep"></span>
+        <span class="crumb-current">{{ crumb() }}</span>
       </div>
-    </nz-sider>
 
-    <!-- Content Area -->
-    <nz-layout class="content-layout">
-      <nz-content class="page-content">
-        <router-outlet></router-outlet>
-      </nz-content>
-      <nz-footer class="app-footer">
-        <p>&copy; 2024 Angular Base Application. All rights reserved.</p>
-      </nz-footer>
-    </nz-layout>
-  </nz-layout>
-</nz-layout>
+      <label class="search" for="global-search">
+        <span nz-icon nzType="search"></span>
+        <input id="global-search" type="search" placeholder="Search people, pages, settings" autocomplete="off" />
+        <kbd>Ctrl K</kbd>
+      </label>
+
+      <div class="top-actions">
+        <button
+          nz-button
+          nzType="text"
+          class="icon-btn"
+          nz-dropdown
+          [nzDropdownMenu]="notifMenu"
+          nzTrigger="click"
+          nzPlacement="bottomRight"
+          aria-label="Notifications"
+        >
+          <nz-badge [nzDot]="true" [nzOffset]="[-2, 4]">
+            <span nz-icon nzType="bell" class="bell"></span>
+          </nz-badge>
+        </button>
+
+        <button class="me" type="button" nz-dropdown [nzDropdownMenu]="userMenu" nzTrigger="click" nzPlacement="bottomRight">
+          <span class="avatar">{{ initials() }}</span>
+          <span class="me-text">
+            <strong>{{ user()?.fullName }}</strong>
+            <span>{{ user()?.roles?.[0] }}</span>
+          </span>
+          <span nz-icon nzType="down" class="me-caret"></span>
+        </button>
+      </div>
+    </header>
+
+    <main class="content">
+      <router-outlet />
+    </main>
+  </div>
+</div>
+
+<nz-dropdown-menu #notifMenu="nzDropdownMenu">
+  <div class="notif-panel">
+    <div class="notif-head">
+      <strong>Notifications</strong>
+      <span class="status is-info">3 new</span>
+    </div>
+    @for (n of notifications; track n.text) {
+      <div class="notif-row">
+        <span class="notif-icon" [attr.data-tone]="n.tone"><span nz-icon [nzType]="n.icon"></span></span>
+        <div>
+          <p>{{ n.text }}</p>
+          <span>{{ n.time }}</span>
+        </div>
+      </div>
+    }
+  </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #userMenu="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item class="menu-identity" nzDisabled>
+      <strong>{{ user()?.fullName }}</strong>
+      <span>{{ user()?.email }}</span>
+    </li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item routerLink="/users"><span nz-icon nzType="user"></span>&nbsp; My profile</li>
+    <li nz-menu-item routerLink="/ui-kit"><span nz-icon nzType="setting"></span>&nbsp; Settings</li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item nzDanger (click)="logout()"><span nz-icon nzType="logout"></span>&nbsp; Sign out</li>
+  </ul>
+</nz-dropdown-menu>

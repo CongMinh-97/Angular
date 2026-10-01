@@ -1,0 +1,18 @@
+<div class="rte" [style.--rte-min-h]="minHeight() + 'px'">
+  @if (stylesReady()) {
+    <ckeditor
+      [editor]="Editor"
+      [config]="config"
+      [disabled]="disabled"
+      [ngModel]="value"
+      (ngModelChange)="onModelChange($event)"
+      (blur)="onTouched()"
+      (ready)="onReady($event)"
+    />
+  } @else {
+    <div class="rte-skeleton" aria-busy="true">
+      <div class="rte-skeleton-bar"></div>
+      <div class="rte-skeleton-body"></div>
+    </div>
+  }
+</div>

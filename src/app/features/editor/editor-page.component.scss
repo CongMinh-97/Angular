@@ -1,0 +1,153 @@
+@use 'styles/tokens' as *;
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 16px;
+  align-items: start;
+}
+
+.main {
+  padding: 20px 24px 16px;
+  min-width: 0;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: calc(var(--topbar-h) + 16px);
+}
+
+.title-item {
+  margin-bottom: 4px;
+}
+
+.title-input {
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 4px 0;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  background: transparent;
+
+  &::placeholder {
+    color: var(--text-3);
+  }
+}
+
+.excerpt {
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0;
+  font-size: 15px;
+  color: var(--text-2);
+  resize: none;
+  background: transparent;
+}
+
+.no-mb {
+  margin-bottom: 0;
+}
+
+.meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  padding-top: 12px;
+  font-size: 12.5px;
+  color: var(--text-3);
+
+  strong {
+    color: var(--text);
+  }
+
+  .saved {
+    margin-left: auto;
+    color: var(--success);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+}
+
+.vis {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  label {
+    margin: 0;
+    font-weight: 600;
+
+    span {
+      display: block;
+      margin-left: 0;
+      font-weight: 400;
+      font-size: 12px;
+      color: var(--text-3);
+    }
+  }
+}
+
+.cover {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+
+  img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  button {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+  }
+}
+
+.cover-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 18px 8px;
+
+  [nz-icon] {
+    font-size: 24px;
+    color: var(--jade-600);
+  }
+
+  span {
+    font-size: 12px;
+    color: var(--text-3);
+  }
+}
+
+@include below($breakpoint-xl) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .side {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+
+@include below($breakpoint-md) {
+  .main {
+    padding: 16px;
+  }
+
+  .title-input {
+    font-size: 22px;
+  }
+}

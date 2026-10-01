@@ -1,102 +1,221 @@
-<div class="dashboard-container">
-  <div class="dashboard-header">
-    <h1>Dashboard</h1>
-    <p>Welcome to your dashboard. Here's what's happening with your business.</p>
-  </div>
+<app-page-header [eyebrow]="(today | date: 'EEEE, d MMMM y') ?? ''" [title]="greeting()" subtitle="Here is how the business is tracking. Figures update every 15 minutes.">
+  <button nz-button (click)="export()"><span nz-icon nzType="download"></span>Export report</button>
+  <a nz-button nzType="primary" routerLink="/users"><span nz-icon nzType="user-add"></span>Invite people</a>
+</app-page-header>
 
-  <!-- Statistics Cards -->
-  <div nz-row [nzGutter]="[16, 16]" class="stats-row">
-    <div nz-col [nzXs]="24" [nzSm]="12" [nzMd]="6" *ngFor="let stat of stats">
-      <nz-card class="stat-card" [ngStyle]="{ borderLeftColor: stat.color }">
-        <div class="stat-content">
-          <span nz-icon [nzType]="stat.icon" class="stat-icon" [ngStyle]="{ color: stat.color }"></span>
-          <div class="stat-info">
-            <p class="stat-label">{{ stat.label }}</p>
-            <p class="stat-value">{{ stat.value }}</p>
-          </div>
-        </div>
-      </nz-card>
-    </div>
-  </div>
+<section class="kpis">
+  @for (k of kpis; track k.label) {
+    <app-stat-card [label]="k.label" [value]="k.value" [delta]="k.delta" [icon]="k.icon" [tone]="k.tone" [series]="k.series" [hint]="k.hint ?? 'vs last month'" />
+  }
+</section>
 
-  <!-- Charts Row 1 -->
-  <div nz-row [nzGutter]="[16, 16]" class="charts-row">
-    <div nz-col [nzXs]="24" [nzMd]="12">
-      <nz-card class="chart-card">
-        <ng-template #cardTitle>
-          <h3>Line Chart - Trends Over Time</h3>
-        </ng-template>
-        <ng-template #cardExtra>
-          <a href="#">More</a>
-        </ng-template>
-        <app-chart-container [config]="lineChartConfig" height="350px"></app-chart-container>
-      </nz-card>
+<section class="grid">
+  <!-- Area line -->
+  <article class="panel span-8">
+    <div class="panel-head">
+      <div>
+        <h3>Revenue</h3>
+        <p>Area line · current vs previous period</p>
+      </div>
+      <nz-segmented [nzOptions]="ranges" [ngModel]="ranges.indexOf(range())" (ngModelChange)="range.set(ranges[$event])" nzSize="small" />
     </div>
+    <div class="panel-body">
+      <app-chart type="line" [data]="revenueData()" [options]="revenueOptions()" [height]="300" label="Revenue trend" />
+    </div>
+  </article>
 
-    <div nz-col [nzXs]="24" [nzMd]="12">
-      <nz-card class="chart-card">
-        <ng-template #cardTitle>
-          <h3>Bar Chart - Sales by Category</h3>
-        </ng-template>
-        <ng-template #cardExtra>
-          <a href="#">More</a>
-        </ng-template>
-        <app-chart-container [config]="barChartConfig" height="350px"></app-chart-container>
-      </nz-card>
+  <!-- Doughnut -->
+  <article class="panel span-4">
+    <div class="panel-head">
+      <div>
+        <h3>Revenue by channel</h3>
+        <p>Doughnut · share of total, %</p>
+      </div>
     </div>
-  </div>
+    <div class="panel-body donut">
+      <app-chart type="doughnut" [data]="channelData" [options]="channelOptions" [height]="300" label="Revenue by channel" />
+      <div class="donut-center">
+        <strong class="num">46%</strong>
+        <span>Online store</span>
+      </div>
+    </div>
+  </article>
 
-  <!-- Charts Row 2 -->
-  <div nz-row [nzGutter]="[16, 16]" class="charts-row">
-    <div nz-col [nzXs]="24" [nzMd]="12">
-      <nz-card class="chart-card">
-        <ng-template #cardTitle>
-          <h3>Pie Chart - Market Distribution</h3>
-        </ng-template>
-        <ng-template #cardExtra>
-          <a href="#">More</a>
-        </ng-template>
-        <app-chart-container [config]="pieChartConfig" height="350px"></app-chart-container>
-      </nz-card>
+  <!-- Stacked bar -->
+  <article class="panel span-6">
+    <div class="panel-head">
+      <div>
+        <h3>Orders by city</h3>
+        <p>Stacked bar · customer type</p>
+      </div>
     </div>
+    <div class="panel-body">
+      <app-chart type="bar" [data]="regionData" [options]="stackedOptions" [height]="280" label="Orders by city" />
+    </div>
+  </article>
 
-    <div nz-col [nzXs]="24" [nzMd]="12">
-      <nz-card class="chart-card">
-        <ng-template #cardTitle>
-          <h3>Doughnut Chart - Quarterly Revenue</h3>
-        </ng-template>
-        <ng-template #cardExtra>
-          <a href="#">More</a>
-        </ng-template>
-        <app-chart-container [config]="doughnutChartConfig" height="350px"></app-chart-container>
-      </nz-card>
+  <!-- Mixed -->
+  <article class="panel span-6">
+    <div class="panel-head">
+      <div>
+        <h3>Sign-ups and conversion</h3>
+        <p>Mixed bar + line · dual axis</p>
+      </div>
     </div>
-  </div>
+    <div class="panel-body">
+      <app-chart type="bar" [data]="mixedData" [options]="mixedOptions" [height]="280" label="Sign-ups and conversion" />
+    </div>
+  </article>
 
-  <!-- Charts Row 3 -->
-  <div nz-row [nzGutter]="[16, 16]" class="charts-row">
-    <div nz-col [nzXs]="24" [nzMd]="12">
-      <nz-card class="chart-card">
-        <ng-template #cardTitle>
-          <h3>Radar Chart - Performance Metrics</h3>
-        </ng-template>
-        <ng-template #cardExtra>
-          <a href="#">More</a>
-        </ng-template>
-        <app-chart-container [config]="radarChartConfig" height="350px"></app-chart-container>
-      </nz-card>
+  <!-- Radar -->
+  <article class="panel span-4">
+    <div class="panel-head">
+      <div>
+        <h3>Team performance</h3>
+        <p>Radar · score out of 100</p>
+      </div>
     </div>
+    <div class="panel-body">
+      <app-chart type="radar" [data]="radarData" [height]="280" label="Team performance" />
+    </div>
+  </article>
 
-    <div nz-col [nzXs]="24" [nzMd]="12">
-      <nz-card class="chart-card">
-        <ng-template #cardTitle>
-          <h3>Polar Chart - Data Distribution</h3>
-        </ng-template>
-        <ng-template #cardExtra>
-          <a href="#">More</a>
-        </ng-template>
-        <app-chart-container [config]="polarChartConfig" height="350px"></app-chart-container>
-      </nz-card>
+  <!-- Polar -->
+  <article class="panel span-4">
+    <div class="panel-head">
+      <div>
+        <h3>Tickets by topic</h3>
+        <p>Polar area · open tickets</p>
+      </div>
     </div>
-  </div>
-</div>
+    <div class="panel-body">
+      <app-chart type="polarArea" [data]="polarData" [options]="polarOptions" [height]="280" label="Tickets by topic" />
+    </div>
+  </article>
+
+  <!-- Pie -->
+  <article class="panel span-4">
+    <div class="panel-head">
+      <div>
+        <h3>Traffic sources</h3>
+        <p>Pie · sessions, %</p>
+      </div>
+    </div>
+    <div class="panel-body">
+      <app-chart type="pie" [data]="pieData" [options]="pieOptions" [height]="280" label="Traffic sources" />
+    </div>
+  </article>
+
+  <!-- Bubble -->
+  <article class="panel span-6">
+    <div class="panel-head">
+      <div>
+        <h3>Pipeline deals</h3>
+        <p>Bubble · bubble size = seats</p>
+      </div>
+    </div>
+    <div class="panel-body">
+      <app-chart type="bubble" [data]="bubbleData" [options]="bubbleOptions" [height]="280" label="Pipeline deals" />
+    </div>
+  </article>
+
+  <!-- Horizontal bar -->
+  <article class="panel span-6">
+    <div class="panel-head">
+      <div>
+        <h3>Top products</h3>
+        <p>Horizontal bar · revenue, ₫ million</p>
+      </div>
+    </div>
+    <div class="panel-body">
+      <app-chart type="bar" [data]="productData" [options]="productOptions" [height]="280" label="Top products" />
+    </div>
+  </article>
+
+  <!-- Scatter -->
+  <article class="panel span-6">
+    <div class="panel-head">
+      <div>
+        <h3>Account health</h3>
+        <p>Scatter · tickets vs health score</p>
+      </div>
+    </div>
+    <div class="panel-body">
+      <app-chart type="scatter" [data]="scatterData" [options]="scatterOptions" [height]="260" label="Account health" />
+    </div>
+  </article>
+
+  <!-- Multi line -->
+  <article class="panel span-6">
+    <div class="panel-head">
+      <div>
+        <h3>API latency</h3>
+        <p>Multi-line · percentiles, last 24 h</p>
+      </div>
+      <span class="status is-success">Healthy</span>
+    </div>
+    <div class="panel-body">
+      <app-chart type="line" [data]="latencyData" [options]="latencyOptions" [height]="260" label="API latency" />
+    </div>
+  </article>
+
+  <!-- Recent orders -->
+  <article class="panel span-8">
+    <div class="panel-head">
+      <div>
+        <h3>Recent orders</h3>
+        <p>Latest 5 across all channels</p>
+      </div>
+      <a nz-button nzType="text" nzSize="small" routerLink="/users">View all <span nz-icon nzType="arrow-right"></span></a>
+    </div>
+    <div class="panel-body table-body">
+      <nz-table #ordersTable [nzData]="orders" [nzShowPagination]="false" [nzScroll]="{ x: '720px' }" nzSize="middle">
+        <thead>
+          <tr>
+            <th nzWidth="110px">Order</th>
+            <th>Customer</th>
+            <th nzWidth="130px">Date</th>
+            <th nzWidth="130px" nzAlign="right">Amount</th>
+            <th nzWidth="120px">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (o of ordersTable.data; track o.id) {
+            <tr>
+              <td class="mono order-id">{{ o.id }}</td>
+              <td>
+                <div class="who">
+                  <span class="mini-avatar">{{ o.initials }}</span>
+                  {{ o.customer }}
+                </div>
+              </td>
+              <td class="muted">{{ o.date | date: 'd MMM, HH:mm' }}</td>
+              <td nzAlign="right" class="num strong">{{ o.amount | currency: 'VND' : 'symbol-narrow' : '1.0-0' }}</td>
+              <td><span class="status" [class]="statusClass[o.status]">{{ o.status }}</span></td>
+            </tr>
+          }
+        </tbody>
+      </nz-table>
+    </div>
+  </article>
+
+  <!-- Activity -->
+  <article class="panel span-4">
+    <div class="panel-head">
+      <div>
+        <h3>Activity</h3>
+        <p>What your team did recently</p>
+      </div>
+    </div>
+    <div class="panel-body">
+      <ol class="timeline">
+        @for (a of activity; track a.what) {
+          <li [attr.data-tone]="a.tone">
+            <p><strong>{{ a.who }}</strong> {{ a.what }}</p>
+            <span>{{ a.when }}</span>
+          </li>
+        }
+      </ol>
+    </div>
+  </article>
+</section>

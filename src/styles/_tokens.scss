@@ -1,0 +1,126 @@
+// Design tokens — "Harbor" identity: ink navy shell, jade actions, coral highlights.
+// Components read the CSS custom properties; SCSS aliases exist for mixins and media queries.
+
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+
+$font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+:root {
+  // Brand
+  --ink-950: #0f1324;
+  --ink-900: #161b31;
+  --ink-800: #1f2642;
+  --ink-700: #2d3e63;
+  --ink-500: #5a6a8e;
+
+  --jade-700: #0a6f5e;
+  --jade-600: #0d8a74;
+  --jade-500: #12a68b;
+  --jade-300: #2fd3b0;
+  --jade-100: #d7f2eb;
+  --jade-50: #eef9f6;
+
+  --coral-600: #e0532a;
+  --coral-500: #f2643a;
+  --coral-100: #fde4da;
+
+  --violet-500: #7b61ff;
+  --violet-100: #ebe6ff;
+  --amber-500: #f5a524;
+  --amber-100: #fdf0d5;
+  --sky-500: #3a8ef6;
+  --sky-100: #e1edfe;
+
+  // Neutrals (biased toward the ink hue)
+  --bg: #f3f5f9;
+  --surface: #ffffff;
+  --surface-2: #f8f9fc;
+  --border: #e3e7ef;
+  --border-strong: #cfd5e1;
+  --text: #121729;
+  --text-2: #586178;
+  --text-3: #8a92a6;
+
+  // Semantic
+  --success: #1e9e62;
+  --success-bg: #e3f6ec;
+  --warning: #c27c00;
+  --warning-bg: #fdf3dc;
+  --danger: #e5484d;
+  --danger-bg: #fdeaea;
+  --info: #3a7bf7;
+  --info-bg: #e6efff;
+
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  --shadow-xs: 0 1px 2px rgba(18, 23, 41, 0.05);
+  --shadow-sm: 0 1px 3px rgba(18, 23, 41, 0.06), 0 1px 2px rgba(18, 23, 41, 0.04);
+  --shadow-md: 0 8px 24px -6px rgba(18, 23, 41, 0.12), 0 2px 6px rgba(18, 23, 41, 0.05);
+  --shadow-lg: 0 24px 48px -12px rgba(18, 23, 41, 0.25);
+
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --sidebar-w: 256px;
+  --sidebar-w-collapsed: 76px;
+  --topbar-h: 64px;
+
+  // Ant Design variable theme overrides (ng-zorro-antd.variable.css)
+  --ant-primary-color: #0d8a74;
+  --ant-primary-color-hover: #12a68b;
+  --ant-primary-color-active: #0a6f5e;
+  --ant-primary-color-outline: rgba(13, 138, 116, 0.18);
+  --ant-primary-1: #eef9f6;
+  --ant-primary-2: #d7f2eb;
+  --ant-primary-3: #a9e3d5;
+  --ant-primary-4: #6fcfb9;
+  --ant-primary-5: #12a68b;
+  --ant-primary-6: #0d8a74;
+  --ant-primary-7: #0a6f5e;
+  --ant-primary-color-deprecated-pure: #0d8a74;
+  --ant-primary-color-deprecated-l-35: #a9e3d5;
+  --ant-primary-color-deprecated-l-20: #6fcfb9;
+  --ant-primary-color-deprecated-t-20: #3da190;
+  --ant-primary-color-deprecated-t-50: #86c4b9;
+  --ant-primary-color-deprecated-f-12: rgba(13, 138, 116, 0.12);
+  --ant-primary-color-active-deprecated-f-30: rgba(13, 138, 116, 0.3);
+  --ant-primary-color-active-deprecated-d-02: #0c826d;
+  --ant-success-color: #1e9e62;
+  --ant-error-color: #e5484d;
+  --ant-error-color-hover: #ec6f73;
+  --ant-error-color-active: #c7363b;
+  --ant-error-color-outline: rgba(229, 72, 77, 0.18);
+  --ant-warning-color: #d98b00;
+  --ant-info-color: #3a7bf7;
+}
+
+@mixin card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+}
+
+@mixin focus-ring {
+  outline: 2px solid var(--jade-500);
+  outline-offset: 2px;
+}
+
+@mixin eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+@mixin below($bp) {
+  @media (max-width: ($bp - 1px)) {
+    @content;
+  }
+}

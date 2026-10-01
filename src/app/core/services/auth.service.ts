@@ -1,66 +1,59 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { User, LoginRequest, LoginResponse } from '@models/auth.model';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { Observable, tap } from 'rxjs';
+import { environment } from '@environments/environment';
+import { LoginRequest, LoginResponse, User } from '@models/auth.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+const TOKEN_KEY = 'token';
+const USER_KEY = 'user';
+
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = '/api/auth';
-  private userSubject = new BehaviorSubject<User | null>(null);
-  private tokenSubject = new BehaviorSubject<string | null>(null);
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  private http = inject(HttpClient);
+  private state = signal<{ token: string | null; user: User | null }>(this.restore());
 
-  user$ = this.userSubject.asObservable();
-  token$ = this.tokenSubject.asObservable();
-  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  readonly user = computed(() => this.state().user);
+  readonly isLoggedIn = computed(() => !!this.state().token);
 
-  constructor(private http: HttpClient) {
-    this.loadFromStorage();
-  }
-
-  login(request: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, request).pipe(
-      tap(response => {
-        this.setAuth(response.token, response.user);
-      })
+  login(request: LoginRequest, remember = true): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, request).pipe(
+      tap(res => {
+        const store = remember ? localStorage : sessionStorage;
+        store.setItem(TOKEN_KEY, res.token);
+        store.setItem(USER_KEY, JSON.stringify(res.user));
+        this.state.set({ token: res.token, user: res.user });
+      }),
     );
   }
 
   logout(): void {
-    this.userSubject.next(null);
-    this.tokenSubject.next(null);
-    this.isAuthenticatedSubject.next(false);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-  }
-
-  getCurrentUser(): User | null {
-    return this.userSubject.value;
+    for (const store of [localStorage, sessionStorage]) {
+      store.removeItem(TOKEN_KEY);
+      store.removeItem(USER_KEY);
+    }
+    this.state.set({ token: null, user: null });
   }
 
   getToken(): string | null {
-    return this.tokenSubject.value;
+    return this.state().token;
   }
 
   isAuthenticated(): boolean {
-    return this.isAuthenticatedSubject.value;
+    return this.isLoggedIn();
   }
 
-  private setAuth(token: string, user: User): void {
-    this.tokenSubject.next(token);
-    this.userSubject.next(user);
-    this.isAuthenticatedSubject.next(true);
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
-  }
-
-  private loadFromStorage(): void {
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');
-    if (token && user) {
-      this.setAuth(token, JSON.parse(user));
+  private restore(): { token: string | null; user: User | null } {
+    for (const store of [localStorage, sessionStorage]) {
+      const token = store.getItem(TOKEN_KEY);
+      const user = store.getItem(USER_KEY);
+      if (token && user) {
+        try {
+          return { token, user: JSON.parse(user) };
+        } catch {
+          store.removeItem(USER_KEY);
+        }
+      }
     }
+    return { token: null, user: null };
   }
 }

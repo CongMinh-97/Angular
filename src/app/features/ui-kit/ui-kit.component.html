@@ -1,0 +1,157 @@
+<app-page-header eyebrow="System" title="UI kit" subtitle="The building blocks every page uses. Colours come from CSS variables in src/styles/_tokens.scss, so a rebrand is one file." />
+
+<div class="kit">
+  <!-- Colours -->
+  <section class="panel span-2">
+    <div class="panel-head"><div><h3>Colour</h3><p>Click a swatch to copy its hex value</p></div></div>
+    <div class="panel-body palette">
+      @for (g of palette; track g.group) {
+        <div class="pal-group">
+          <span class="eyebrow">{{ g.group }}</span>
+          <div class="swatches">
+            @for (c of g.items; track c.token) {
+              <button type="button" class="swatch" (click)="copy(c.hex)" [attr.aria-label]="'Copy ' + c.hex">
+                <span class="chip" [style.background]="c.hex" [class.on-dark]="c.dark">
+                  @if (copied() === c.hex) { <span nz-icon nzType="check"></span> }
+                </span>
+                <strong>{{ c.name }}</strong>
+                <span class="mono">{{ c.hex }}</span>
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Type -->
+  <section class="panel span-2">
+    <div class="panel-head"><div><h3>Typography</h3><p>Plus Jakarta Sans for interface, JetBrains Mono for codes and IDs</p></div></div>
+    <div class="panel-body type">
+      @for (t of typeScale; track t.label) {
+        <div class="type-row">
+          <span class="type-meta"><strong>{{ t.label }}</strong><span class="num">{{ t.size }} / {{ t.weight }}</span></span>
+          <span class="type-sample" [style.font-size.px]="t.size" [style.font-weight]="t.weight">{{ t.sample }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Buttons -->
+  <section class="panel">
+    <div class="panel-head"><div><h3>Buttons</h3><p>One primary action per view</p></div></div>
+    <div class="panel-body stack">
+      <div class="row">
+        <button nz-button nzType="primary"><span nz-icon nzType="plus"></span>Add user</button>
+        <button nz-button>Cancel</button>
+        <button nz-button nzType="text">Skip</button>
+        <button nz-button nzDanger><span nz-icon nzType="delete"></span>Delete</button>
+      </div>
+      <div class="row">
+        <button nz-button nzType="primary" nzSize="large">Large</button>
+        <button nz-button nzType="primary">Default</button>
+        <button nz-button nzType="primary" nzSize="small">Small</button>
+        <button nz-button nzType="primary" [nzLoading]="true">Saving</button>
+        <button nz-button disabled>Disabled</button>
+      </div>
+      <div class="row">
+        <button nz-button nz-tooltip nzTooltipTitle="Edit" aria-label="Edit"><span nz-icon nzType="edit"></span></button>
+        <button nz-button nz-tooltip nzTooltipTitle="Download" aria-label="Download"><span nz-icon nzType="download"></span></button>
+        <button nz-button nz-tooltip nzTooltipTitle="More" aria-label="More"><span nz-icon nzType="more"></span></button>
+        <nz-segmented [nzOptions]="['Day', 'Week', 'Month']" [(ngModel)]="view" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Status -->
+  <section class="panel">
+    <div class="panel-head"><div><h3>Status and progress</h3><p>State is shown with colour and a label, never colour alone</p></div></div>
+    <div class="panel-body stack">
+      <div class="row">
+        <span class="status is-success">Active</span>
+        <span class="status is-info">Invited</span>
+        <span class="status is-warning">Pending review</span>
+        <span class="status is-danger">Suspended</span>
+        <span class="status is-neutral">Archived</span>
+      </div>
+      <div class="progress-list">
+        <div><span>Storage</span><nz-progress [nzPercent]="64" nzStrokeColor="#0d8a74" nzSize="small" /></div>
+        <div><span>Seats</span><nz-progress [nzPercent]="92" nzStrokeColor="#f2643a" nzSize="small" /></div>
+        <div><span>Onboarding</span><nz-progress [nzPercent]="100" nzSize="small" /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form controls -->
+  <section class="panel">
+    <div class="panel-head"><div><h3>Form controls</h3><p>38 px controls, 10 px radius, jade focus ring</p></div></div>
+    <div class="panel-body form-grid">
+      <label class="fld">
+        <span>Full name</span>
+        <nz-input-group nzPrefixIcon="user"><input nz-input [(ngModel)]="text" /></nz-input-group>
+      </label>
+      <label class="fld">
+        <span>Role</span>
+        <nz-select [(ngModel)]="role">
+          <nz-option nzLabel="Admin" nzValue="Admin" />
+          <nz-option nzLabel="Manager" nzValue="Manager" />
+          <nz-option nzLabel="Editor" nzValue="Editor" />
+          <nz-option nzLabel="Viewer" nzValue="Viewer" />
+        </nz-select>
+      </label>
+      <label class="fld">
+        <span>Start date</span>
+        <nz-date-picker [(ngModel)]="date" nzFormat="dd/MM/yyyy" class="w-full" />
+      </label>
+      <label class="fld">
+        <span>Error state</span>
+        <input nz-input value="an.nguyen@" class="ant-input-status-error" />
+        <small class="err">Enter a valid email address</small>
+      </label>
+      <div class="fld">
+        <span>Plan</span>
+        <nz-radio-group [(ngModel)]="plan" nzButtonStyle="solid">
+          <label nz-radio-button nzValue="starter">Starter</label>
+          <label nz-radio-button nzValue="team">Team</label>
+          <label nz-radio-button nzValue="scale">Scale</label>
+        </nz-radio-group>
+      </div>
+      <div class="fld">
+        <span>Seats: <strong class="num">{{ seats }}</strong></span>
+        <nz-slider [(ngModel)]="seats" [nzMin]="1" [nzMax]="100" />
+      </div>
+      <div class="fld inline">
+        <nz-switch [(ngModel)]="notify" />
+        <span>Email me when an import finishes</span>
+      </div>
+      <label nz-checkbox [(ngModel)]="agree" class="fld inline">I agree to the data processing terms</label>
+    </div>
+  </section>
+
+  <!-- Feedback -->
+  <section class="panel">
+    <div class="panel-head"><div><h3>Feedback</h3><p>Toasts for results, alerts for page state, modals only to confirm destructive actions</p></div></div>
+    <div class="panel-body stack">
+      <nz-alert nzType="success" nzShowIcon nzMessage="Import finished: 42 users added." />
+      <nz-alert nzType="warning" nzShowIcon nzMessage="Two rows were skipped" nzDescription="Their email addresses already belong to existing users." />
+      <nz-alert nzType="error" nzShowIcon nzMessage="Payment failed. Update your card to keep your workspace active." />
+      <div class="row">
+        <button nz-button (click)="toast('success')">Success toast</button>
+        <button nz-button (click)="toast('error')">Error toast</button>
+        <button nz-button (click)="notifyMe()">Notification</button>
+        <button nz-button nzDanger (click)="confirm()">Confirm modal</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stat cards -->
+  <section class="panel span-2">
+    <div class="panel-head"><div><h3>Stat cards</h3><p>&lt;app-stat-card&gt; with tone, delta and sparkline</p></div></div>
+    <div class="panel-body stats">
+      <app-stat-card label="Revenue" value="₫2.48 tỷ" [delta]="18.2" icon="wallet" tone="jade" [series]="[3, 4, 3.5, 5, 4.8, 6, 7]" />
+      <app-stat-card label="Refunds" value="₫38 tr" [delta]="-4.1" icon="reload" tone="coral" [series]="[6, 5, 5.5, 4, 4.2, 3.6, 3.4]" />
+      <app-stat-card label="Seats used" value="92%" [delta]="2.0" icon="team" tone="violet" [series]="[80, 82, 85, 86, 88, 90, 92]" />
+      <app-stat-card label="Uptime" value="99.98%" [delta]="0.02" icon="thunderbolt" tone="sky" hint="last 30 days" [series]="[99.9, 99.95, 99.97, 99.96, 99.99, 99.98, 99.98]" />
+    </div>
+  </section>
+</div>

@@ -1,0 +1,104 @@
+<app-page-header eyebrow="Content" title="Article editor" subtitle="Write and format long-form content. Images you paste or upload are sent through the API.">
+  <button nz-button [nzLoading]="saving() === 'draft'" (click)="save('draft')"><span nz-icon nzType="save"></span>Save draft</button>
+  <button nz-button nzType="primary" [nzLoading]="saving() === 'publish'" (click)="save('publish')"><span nz-icon nzType="send"></span>Publish</button>
+</app-page-header>
+
+<form class="layout" [formGroup]="form" nz-form nzLayout="vertical" (ngSubmit)="save('publish')">
+  <div class="main panel">
+    <nz-form-item class="title-item">
+      <nz-form-control nzErrorTip="Give the article a title (up to 120 characters)">
+        <input nz-input formControlName="title" class="title-input" placeholder="Article title" aria-label="Article title" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Keep the summary under 200 characters">
+        <textarea nz-input formControlName="excerpt" class="excerpt" [nzAutosize]="{ minRows: 1, maxRows: 3 }" placeholder="One-sentence summary shown in lists and previews" aria-label="Summary"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item class="no-mb">
+      <nz-form-control nzErrorTip="Write something before publishing">
+        <app-rich-text-editor formControlName="body" [minHeight]="420" (stats)="stats.set($event)" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <div class="meta-bar">
+      <span><strong class="num">{{ stats().words }}</strong> words</span>
+      <span><strong class="num">{{ stats().characters }}</strong> characters</span>
+      <span><strong class="num">{{ readMinutes() }}</strong> min read</span>
+      @if (savedAt(); as t) {
+        <span class="saved"><span nz-icon nzType="check-circle"></span>Saved {{ t.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) }}</span>
+      }
+    </div>
+  </div>
+
+  <aside class="side">
+    <section class="panel">
+      <div class="panel-head"><h3>Publishing</h3></div>
+      <div class="panel-body">
+        <nz-form-item>
+          <nz-form-label>Visibility</nz-form-label>
+          <nz-form-control>
+            <nz-radio-group formControlName="visibility" class="vis">
+              <label nz-radio nzValue="public">Public <span>Anyone with the link</span></label>
+              <label nz-radio nzValue="members">Members only <span>Signed-in users</span></label>
+              <label nz-radio nzValue="private">Private <span>Only editors</span></label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="no-mb">
+          <nz-form-label nzFor="publish-at">Schedule</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker nzId="publish-at" formControlName="publishAt" nzShowTime nzFormat="dd/MM/yyyy HH:mm" nzPlaceHolder="Publish immediately" [nzDisabledDate]="disablePast" class="w-full" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h3>Details</h3></div>
+      <div class="panel-body">
+        <nz-form-item>
+          <nz-form-label nzFor="category" nzRequired>Category</nz-form-label>
+          <nz-form-control nzErrorTip="Choose a category">
+            <nz-select nzId="category" formControlName="category">
+              @for (c of categories; track c) {
+                <nz-option [nzLabel]="c" [nzValue]="c" />
+              }
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="no-mb">
+          <nz-form-label nzFor="tags">Tags</nz-form-label>
+          <nz-form-control>
+            <nz-select nzId="tags" nzMode="tags" formControlName="tags" nzPlaceHolder="Add tags">
+              @for (t of tagOptions; track t) {
+                <nz-option [nzLabel]="t" [nzValue]="t" />
+              }
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h3>Cover image</h3></div>
+      <div class="panel-body">
+        @if (cover(); as src) {
+          <div class="cover">
+            <img [src]="src" alt="Cover preview" />
+            <button nz-button nzSize="small" type="button" (click)="cover.set(null)"><span nz-icon nzType="delete"></span>Remove</button>
+          </div>
+        } @else {
+          <nz-upload nzType="drag" nzAccept="image/*" [nzBeforeUpload]="beforeCover" [nzShowUploadList]="false">
+            <div class="cover-drop">
+              <span nz-icon nzType="picture"></span>
+              <strong>Upload a cover</strong>
+              <span>1600 × 900 px works best · up to 5 MB</span>
+            </div>
+          </nz-upload>
+        }
+      </div>
+    </section>
+  </aside>
+</form>

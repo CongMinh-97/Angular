@@ -1,203 +1,63 @@
-# Angular Base Application
+# Harbor — Angular 18 admin base
 
-A sophisticated, modern Angular base application with enterprise-grade features and design patterns.
+A production-ready starting point for admin consoles: Angular 18 standalone components, Ant Design (ng-zorro 18) themed with a custom identity, Tailwind utilities, Chart.js, CKEditor 5 and a mock API so every screen works without a backend.
 
-## Features
-
-### Core Architecture
-- **Angular 18** - Latest Angular framework
-- **Standalone Components** - Modern Angular architecture
-- **TypeScript** - Fully typed codebase
-- **Routing** - Pre-configured routing with auth guards
-- **HTTP Client** - Built-in HTTP interceptors
-
-### Authentication & Security
-- **Auth Service** - Centralized authentication management
-- **HTTP Interceptor** - Automatic token attachment
-- **Error Interceptor** - Global error handling
-- **Auth Guard** - Route protection for authenticated users
-
-### UI/UX
-- **Ant Design Integration** - Enterprise UI components
-- **Tailwind CSS** - Utility-first CSS framework
-- **Custom Color Palette** - Distinctive, branded colors
-- **Responsive Design** - Mobile-first approach
-- **Dark Mode Ready** - Theme support infrastructure
-
-### Components Library
-- **Data Table** - Feature-rich table with sorting, filtering, pagination
-- **Form Builder** - Dynamic form generation with validation
-- **Rich Text Editor** - CKEditor 5 integration with image upload
-- **Chart Components** - Multiple chart types (Line, Bar, Pie, Doughnut, Radar, Polar)
-
-### Charts & Visualization
-- **Chart.js** - Powerful charting library
-- **ng2-charts** - Angular wrapper for Chart.js
-- **Multiple Chart Types**
-  - Line Charts (Trends, Time Series)
-  - Bar Charts (Comparisons, Sales)
-  - Pie Charts (Distribution, Segments)
-  - Doughnut Charts (Circular Distribution)
-  - Radar Charts (Multi-dimensional Comparison)
-  - Polar Charts (Angular Distribution)
-
-### Dashboard
-- **Statistics Cards** - Quick metrics overview
-- **Chart Gallery** - All chart types displayed
-- **Responsive Grid** - Adaptive layouts
-
-## Project Structure
-
-```
-src/
-├── app/
-│   ├── core/
-│   │   ├── guards/
-│   │   │   └── auth.guard.ts
-│   │   ├── interceptors/
-│   │   │   ├── http.interceptor.ts
-│   │   │   └── error.interceptor.ts
-│   │   ├── models/
-│   │   │   ├── auth.model.ts
-│   │   │   └── api-response.model.ts
-│   │   ├── services/
-│   │   │   └── auth.service.ts
-│   │   └── utils/
-│   ├── features/
-│   │   ├── auth/
-│   │   │   └── login/
-│   │   └── dashboard/
-│   ├── shared/
-│   │   └── components/
-│   │       ├── layout/
-│   │       ├── table/
-│   │       ├── forms/
-│   │       ├── editor/
-│   │       └── charts/
-│   ├── app.component.ts
-│   ├── app.routes.ts
-│   └── environments/
-├── styles/
-│   ├── variables.scss
-│   ├── themes.scss
-│   └── global styles
-├── main.ts
-├── index.html
-└── environments/
-
-```
-
-## Installation
-
-### Prerequisites
-- Node.js (v22.22+)
-- npm (v10.9+)
-
-### Setup
+## Run it
 
 ```bash
-# Install dependencies
 npm install
-
-# Start development server
-npm start
-
-# Navigate to http://localhost:4200/
+npm start            # http://localhost:4200
 ```
 
-## Development
-
-### Running the Application
+Sign in with **admin@harbor.vn / password123** (or press **Fill in** on the login page).
 
 ```bash
-npm start
+npm run build        # production build → dist/angular-base
 ```
 
-The application will automatically reload if you change any of the source files.
+> The production build sets `mockApi: false` (`src/environments/environment.prod.ts`). Turn it on there if you want to deploy the demo without a backend.
 
-### Building for Production
+## What's inside
 
-```bash
-npm run build
-```
+| Area | Where | Notes |
+| --- | --- | --- |
+| HTTP interceptor | `core/interceptors/http.interceptor.ts` | Adds `Authorization: Bearer …`; leaves `Content-Type` to HttpClient so uploads keep multipart boundaries |
+| Error interceptor | `core/interceptors/error.interceptor.ts` | 401 → sign out and redirect with `returnUrl`; other errors → toast |
+| Mock backend | `core/mock/` | Interceptor that serves `/api/*` (login, users CRUD, bulk delete, import, image upload). Remove it from `app.config.ts` when the real API is ready |
+| Guards | `core/guards/auth.guard.ts` | `authGuard` for the app shell, `guestGuard` for `/login` |
+| Auth state | `core/services/auth.service.ts` | Signals; "Keep me signed in" chooses localStorage vs sessionStorage |
+| App shell | `shared/components/layout` | Collapsible sidebar (remembered), breadcrumb, Ctrl K search focus, notifications, user menu, mobile drawer |
+| Data table | `shared/components/data-table` | Server-side sort / filter / pagination, debounced search, column visibility, density, row selection + bulk bar, custom cells via `<ng-template appCell="key">` |
+| Form builder | `shared/components/dynamic-form` | `buildForm(fields)` + `<app-dynamic-form>`; validators and error messages come from the field config |
+| Rich text editor | `shared/components/rich-text-editor` | CKEditor 5 (GPL, free plugins only), image upload through HttpClient, custom "Insert date" button with its own icon, word count. Its stylesheet is a lazy bundle |
+| Charts | `shared/components/chart` | `<app-chart type data options>` wrapper with brand theme and series palette |
+| Stat card | `shared/components/stat-card` | KPI tile with delta and sparkline |
 
-The build artifacts will be stored in the `dist/` directory.
+### Pages
 
-## Color Palette
+- **/login**: split-screen sign-in, inline errors, password toggle
+- **/dashboard**: KPI tiles and 11 chart types (area, doughnut, stacked bar, mixed bar + line, radar, polar area, pie, bubble, horizontal bar, scatter, multi-line), recent orders, activity
+- **/users**: CRUD template (table + create/edit drawer + delete confirm + bulk delete + CSV export)
+- **/import**: import flow template (upload CSV → match columns → review with row validation → result)
+- **/editor**: article composer with CKEditor, publishing options, cover upload
+- **/ui-kit**: palette, type scale, buttons, status, form controls, feedback
 
-The application uses a distinctive, branded color palette:
+## Theming
 
-- **Primary**: Deep Indigo (#2d3e63)
-- **Secondary**: Coral Orange (#ff6b35)
-- **Accent**: Electric Emerald (#00d4a8)
-- **Tertiary**: Soft Purple (#7c5cff)
+All colours are CSS variables in `src/styles/_tokens.scss`, which also overrides Ant Design's variable theme (`--ant-primary-*`). Tailwind's palette (`tailwind.config.js`) points at the same variables, so `bg-jade-600` and `var(--jade-600)` stay in sync. Change the tokens to rebrand.
 
-## Authentication
+| Token | Value | Use |
+| --- | --- | --- |
+| `--ink-950` | `#0F1324` | Sidebar, dark surfaces |
+| `--jade-600` | `#0D8A74` | Primary actions, focus |
+| `--coral-500` | `#F2643A` | Highlights, second chart series |
+| `--violet-500` / `--amber-500` / `--sky-500` | | Further chart series |
 
-### Demo Credentials
-- Username: `admin`
-- Password: `password123`
+Fonts: Plus Jakarta Sans (UI) and JetBrains Mono (IDs, codes), loaded in `src/index.html`.
 
-### API Integration
+## Adding a CRUD page
 
-Update the API endpoints in:
-- `src/app/core/services/auth.service.ts`
-- `src/environments/environment.ts`
-
-## Customization
-
-### Changing Colors
-
-Edit `src/styles/variables.scss` to customize the color palette.
-
-### Adding New Routes
-
-Update `src/app/app.routes.ts` with your new routes.
-
-### Custom Components
-
-Add new components in `src/app/shared/components/` and export them.
-
-## Features to Implement
-
-- [ ] User management module
-- [ ] Product management module
-- [ ] Settings & configuration
-- [ ] Reports & export functionality
-- [ ] Multi-language support (i18n)
-- [ ] Dark mode toggle
-- [ ] Advanced filtering system
-- [ ] Real-time notifications
-
-## Performance
-
-- **Code Splitting**: Route-based lazy loading
-- **Tree Shaking**: Optimized bundle size
-- **OnPush Change Detection**: Ready for implementation
-- **Standalone Components**: Reduced bundle overhead
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-
-## Contributing
-
-1. Create a new branch for your feature
-2. Follow the existing code structure and patterns
-3. Write meaningful commit messages
-4. Create a pull request with a clear description
-
-## License
-
-MIT
-
-## Support
-
-For issues and questions, please contact the development team.
-
----
-
-**Built with Angular, Ant Design, and TypeScript**
+1. Add a service like `core/services/user.service.ts` that accepts a `ListQuery`.
+2. Describe columns (`TableColumn[]`) and form fields (`FieldConfig[]`).
+3. Copy `features/users` and swap the service, columns and fields.
+4. Register the route as a child of the shell in `app.routes.ts`.

@@ -1,77 +1,121 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzIconModule } from 'ng-zorro-antd/icon';
+import { Component, HostListener, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
-import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { filter, map } from 'rxjs';
+import { environment } from '@environments/environment';
 import { AuthService } from '@services/auth.service';
-import { User } from '@models/auth.model';
-import {
-  MenuFoldOutline,
-  MenuUnfoldOutline,
-  LogoutOutline,
-  SettingOutline,
-  UserOutline,
-  BellOutline,
-  SearchOutline,
-} from '@ant-design/icons-angular/icons';
+import { LogoComponent } from '../logo/logo.component';
+
+interface NavItem {
+  label: string;
+  icon: string;
+  link: string;
+  badge?: string;
+}
+
+interface NavGroup {
+  title: string;
+  items: NavItem[];
+}
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    NzLayoutModule,
-    NzMenuModule,
-    NzAvatarModule,
-    NzDropDownModule,
-    NzButtonModule,
-    NzIconModule,
-    NzBadgeModule,
-    NzInputModule,
-  ],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, NzIconModule, NzButtonModule, NzDropDownModule, NzMenuModule, NzBadgeModule, NzToolTipModule, LogoComponent],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
 })
-export class LayoutComponent implements OnInit {
-  isCollapsed = false;
-  user: User | null = null;
+export class LayoutComponent {
+  private auth = inject(AuthService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {
-    this.icons = [
-      MenuFoldOutline,
-      MenuUnfoldOutline,
-      LogoutOutline,
-      SettingOutline,
-      UserOutline,
-      BellOutline,
-      SearchOutline,
-    ];
+  readonly appName = environment.appName;
+  readonly mockApi = environment.mockApi;
+  readonly user = this.auth.user;
+  readonly initials = computed(() =>
+    (this.user()?.fullName ?? 'U')
+      .split(' ')
+      .slice(-2)
+      .map(p => p[0])
+      .join('')
+      .toUpperCase(),
+  );
+
+  collapsed = signal(this.readCollapsed());
+  mobileOpen = signal(false);
+
+  readonly nav: NavGroup[] = [
+    { title: 'Overview', items: [{ label: 'Dashboard', icon: 'dashboard', link: '/dashboard' }] },
+    {
+      title: 'Management',
+      items: [
+        { label: 'Users', icon: 'team', link: '/users' },
+        { label: 'Import users', icon: 'cloud-upload', link: '/import' },
+      ],
+    },
+    { title: 'Content', items: [{ label: 'Article editor', icon: 'edit', link: '/editor' }] },
+    { title: 'System', items: [{ label: 'UI kit', icon: 'appstore', link: '/ui-kit' }] },
+  ];
+
+  readonly notifications = [
+    { icon: 'user-add', tone: 'jade', text: '3 people accepted their invitation', time: '12 min ago' },
+    { icon: 'cloud-upload', tone: 'violet', text: 'Import finished: 42 users added, 2 skipped', time: '1 h ago' },
+    { icon: 'warning', tone: 'coral', text: 'Invoice #INV-2091 is 5 days overdue', time: 'Yesterday' },
+  ];
+
+  readonly crumb = toSignal(
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd),
+      map(() => this.currentCrumb()),
+    ),
+    { initialValue: this.currentCrumb() },
+  );
+
+  toggleCollapsed(): void {
+    this.collapsed.update(v => !v);
+    try {
+      localStorage.setItem('sidebar-collapsed', String(this.collapsed()));
+    } catch {
+      /* storage unavailable */
+    }
   }
 
-  icons: any[] = [];
-
-  ngOnInit(): void {
-    this.authService.user$.subscribe(user => {
-      this.user = user;
-    });
-  }
-
-  toggleMenu(): void {
-    this.isCollapsed = !this.isCollapsed;
+  closeMobile(): void {
+    this.mobileOpen.set(false);
   }
 
   logout(): void {
-    this.authService.logout();
+    this.auth.logout();
     this.router.navigate(['/login']);
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onKey(e: KeyboardEvent): void {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      document.getElementById('global-search')?.focus();
+    }
+    if (e.key === 'Escape') this.closeMobile();
+  }
+
+  private currentCrumb(): string {
+    let r = this.route.snapshot;
+    while (r.firstChild) r = r.firstChild;
+    return r.data['breadcrumb'] ?? '';
+  }
+
+  private readCollapsed(): boolean {
+    try {
+      return localStorage.getItem('sidebar-collapsed') === 'true';
+    } catch {
+      return false;
+    }
   }
 }

@@ -1,84 +1,146 @@
-<div class="login-container">
-  <div class="login-wrapper">
-    <div class="login-card">
-      <div class="login-header">
-        <div class="logo-area">
-          <h1 class="login-title">Angular Base</h1>
+<div class="auth">
+  <!-- Brand panel -->
+  <section class="brand-panel" aria-hidden="true">
+    <div class="bp-top">
+      <app-logo [size]="38" />
+      <span class="bp-name">{{ appName }}</span>
+    </div>
+
+    <div class="bp-copy">
+      <span class="bp-eyebrow">Operations console</span>
+      <h2>Every team, every number,<br />one calm place.</h2>
+      <p>Manage people, import records, publish content and watch the metrics that matter, without switching tools.</p>
+    </div>
+
+    <div class="preview">
+      <div class="pv-card pv-main">
+        <div class="pv-head">
+          <span>Monthly revenue</span>
+          <span class="pv-chip">+18.2%</span>
         </div>
-        <h2 class="login-subtitle">Welcome Back</h2>
-        <p class="login-description">Sign in to your account to continue</p>
+        <div class="pv-value num">₫ 2.48 tỷ</div>
+        <svg viewBox="0 0 300 80" class="pv-chart" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="pvg" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#2FD3B0" stop-opacity="0.35" />
+              <stop offset="1" stop-color="#2FD3B0" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <path d="M0 62 C30 58 45 40 75 44 S120 60 150 36 S205 30 225 22 S270 18 300 8 L300 80 L0 80Z" fill="url(#pvg)" />
+          <path d="M0 62 C30 58 45 40 75 44 S120 60 150 36 S205 30 225 22 S270 18 300 8" fill="none" stroke="#2FD3B0" stroke-width="2.5" />
+          <circle cx="300" cy="8" r="4" fill="#2FD3B0" />
+        </svg>
+        <div class="pv-axis"><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span></div>
       </div>
 
-      <form [formGroup]="form" (ngSubmit)="onLogin()" class="login-form">
-        <div class="form-group">
-          <label>Email Address <span class="required">*</span></label>
-          <input
-            type="email"
-            formControlName="username"
-            placeholder="demo@example.com"
-            class="form-input"
-            [class.error]="form.get('username')?.invalid && form.get('username')?.touched"
-          />
-          <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched" class="error-text">
-            {{ form.get('username')?.hasError('required') ? 'Email is required' : 'Invalid email' }}
+      <div class="pv-card pv-side">
+        <div class="pv-head"><span>Active today</span></div>
+        <div class="pv-people">
+          <span style="background:#0d8a74">LN</span>
+          <span style="background:#f2643a">MT</span>
+          <span style="background:#7b61ff">HA</span>
+          <span style="background:#2d3e63">+38</span>
+        </div>
+        <div class="pv-bar"><i style="width: 72%"></i></div>
+        <small>72% of seats in use</small>
+      </div>
+    </div>
+
+    <div class="bp-foot">
+      <span><i class="dot"></i> All systems normal</span>
+      <span>© {{ year }} {{ appName }}</span>
+    </div>
+  </section>
+
+  <!-- Form panel -->
+  <section class="form-panel">
+    <div class="form-wrap">
+      <div class="mobile-brand">
+        <app-logo [size]="36" />
+        <span>{{ appName }}</span>
+      </div>
+
+      <h1>Sign in</h1>
+      <p class="lead">Welcome back. Enter your details to continue.</p>
+
+      @if (error()) {
+        <nz-alert class="err" nzType="error" [nzMessage]="error()!" nzShowIcon />
+      }
+
+      <form nz-form nzLayout="vertical" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <nz-form-item>
+          <nz-form-label nzFor="login-user">Email or username</nz-form-label>
+          <nz-form-control nzErrorTip="Enter your email or username">
+            <nz-input-group nzSize="large" [nzPrefix]="mailIcon">
+              <input nz-input id="login-user" formControlName="username" autocomplete="username" placeholder="you@company.com" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <div class="pw-label">
+            <nz-form-label nzFor="login-pass">Password</nz-form-label>
+            <a class="link" href="#" (click)="$event.preventDefault(); sso('Password reset')">Forgot password?</a>
           </div>
-        </div>
+          <nz-form-control [nzErrorTip]="pwError">
+            <nz-input-group nzSize="large" [nzPrefix]="lockIcon" [nzSuffix]="eyeToggle">
+              <input
+                nz-input
+                id="login-pass"
+                [type]="showPassword() ? 'text' : 'password'"
+                formControlName="password"
+                autocomplete="current-password"
+                placeholder="At least 6 characters"
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
 
-        <div class="form-group">
-          <label>Password <span class="required">*</span></label>
-          <input
-            type="password"
-            formControlName="password"
-            placeholder="Enter your password"
-            class="form-input"
-            [class.error]="form.get('password')?.invalid && form.get('password')?.touched"
-          />
-          <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="error-text">
-            Password is required
-          </div>
-        </div>
+        <label nz-checkbox formControlName="remember" class="remember">Keep me signed in on this device</label>
 
-        <div class="form-actions">
-          <label class="checkbox-label">
-            <input type="checkbox" formControlName="rememberMe" class="checkbox-input" />
-            <span>Remember me</span>
-          </label>
-          <a href="#" class="forgot-link">Forgot password?</a>
-        </div>
-
-        <button
-          type="submit"
-          [disabled]="form.invalid || loading"
-          class="login-button"
-          [class.loading]="loading"
-        >
-          {{ loading ? 'Signing in...' : 'Sign In' }}
-        </button>
-
-        <div class="divider">
-          <span>or</span>
-        </div>
-
-        <button
-          type="button"
-          (click)="getDemoCredentials()"
-          class="demo-button"
-        >
-          👤 Use Demo Credentials
+        <button nz-button nzType="primary" nzSize="large" nzBlock [nzLoading]="loading()" type="submit" class="submit">
+          Sign in
+          <span nz-icon nzType="arrow-right"></span>
         </button>
       </form>
 
-      <div class="login-info">
-        <p class="info-title">Demo Access</p>
-        <p class="info-text">Email: <strong>admin</strong></p>
-        <p class="info-text">Password: <strong>password123</strong></p>
+      <div class="divider"><span>or continue with</span></div>
+
+      <div class="sso">
+        <button nz-button nzSize="large" type="button" (click)="sso('Google')">
+          <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
+          Google
+        </button>
+        <button nz-button nzSize="large" type="button" (click)="sso('Microsoft')">
+          <svg width="15" height="15" viewBox="0 0 21 21" aria-hidden="true"><path fill="#f25022" d="M1 1h9v9H1z"/><path fill="#00a4ef" d="M1 11h9v9H1z"/><path fill="#7fba00" d="M11 1h9v9h-9z"/><path fill="#ffb900" d="M11 11h9v9h-9z"/></svg>
+          Microsoft
+        </button>
+      </div>
+
+      <div class="demo">
+        <div>
+          <strong>Demo account</strong>
+          <span><code>admin&#64;harbor.vn</code> · <code>password123</code></span>
+        </div>
+        <button nz-button nzSize="small" type="button" (click)="fillDemo()">Fill in</button>
       </div>
     </div>
-
-    <div class="login-decoration">
-      <div class="decoration-circle decoration-circle-1"></div>
-      <div class="decoration-circle decoration-circle-2"></div>
-      <div class="decoration-circle decoration-circle-3"></div>
-    </div>
-  </div>
+  </section>
 </div>
+
+<ng-template #mailIcon><span nz-icon nzType="mail"></span></ng-template>
+<ng-template #lockIcon><span nz-icon nzType="lock"></span></ng-template>
+<ng-template #eyeToggle>
+  <button
+    type="button"
+    class="eye"
+    (click)="showPassword.set(!showPassword())"
+    [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+  >
+    <span nz-icon [nzType]="showPassword() ? 'eye-invisible' : 'eye'"></span>
+  </button>
+</ng-template>
+<ng-template #pwError let-control>
+  @if (control.hasError('required')) { Enter your password }
+  @if (control.hasError('minlength')) { Password must be at least 6 characters }
+</ng-template>

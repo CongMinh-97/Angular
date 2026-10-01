@@ -1,0 +1,120 @@
+<app-page-header eyebrow="Management" title="Users" subtitle="Invite people, change their role, or remove access. Changes take effect immediately.">
+  <a nz-button routerLink="/import"><span nz-icon nzType="cloud-upload"></span>Import</a>
+  <button nz-button (click)="exportCsv()"><span nz-icon nzType="download"></span>Export CSV</button>
+  <button nz-button nzType="primary" (click)="openCreate()"><span nz-icon nzType="plus"></span>Add user</button>
+</app-page-header>
+
+<app-data-table
+  [columns]="columns"
+  [data]="rows()"
+  [total]="total()"
+  [loading]="loading()"
+  [(query)]="query"
+  [(selected)]="selected"
+  (reload)="load()"
+  searchPlaceholder="Search name, email or phone"
+  itemLabel="users"
+>
+  <nz-select
+    toolbar
+    class="dept-filter"
+    nzMode="multiple"
+    nzPlaceHolder="All departments"
+    [nzMaxTagCount]="1"
+    nzAllowClear
+    [(ngModel)]="departmentFilter"
+    (ngModelChange)="onDepartmentChange($event)"
+  >
+    @for (d of departments; track d) {
+      <nz-option [nzLabel]="d" [nzValue]="d" />
+    }
+  </nz-select>
+
+  <button bulk nz-button nzSize="small" nzDanger (click)="removeSelected()"><span nz-icon nzType="delete"></span>Delete selected</button>
+
+  <ng-template appCell="name" let-u>
+    <div class="person">
+      <span class="avatar" [style.background]="tone(u.id)">{{ initials(u.name) }}</span>
+      <div class="person-text">
+        <strong>{{ u.name }}</strong>
+        <span>{{ u.email }}</span>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template appCell="role" let-u>
+    <span class="role" [attr.data-role]="u.role">{{ u.role }}</span>
+  </ng-template>
+
+  <ng-template appCell="status" let-u>
+    <span class="status" [class]="statusClass[u.status]">{{ statusLabel[u.status] }}</span>
+  </ng-template>
+
+  <ng-template appCell="phone" let-u><span class="mono muted">{{ u.phone }}</span></ng-template>
+
+  <ng-template appCell="spend" let-u>
+    <span class="num strong">{{ u.spend * 1000 | currency: 'VND' : 'symbol-narrow' : '1.0-0' }}</span>
+  </ng-template>
+
+  <ng-template appCell="createdAt" let-u><span class="muted">{{ u.createdAt | date: 'd MMM y' }}</span></ng-template>
+  <ng-template appCell="lastActive" let-u><span class="muted">{{ u.lastActive | date: 'd MMM, HH:mm' }}</span></ng-template>
+
+  <ng-template appCell="actions" let-u>
+    <div class="row-actions">
+      <button nz-button nzType="text" nzSize="small" nz-tooltip nzTooltipTitle="Edit" (click)="openEdit(u)" [attr.aria-label]="'Edit ' + u.name">
+        <span nz-icon nzType="edit"></span>
+      </button>
+      <button
+        nz-button
+        nzType="text"
+        nzSize="small"
+        nzDanger
+        nz-popconfirm
+        [nzPopconfirmTitle]="'Delete ' + u.name + '?'"
+        nzOkText="Delete"
+        nzOkDanger
+        nzCancelText="Cancel"
+        nzPopconfirmPlacement="left"
+        (nzOnConfirm)="remove(u)"
+        [attr.aria-label]="'Delete ' + u.name"
+      >
+        <span nz-icon nzType="delete"></span>
+      </button>
+    </div>
+  </ng-template>
+</app-data-table>
+
+<nz-drawer
+  [nzVisible]="drawerOpen()"
+  [nzWidth]="'min(560px, 100vw)'"
+  [nzTitle]="editing() ? 'Edit user' : 'Add user'"
+  [nzFooter]="drawerFooter"
+  (nzOnClose)="closeDrawer()"
+>
+  <ng-container *nzDrawerContent>
+    @if (editing(); as u) {
+      <div class="drawer-intro">
+        <span class="avatar lg" [style.background]="tone(u.id)">{{ initials(u.name) }}</span>
+        <div>
+          <strong>{{ u.name }}</strong>
+          <span>Member since {{ u.createdAt | date: 'MMMM y' }}</span>
+        </div>
+      </div>
+    } @else {
+      <p class="drawer-lead">They will get an email invitation and can sign in once they set a password.</p>
+    }
+    <form (ngSubmit)="save()">
+      <app-dynamic-form [form]="form" [fields]="fields" idPrefix="user" />
+      <button type="submit" hidden></button>
+    </form>
+  </ng-container>
+</nz-drawer>
+
+<ng-template #drawerFooter>
+  <div class="drawer-footer">
+    <button nz-button (click)="closeDrawer()">Cancel</button>
+    <button nz-button nzType="primary" [nzLoading]="saving()" (click)="save()">
+      <span nz-icon [nzType]="editing() ? 'save' : 'send'"></span>{{ editing() ? 'Save changes' : 'Add and invite' }}
+    </button>
+  </div>
+</ng-template>
