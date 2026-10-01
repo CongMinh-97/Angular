@@ -4,8 +4,6 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzRowModule } from 'ng-zorro-antd/grid';
-import { NzColModule } from 'ng-zorro-antd/grid';
 import { ChartContainerComponent } from '@shared/components/charts/chart-container.component';
 import {
   DEFAULT_LINE_CHART,
@@ -26,8 +24,6 @@ import {
     NzCardModule,
     NzStatisticModule,
     NzIconModule,
-    NzRowModule,
-    NzColModule,
     ChartContainerComponent,
   ],
   templateUrl: './dashboard.component.html',
