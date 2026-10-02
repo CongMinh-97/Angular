@@ -10,8 +10,8 @@ library(mirt)
 # ---------------------------------------------------------------------
 # 1) CTT - bai trac nghiem A/B/C/D chua cham + dap an
 # ---------------------------------------------------------------------
-raw  <- read.csv("01_ctt_tracnghiem_ABCD.csv", stringsAsFactors = FALSE,
-                 na.strings = "")
+# o trong duoc doc la "" -> khong khop dap an -> cham 0
+raw  <- read.csv("01_ctt_tracnghiem_ABCD.csv", stringsAsFactors = FALSE)
 key  <- read.csv("01_ctt_dapan.csv", stringsAsFactors = FALSE)$DapAn
 resp <- raw[, -(1:2)]                       # bo cot ID, GioiTinh
 
