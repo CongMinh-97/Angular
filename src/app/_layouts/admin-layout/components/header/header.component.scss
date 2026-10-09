@@ -57,7 +57,10 @@
   background: var(--surface-2);
   border: 1px solid var(--border);
   color: var(--text-3);
-  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    background 0.15s;
 
   &:focus-within {
     background: var(--surface);
@@ -125,7 +128,6 @@
     background: var(--surface-2);
   }
 }
-
 
 .me-text {
   display: flex;
@@ -205,9 +207,18 @@
   place-items: center;
   font-size: 15px;
 
-  &[data-tone='jade'] { background: var(--jade-50); color: var(--jade-600); }
-  &[data-tone='violet'] { background: var(--violet-100); color: var(--violet-500); }
-  &[data-tone='coral'] { background: var(--coral-100); color: var(--coral-600); }
+  &[data-tone='jade'] {
+    background: var(--jade-50);
+    color: var(--jade-600);
+  }
+  &[data-tone='violet'] {
+    background: var(--violet-100);
+    color: var(--violet-500);
+  }
+  &[data-tone='coral'] {
+    background: var(--coral-100);
+    color: var(--coral-600);
+  }
 }
 
 .menu-identity {
@@ -216,8 +227,13 @@
   cursor: default !important;
   line-height: 1.35;
 
-  strong { color: var(--text); }
-  span { color: var(--text-3); font-size: 12px; }
+  strong {
+    color: var(--text);
+  }
+  span {
+    color: var(--text-3);
+    font-size: 12px;
+  }
 }
 
 @include below($breakpoint-lg) {

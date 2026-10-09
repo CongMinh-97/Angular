@@ -145,44 +145,219 @@ export function formatBytes(n: number): string {
   `,
   styles: [
     `
-      :host { display: block; min-width: 0; }
-      .ui-up-native { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+      :host {
+        display: block;
+        min-width: 0;
+      }
+      .ui-up-native {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+      }
       .ui-up-drop {
-        display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 22px 16px; text-align: center; cursor: pointer;
-        border: 1.5px dashed var(--border-strong); border-radius: var(--radius-lg); background: var(--surface-2);
-        transition: border-color 0.15s, background 0.15s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 22px 16px;
+        text-align: center;
+        cursor: pointer;
+        border: 1.5px dashed var(--border-strong);
+        border-radius: var(--radius-lg);
+        background: var(--surface-2);
+        transition:
+          border-color 0.15s,
+          background 0.15s;
       }
-      .ui-up-drop:hover, .ui-up-drop.is-over { border-color: var(--jade-500); background: var(--jade-50); }
-      .ui-up-drop:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ant-primary-color-outline); }
-      .ui-up-drop.is-invalid { border-color: var(--danger); }
-      .ui-up-drop.is-disabled { cursor: not-allowed; opacity: 0.6; }
-      .ui-up-drop strong { color: var(--text); font-size: 13.5px; }
-      .ui-up-drop > span:last-child { font-size: 12px; color: var(--text-3); }
-      .ui-up-icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 4px; font-size: 18px; color: var(--jade-600); background: var(--surface); box-shadow: inset 0 0 0 1px var(--border); }
+      .ui-up-drop:hover,
+      .ui-up-drop.is-over {
+        border-color: var(--jade-500);
+        background: var(--jade-50);
+      }
+      .ui-up-drop:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px var(--ant-primary-color-outline);
+      }
+      .ui-up-drop.is-invalid {
+        border-color: var(--danger);
+      }
+      .ui-up-drop.is-disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+      .ui-up-drop strong {
+        color: var(--text);
+        font-size: 13.5px;
+      }
+      .ui-up-drop > span:last-child {
+        font-size: 12px;
+        color: var(--text-3);
+      }
+      .ui-up-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 4px;
+        font-size: 18px;
+        color: var(--jade-600);
+        background: var(--surface);
+        box-shadow: inset 0 0 0 1px var(--border);
+      }
       .ui-up-btn {
-        display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; font: inherit; font-weight: 600; cursor: pointer;
-        border: 1px solid var(--border-strong); border-radius: var(--radius); background: var(--surface); color: var(--text);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 38px;
+        padding: 0 14px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius);
+        background: var(--surface);
+        color: var(--text);
       }
-      .ui-up-btn:hover:not(:disabled) { border-color: var(--jade-500); color: var(--jade-700); background: var(--jade-50); }
-      .ui-up-btn:disabled { opacity: 0.55; cursor: not-allowed; }
-      .ui-up-list { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-      .ui-up-list li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
-      .ui-up-list img { width: 36px; height: 36px; object-fit: cover; border-radius: 8px; }
-      .ui-up-ficon { width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center; color: var(--jade-600); background: var(--jade-50); }
-      .ui-up-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-      .ui-up-meta strong { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      .ui-up-meta span { font-size: 12px; color: var(--text-3); }
-      .ui-up-del { width: 30px; height: 30px; border: 0; border-radius: 8px; background: none; color: var(--text-3); cursor: pointer; }
-      .ui-up-del:hover { color: var(--danger); background: var(--danger-bg); }
-      .ui-up-grid { display: flex; flex-wrap: wrap; gap: 10px; }
-      .ui-up-thumb, .ui-up-add { position: relative; width: 104px; height: 104px; margin: 0; border-radius: var(--radius); overflow: hidden; }
-      .ui-up-thumb { border: 1px solid var(--border); display: grid; place-items: center; background: var(--surface-2); color: var(--text-3); font-size: 22px; }
-      .ui-up-thumb img { width: 100%; height: 100%; object-fit: cover; }
-      .ui-up-x { position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border: 0; border-radius: 50%; display: grid; place-items: center; font-size: 11px; color: #fff; background: rgba(15, 19, 36, 0.6); cursor: pointer; }
-      .ui-up-add { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font: inherit; font-size: 12px; color: var(--text-2); cursor: pointer; border: 1.5px dashed var(--border-strong); background: var(--surface-2); }
-      .ui-up-add [nz-icon] { font-size: 18px; color: var(--jade-600); }
-      .ui-up-add:hover:not(:disabled) { border-color: var(--jade-500); background: var(--jade-50); }
-      .ui-up-add.is-invalid { border-color: var(--danger); }
+      .ui-up-btn:hover:not(:disabled) {
+        border-color: var(--jade-500);
+        color: var(--jade-700);
+        background: var(--jade-50);
+      }
+      .ui-up-btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      .ui-up-list {
+        list-style: none;
+        margin: 10px 0 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .ui-up-list li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+      }
+      .ui-up-list img {
+        width: 36px;
+        height: 36px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+      .ui-up-ficon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        color: var(--jade-600);
+        background: var(--jade-50);
+      }
+      .ui-up-meta {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .ui-up-meta strong {
+        font-size: 13px;
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .ui-up-meta span {
+        font-size: 12px;
+        color: var(--text-3);
+      }
+      .ui-up-del {
+        width: 30px;
+        height: 30px;
+        border: 0;
+        border-radius: 8px;
+        background: none;
+        color: var(--text-3);
+        cursor: pointer;
+      }
+      .ui-up-del:hover {
+        color: var(--danger);
+        background: var(--danger-bg);
+      }
+      .ui-up-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .ui-up-thumb,
+      .ui-up-add {
+        position: relative;
+        width: 104px;
+        height: 104px;
+        margin: 0;
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .ui-up-thumb {
+        border: 1px solid var(--border);
+        display: grid;
+        place-items: center;
+        background: var(--surface-2);
+        color: var(--text-3);
+        font-size: 22px;
+      }
+      .ui-up-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .ui-up-x {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 24px;
+        height: 24px;
+        border: 0;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-size: 11px;
+        color: #fff;
+        background: rgba(15, 19, 36, 0.6);
+        cursor: pointer;
+      }
+      .ui-up-add {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        font: inherit;
+        font-size: 12px;
+        color: var(--text-2);
+        cursor: pointer;
+        border: 1.5px dashed var(--border-strong);
+        background: var(--surface-2);
+      }
+      .ui-up-add [nz-icon] {
+        font-size: 18px;
+        color: var(--jade-600);
+      }
+      .ui-up-add:hover:not(:disabled) {
+        border-color: var(--jade-500);
+        background: var(--jade-50);
+      }
+      .ui-up-add.is-invalid {
+        border-color: var(--danger);
+      }
     `,
   ],
 })
@@ -264,7 +439,10 @@ export class UiUploadComponent extends UiControlBase<UiUploadFile[]> {
   }
 
   private matchesAccept(file: File): boolean {
-    const rules = this.accept().split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+    const rules = this.accept()
+      .split(',')
+      .map(s => s.trim().toLowerCase())
+      .filter(Boolean);
     if (!rules.length) return true;
     const name = file.name.toLowerCase();
     const type = file.type.toLowerCase();

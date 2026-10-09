@@ -63,11 +63,12 @@ function listUsers(params: HttpParams): PaginatedResponse<UserRecord> {
   const statuses = params.getAll('status') || [];
   const departments = params.getAll('department') || [];
 
-  let rows = mockDb.users.filter(u =>
-    (!search || u.name.toLowerCase().includes(search) || u.email.includes(search) || u.phone.includes(search)) &&
-    (!roles.length || roles.includes(u.role)) &&
-    (!statuses.length || statuses.includes(u.status)) &&
-    (!departments.length || departments.includes(u.department)),
+  let rows = mockDb.users.filter(
+    u =>
+      (!search || u.name.toLowerCase().includes(search) || u.email.includes(search) || u.phone.includes(search)) &&
+      (!roles.length || roles.includes(u.role)) &&
+      (!statuses.length || statuses.includes(u.status)) &&
+      (!departments.length || departments.includes(u.department)),
   );
 
   if (sortField && sortOrder) {

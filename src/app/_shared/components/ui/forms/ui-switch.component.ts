@@ -50,13 +50,37 @@ import { UiFieldComponent } from '../core/ui-field.component';
   `,
   styles: [
     `
-      :host { display: block; min-width: 0; }
-      .ui-sw { display: flex; align-items: flex-start; gap: 12px; }
-      .ui-sw.is-reverse { flex-direction: row-reverse; justify-content: space-between; }
-      .ui-sw nz-switch { flex: none; margin-top: 1px; }
-      .ui-sw-text { display: flex; flex-direction: column; cursor: pointer; min-width: 0; }
-      .ui-sw-text span { font-weight: 500; color: var(--text); }
-      .ui-sw-text small { font-size: 12.5px; color: var(--text-3); }
+      :host {
+        display: block;
+        min-width: 0;
+      }
+      .ui-sw {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .ui-sw.is-reverse {
+        flex-direction: row-reverse;
+        justify-content: space-between;
+      }
+      .ui-sw nz-switch {
+        flex: none;
+        margin-top: 1px;
+      }
+      .ui-sw-text {
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        min-width: 0;
+      }
+      .ui-sw-text span {
+        font-weight: 500;
+        color: var(--text);
+      }
+      .ui-sw-text small {
+        font-size: 12.5px;
+        color: var(--text-3);
+      }
     `,
   ],
 })

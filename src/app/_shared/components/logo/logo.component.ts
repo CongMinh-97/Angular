@@ -16,7 +16,12 @@ let nextId = 0;
       </defs>
       <rect width="40" height="40" rx="11" [attr.fill]="'url(#' + gid + ')'" />
       <path d="M13 10v14M27 10v14M13 17h14" stroke="#0F1324" stroke-width="3.4" stroke-linecap="round" />
-      <path d="M8 29.5c2.4 0 2.4-2 4.8-2s2.4 2 4.8 2 2.4-2 4.8-2 2.4 2 4.8 2 2.4-2 4.8-2" stroke="#fff" stroke-width="2.4" stroke-linecap="round" />
+      <path
+        d="M8 29.5c2.4 0 2.4-2 4.8-2s2.4 2 4.8 2 2.4-2 4.8-2 2.4 2 4.8 2 2.4-2 4.8-2"
+        stroke="#fff"
+        stroke-width="2.4"
+        stroke-linecap="round"
+      />
     </svg>
   `,
   styles: [':host{display:inline-flex;flex:none}'],

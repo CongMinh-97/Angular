@@ -26,18 +26,43 @@ import { DOC } from '../doc.components';
       intro="Every control works with Reactive Forms, with ngModel, and with plain [(value)]. Inside a form the control reads its validators: the required mark appears by itself and the first error shows once the field is touched or the form is submitted."
     >
       <!-- Reactive -->
-      <doc-example heading="1. Reactive form" description="Press Create with the form empty to see every error at once. Try “taken@harbor.vn” as the organiser email to see a server-side error." [code]="code.reactive" stack>
+      <doc-example
+        heading="1. Reactive form"
+        description="Press Create with the form empty to see every error at once. Try “taken@harbor.vn” as the organiser email to see a server-side error."
+        [code]="code.reactive"
+        stack
+      >
         <div class="rf">
           <form [formGroup]="form" (ngSubmit)="submit()" class="rf-form" novalidate>
             <div class="grid-2">
               <ui-input formControlName="name" label="Event name" placeholder="Harbor Q4 kickoff" [maxChars]="60" showCount />
-              <ui-input formControlName="organiser" label="Organiser email" type="email" prefixIcon="mail" placeholder="you@harbor.vn" (blurred)="checkEmail()" />
+              <ui-input
+                formControlName="organiser"
+                label="Organiser email"
+                type="email"
+                prefixIcon="mail"
+                placeholder="you@harbor.vn"
+                (blurred)="checkEmail()"
+              />
               <ui-select formControlName="category" label="Category" [options]="categories" placeholder="Choose a category" />
-              <ui-multi-select formControlName="teams" label="Teams invited" [options]="teams" showSelectAll [errorMessages]="{ minSelected: 'Invite at least one team' }" hint="Up to 4 teams" />
+              <ui-multi-select
+                formControlName="teams"
+                label="Teams invited"
+                [options]="teams"
+                showSelectAll
+                [errorMessages]="{ minSelected: 'Invite at least one team' }"
+                hint="Up to 4 teams"
+              />
               <ui-date-range-picker formControlName="period" label="Dates" disablePast [maxDays]="14" />
               <ui-time-picker formControlName="startsAt" label="Starts at" [minuteStep]="15" />
               <ui-number formControlName="capacity" label="Capacity" unit="people" [min]="1" [max]="500" />
-              <ui-number formControlName="budget" label="Budget" format="currency" [step]="500000" tooltip="Leave empty if there is no budget" />
+              <ui-number
+                formControlName="budget"
+                label="Budget"
+                format="currency"
+                [step]="500000"
+                tooltip="Leave empty if there is no budget"
+              />
             </div>
             <ui-radio-group formControlName="format" label="Format" variant="card" [options]="formats" />
             <ui-textarea formControlName="agenda" label="Agenda" [maxChars]="400" showCount placeholder="What will happen, in order" />
@@ -60,8 +85,12 @@ import { DOC } from '../doc.components';
               <span>Status</span>
               <strong [class.ok]="status() === 'VALID'" [class.bad]="status() === 'INVALID'">{{ status() }}</strong>
             </div>
-            <div class="st-row"><span>Touched</span><strong>{{ form.touched }}</strong></div>
-            <div class="st-row"><span>Dirty</span><strong>{{ form.dirty }}</strong></div>
+            <div class="st-row">
+              <span>Touched</span><strong>{{ form.touched }}</strong>
+            </div>
+            <div class="st-row">
+              <span>Dirty</span><strong>{{ form.dirty }}</strong>
+            </div>
             <div class="st-label">form.getRawValue()</div>
             <pre>{{ preview() | json }}</pre>
           </aside>
@@ -69,7 +98,12 @@ import { DOC } from '../doc.components';
       </doc-example>
 
       <!-- Template-driven -->
-      <doc-example heading="2. Template-driven form (ngModel)" description="Angular's own validator directives (required, email, minlength) work as-is." [code]="code.template" stack>
+      <doc-example
+        heading="2. Template-driven form (ngModel)"
+        description="Angular's own validator directives (required, email, minlength) work as-is."
+        [code]="code.template"
+        stack
+      >
         <form #tf="ngForm" (ngSubmit)="tfSubmitted.set(tf.valid ?? false)" class="tf" novalidate>
           <div class="grid-3">
             <ui-input name="fullName" [(ngModel)]="person.name" label="Full name" required minlength="2" />
@@ -77,7 +111,9 @@ import { DOC } from '../doc.components';
             <ui-select name="role" [(ngModel)]="person.role" label="Role" [options]="roles" required />
           </div>
           <div class="rf-actions">
-            <span class="out">model: <code>{{ person | json }}</code></span>
+            <span class="out"
+              >model: <code>{{ person | json }}</code></span
+            >
             <span class="spacer"></span>
             <button ui-button variant="primary" type="submit">Save</button>
           </div>
@@ -88,7 +124,12 @@ import { DOC } from '../doc.components';
       </doc-example>
 
       <!-- Standalone -->
-      <doc-example heading="3. Standalone, without a form" description="Bind [(value)] to a signal or field. Pass error yourself when you validate, here an availability check that runs 500 ms after typing stops." [code]="code.standalone" stack>
+      <doc-example
+        heading="3. Standalone, without a form"
+        description="Bind [(value)] to a signal or field. Pass error yourself when you validate, here an availability check that runs 500 ms after typing stops."
+        [code]="code.standalone"
+        stack
+      >
         <div class="grid-3">
           <ui-input
             label="Workspace URL"
@@ -102,29 +143,115 @@ import { DOC } from '../doc.components';
           <ui-select label="Timezone" [options]="zones" [(value)]="zone" searchable />
           <ui-date-picker label="Go-live date" [(value)]="goLive" disablePast />
         </div>
-        <div class="out">slug = <code>{{ slug() }}</code> · zone = <code>{{ zone() }}</code> · goLive = <code>{{ goLive()?.toLocaleDateString('vi-VN') }}</code></div>
+        <div class="out">
+          slug = <code>{{ slug() }}</code> · zone = <code>{{ zone() }}</code> · goLive =
+          <code>{{ goLive()?.toLocaleDateString('vi-VN') }}</code>
+        </div>
       </doc-example>
     </doc-section>
   `,
   styles: [
     `
-      .rf { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start; width: 100%; }
-      .rf-form, .tf { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
-      .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; }
-      .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 16px; }
-      .rf-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding-top: 16px; border-top: 1px solid var(--border); }
-      .spacer { flex: 1; }
-      .rf-state { position: sticky; top: calc(var(--topbar-h) + 16px); padding: 14px; border-radius: var(--radius); background: var(--ink-950); color: #c4cbe0; font-size: 12.5px; }
-      .st-row { display: flex; justify-content: space-between; padding: 4px 0; }
-      .st-row strong { color: #fff; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
-      .st-row strong.ok { color: var(--jade-300); }
-      .st-row strong.bad { color: #ff8a8d; }
-      .st-label { margin: 10px 0 6px; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #7f89a6; }
-      pre { margin: 0; max-height: 420px; overflow: auto; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; line-height: 1.55; color: #d5dbeb; white-space: pre-wrap; word-break: break-word; }
-      .out { font-size: 12.5px; color: var(--text-3); }
-      code { font-family: 'JetBrains Mono', monospace; color: var(--text); }
-      @media (max-width: 1279px) { .rf { grid-template-columns: minmax(0, 1fr); } .rf-state { position: static; } }
-      @media (max-width: 767px) { .grid-2, .grid-3 { grid-template-columns: minmax(0, 1fr); } }
+      .rf {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap: 20px;
+        align-items: start;
+        width: 100%;
+      }
+      .rf-form,
+      .tf {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        min-width: 0;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px 16px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px 16px;
+      }
+      .rf-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+      .spacer {
+        flex: 1;
+      }
+      .rf-state {
+        position: sticky;
+        top: calc(var(--topbar-h) + 16px);
+        padding: 14px;
+        border-radius: var(--radius);
+        background: var(--ink-950);
+        color: #c4cbe0;
+        font-size: 12.5px;
+      }
+      .st-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+      }
+      .st-row strong {
+        color: #fff;
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 500;
+      }
+      .st-row strong.ok {
+        color: var(--jade-300);
+      }
+      .st-row strong.bad {
+        color: #ff8a8d;
+      }
+      .st-label {
+        margin: 10px 0 6px;
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #7f89a6;
+      }
+      pre {
+        margin: 0;
+        max-height: 420px;
+        overflow: auto;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11.5px;
+        line-height: 1.55;
+        color: #d5dbeb;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .out {
+        font-size: 12.5px;
+        color: var(--text-3);
+      }
+      code {
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--text);
+      }
+      @media (max-width: 1279px) {
+        .rf {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .rf-state {
+          position: static;
+        }
+      }
+      @media (max-width: 767px) {
+        .grid-2,
+        .grid-3 {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
     `,
   ],
 })
@@ -138,7 +265,10 @@ export class FormUsageSectionComponent {
     { label: 'Customer event', value: 'customer', icon: 'shop' },
     { label: 'Offsite', value: 'offsite', icon: 'environment' },
   ];
-  readonly teams: UiOption<string>[] = ['Engineering', 'Design', 'Marketing', 'Sales', 'Finance', 'Support'].map(t => ({ label: t, value: t }));
+  readonly teams: UiOption<string>[] = ['Engineering', 'Design', 'Marketing', 'Sales', 'Finance', 'Support'].map(t => ({
+    label: t,
+    value: t,
+  }));
   readonly formats: UiOption<string>[] = [
     { label: 'In person', value: 'onsite', icon: 'home', description: 'Everyone in the same room' },
     { label: 'Online', value: 'online', icon: 'global', description: 'Video call link sent with the invite' },
@@ -176,7 +306,13 @@ export class FormUsageSectionComponent {
 
   saving = signal(false);
   status = toSignal(this.form.statusChanges.pipe(startWith(this.form.status)), { initialValue: this.form.status });
-  private raw = toSignal(this.form.valueChanges.pipe(startWith(null), map(() => this.form.getRawValue())), { initialValue: this.form.getRawValue() });
+  private raw = toSignal(
+    this.form.valueChanges.pipe(
+      startWith(null),
+      map(() => this.form.getRawValue()),
+    ),
+    { initialValue: this.form.getRawValue() },
+  );
   preview = computed(() => {
     const v = this.raw();
     return { ...v, files: (v.files as { name: string }[]).map(f => f.name) };

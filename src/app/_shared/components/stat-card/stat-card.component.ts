@@ -27,7 +27,15 @@ const TONE_HEX: Record<Tone, string> = {
         @if (series().length > 1) {
           <svg class="spark" viewBox="0 0 120 40" preserveAspectRatio="none" aria-hidden="true">
             <path [attr.d]="area()" [attr.fill]="color()" fill-opacity="0.12" />
-            <path [attr.d]="line()" fill="none" [attr.stroke]="color()" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+            <path
+              [attr.d]="line()"
+              fill="none"
+              [attr.stroke]="color()"
+              stroke-width="2"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              vector-effect="non-scaling-stroke"
+            />
           </svg>
         }
       </div>
@@ -41,7 +49,10 @@ const TONE_HEX: Record<Tone, string> = {
   `,
   styles: [
     `
-      :host { display: block; min-width: 0; }
+      :host {
+        display: block;
+        min-width: 0;
+      }
       .card {
         height: 100%;
         padding: 18px 18px 16px;
@@ -49,33 +60,103 @@ const TONE_HEX: Record<Tone, string> = {
         border: 1px solid var(--border);
         border-radius: var(--radius-lg);
         box-shadow: var(--shadow-xs);
-        transition: box-shadow 0.2s, transform 0.2s;
+        transition:
+          box-shadow 0.2s,
+          transform 0.2s;
       }
-      .card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
-      .top { display: flex; align-items: center; gap: 10px; }
+      .card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-1px);
+      }
+      .top {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
       .icon {
-        width: 34px; height: 34px; border-radius: 10px;
-        display: grid; place-items: center; font-size: 16px;
-        color: var(--tone); background: var(--tone-bg);
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        font-size: 16px;
+        color: var(--tone);
+        background: var(--tone-bg);
       }
-      .label { font-size: 13px; font-weight: 600; color: var(--text-2); }
-      .mid { margin-top: 14px; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
-      .value { font-size: 28px; line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; color: var(--text); }
-      .foot { margin-top: 10px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; font-size: 12px; }
+      .label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-2);
+      }
+      .mid {
+        margin-top: 14px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .value {
+        font-size: 28px;
+        line-height: 1.1;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--text);
+      }
+      .foot {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px 8px;
+        font-size: 12px;
+      }
       .delta {
-        display: inline-flex; align-items: center; gap: 3px;
-        padding: 1px 7px; border-radius: 999px; font-weight: 700;
-        color: var(--success); background: var(--success-bg);
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        padding: 1px 7px;
+        border-radius: 999px;
+        font-weight: 700;
+        color: var(--success);
+        background: var(--success-bg);
       }
-      .delta.down { color: var(--danger); background: var(--danger-bg); }
-      .hint { color: var(--text-3); }
-      .spark { flex: none; width: 96px; height: 36px; overflow: visible; }
-      [data-tone='jade'] { --tone: var(--jade-600); --tone-bg: var(--jade-50); }
-      [data-tone='coral'] { --tone: var(--coral-600); --tone-bg: var(--coral-100); }
-      [data-tone='violet'] { --tone: var(--violet-500); --tone-bg: var(--violet-100); }
-      [data-tone='amber'] { --tone: #b8770a; --tone-bg: var(--amber-100); }
-      [data-tone='ink'] { --tone: var(--ink-700); --tone-bg: #e8ebf3; }
-      [data-tone='sky'] { --tone: var(--sky-500); --tone-bg: var(--sky-100); }
+      .delta.down {
+        color: var(--danger);
+        background: var(--danger-bg);
+      }
+      .hint {
+        color: var(--text-3);
+      }
+      .spark {
+        flex: none;
+        width: 96px;
+        height: 36px;
+        overflow: visible;
+      }
+      [data-tone='jade'] {
+        --tone: var(--jade-600);
+        --tone-bg: var(--jade-50);
+      }
+      [data-tone='coral'] {
+        --tone: var(--coral-600);
+        --tone-bg: var(--coral-100);
+      }
+      [data-tone='violet'] {
+        --tone: var(--violet-500);
+        --tone-bg: var(--violet-100);
+      }
+      [data-tone='amber'] {
+        --tone: #b8770a;
+        --tone-bg: var(--amber-100);
+      }
+      [data-tone='ink'] {
+        --tone: var(--ink-700);
+        --tone-bg: #e8ebf3;
+      }
+      [data-tone='sky'] {
+        --tone: var(--sky-500);
+        --tone-bg: var(--sky-100);
+      }
     `,
   ],
 })
@@ -99,6 +180,10 @@ export class StatCardComponent {
     return s.map((v, i) => [(i / (s.length - 1)) * 120, 36 - ((v - min) / span) * 30] as const);
   });
 
-  line = computed(() => this.points().map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' '));
+  line = computed(() =>
+    this.points()
+      .map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`)
+      .join(' '),
+  );
   area = computed(() => `${this.line()} L120 40 L0 40 Z`);
 }

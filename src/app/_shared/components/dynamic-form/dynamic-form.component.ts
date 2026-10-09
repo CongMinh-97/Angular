@@ -84,9 +84,19 @@ export function buildForm(fields: FieldConfig[]): FormGroup {
   templateUrl: './dynamic-form.component.html',
   styles: [
     `
-      .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; }
-      .span-24 { grid-column: 1 / -1; }
-      @media (max-width: 639px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px 16px;
+      }
+      .span-24 {
+        grid-column: 1 / -1;
+      }
+      @media (max-width: 639px) {
+        .grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
     `,
   ],
 })

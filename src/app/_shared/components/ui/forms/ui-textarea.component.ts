@@ -53,11 +53,27 @@ import { UiFieldComponent } from '../core/ui-field.component';
   `,
   styles: [
     `
-      :host { display: block; min-width: 0; }
-      .ui-ta { position: relative; }
-      .ui-ta.has-count textarea { padding-bottom: 24px; }
-      .ui-ta-count { position: absolute; right: 10px; bottom: 6px; font-size: 11.5px; color: var(--text-3); pointer-events: none; }
-      .ui-ta-count.is-full { color: var(--warning); }
+      :host {
+        display: block;
+        min-width: 0;
+      }
+      .ui-ta {
+        position: relative;
+      }
+      .ui-ta.has-count textarea {
+        padding-bottom: 24px;
+      }
+      .ui-ta-count {
+        position: absolute;
+        right: 10px;
+        bottom: 6px;
+        font-size: 11.5px;
+        color: var(--text-3);
+        pointer-events: none;
+      }
+      .ui-ta-count.is-full {
+        color: var(--warning);
+      }
     `,
   ],
 })

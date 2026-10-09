@@ -1,4 +1,8 @@
-<app-page-header eyebrow="Content" title="Article editor" subtitle="Write and format long-form content. Images you paste or upload are sent through the API.">
+<app-page-header
+  eyebrow="Content"
+  title="Article editor"
+  subtitle="Write and format long-form content. Images you paste or upload are sent through the API."
+>
   <button ui-button icon="save" [loading]="saving() === 'draft'" (click)="save('draft')">Save draft</button>
   <button ui-button variant="primary" icon="send" [loading]="saving() === 'publish'" (click)="save('publish')">Publish</button>
 </app-page-header>
@@ -6,7 +10,13 @@
 <form class="layout" [formGroup]="form" (ngSubmit)="save('publish')" novalidate>
   <ui-card class="main">
     <ui-field [error]="fieldError('title')" msgId="title-msg">
-      <input class="title-input" formControlName="title" placeholder="Article title" aria-label="Article title" aria-describedby="title-msg" />
+      <input
+        class="title-input"
+        formControlName="title"
+        placeholder="Article title"
+        aria-label="Article title"
+        aria-describedby="title-msg"
+      />
     </ui-field>
     <ui-field [error]="fieldError('excerpt')" msgId="excerpt-msg">
       <textarea
@@ -24,11 +34,19 @@
     </ui-field>
 
     <div class="meta-bar">
-      <span><strong class="num">{{ stats().words }}</strong> words</span>
-      <span><strong class="num">{{ stats().characters }}</strong> characters</span>
-      <span><strong class="num">{{ readMinutes() }}</strong> min read</span>
+      <span
+        ><strong class="num">{{ stats().words }}</strong> words</span
+      >
+      <span
+        ><strong class="num">{{ stats().characters }}</strong> characters</span
+      >
+      <span
+        ><strong class="num">{{ readMinutes() }}</strong> min read</span
+      >
       @if (savedAt(); as t) {
-        <ui-tag class="saved" tone="success" icon="check">Saved {{ t.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) }}</ui-tag>
+        <ui-tag class="saved" tone="success" icon="check"
+          >Saved {{ t.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) }}</ui-tag
+        >
       }
     </div>
   </ui-card>
@@ -37,19 +55,44 @@
     <ui-card heading="Publishing" icon="send">
       <div class="stack">
         <ui-radio-group formControlName="visibility" label="Visibility" direction="vertical" [options]="visibilityOptions" />
-        <ui-date-picker formControlName="publishAt" inputId="publish-at" label="Schedule" showTime [minuteStep]="15" disablePast placeholder="Publish immediately" hint="Leave empty to publish now" />
+        <ui-date-picker
+          formControlName="publishAt"
+          inputId="publish-at"
+          label="Schedule"
+          showTime
+          [minuteStep]="15"
+          disablePast
+          placeholder="Publish immediately"
+          hint="Leave empty to publish now"
+        />
       </div>
     </ui-card>
 
     <ui-card heading="Details" icon="tags">
       <div class="stack">
         <ui-select formControlName="category" inputId="category" label="Category" [options]="categories" />
-        <ui-multi-select formControlName="tags" inputId="tags" label="Tags" [options]="tagOptions" allowCreate placeholder="Add tags" [maxTagCount]="4" />
+        <ui-multi-select
+          formControlName="tags"
+          inputId="tags"
+          label="Tags"
+          [options]="tagOptions"
+          allowCreate
+          placeholder="Add tags"
+          [maxTagCount]="4"
+        />
       </div>
     </ui-card>
 
     <ui-card heading="Cover image" icon="picture">
-      <ui-upload formControlName="cover" inputId="cover" variant="image" accept="image/*" [maxFiles]="1" [maxSizeMb]="5" hint="1600 × 900 px works best · up to 5 MB" />
+      <ui-upload
+        formControlName="cover"
+        inputId="cover"
+        variant="image"
+        accept="image/*"
+        [maxFiles]="1"
+        [maxSizeMb]="5"
+        hint="1600 × 900 px works best · up to 5 MB"
+      />
     </ui-card>
   </aside>
 </form>

@@ -93,8 +93,13 @@ export class UiDatePickerComponent extends UiControlBase<Date> {
   clearable = input(true, { transform: booleanAttribute });
 
   displayFormat = computed(() => this.format() || (this.showTime() ? 'dd/MM/yyyy HH:mm' : DEFAULT_FORMAT[this.mode()]));
-  defaultPlaceholder = computed(() => ({ date: 'Select date', week: 'Select week', month: 'Select month', quarter: 'Select quarter', year: 'Select year' })[this.mode()]);
-  disabledDate = computed(() => dateDisabler({ min: this.min(), max: this.max(), disablePast: this.disablePast(), disableFuture: this.disableFuture() }));
+  defaultPlaceholder = computed(
+    () =>
+      ({ date: 'Select date', week: 'Select week', month: 'Select month', quarter: 'Select quarter', year: 'Select year' })[this.mode()],
+  );
+  disabledDate = computed(() =>
+    dateDisabler({ min: this.min(), max: this.max(), disablePast: this.disablePast(), disableFuture: this.disableFuture() }),
+  );
 
   protected override normalize(v: unknown): Date | null {
     if (v === null || v === undefined || v === '') return null;

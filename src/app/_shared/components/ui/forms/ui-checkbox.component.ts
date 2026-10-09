@@ -48,11 +48,26 @@ import { UiOption } from '../core/ui-types';
   `,
   styles: [
     `
-      :host { display: block; min-width: 0; }
-      .ui-check { align-items: flex-start; }
-      .ui-check.is-invalid ::ng-deep .ant-checkbox-inner { border-color: var(--danger); }
-      .ui-check-text { color: var(--text); font-weight: 500; }
-      .ui-check-desc { display: block; margin-top: 2px; font-size: 12.5px; color: var(--text-3); }
+      :host {
+        display: block;
+        min-width: 0;
+      }
+      .ui-check {
+        align-items: flex-start;
+      }
+      .ui-check.is-invalid ::ng-deep .ant-checkbox-inner {
+        border-color: var(--danger);
+      }
+      .ui-check-text {
+        color: var(--text);
+        font-weight: 500;
+      }
+      .ui-check-desc {
+        display: block;
+        margin-top: 2px;
+        font-size: 12.5px;
+        color: var(--text-3);
+      }
     `,
   ],
 })
@@ -127,15 +142,49 @@ export class UiCheckboxComponent extends UiControlBase<boolean> {
   `,
   styles: [
     `
-      :host { display: block; min-width: 0; }
-      .ui-cg { display: flex; flex-wrap: wrap; gap: 10px 20px; padding-top: 4px; }
-      .ui-cg.is-vertical { flex-direction: column; gap: 10px; }
-      .ui-cg.is-grid { display: grid; grid-template-columns: repeat(var(--ui-cg-cols), minmax(0, 1fr)); }
-      .ui-cg label { margin: 0 !important; align-items: flex-start; }
-      .ui-cg-all { grid-column: 1 / -1; padding-bottom: 8px; border-bottom: 1px dashed var(--border); font-weight: 600; }
-      .ui-check-text { color: var(--text); font-weight: 500; }
-      .ui-check-desc { display: block; margin-top: 2px; font-size: 12.5px; color: var(--text-3); }
-      @media (max-width: 639px) { .ui-cg.is-grid { grid-template-columns: minmax(0, 1fr); } }
+      :host {
+        display: block;
+        min-width: 0;
+      }
+      .ui-cg {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 20px;
+        padding-top: 4px;
+      }
+      .ui-cg.is-vertical {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .ui-cg.is-grid {
+        display: grid;
+        grid-template-columns: repeat(var(--ui-cg-cols), minmax(0, 1fr));
+      }
+      .ui-cg label {
+        margin: 0 !important;
+        align-items: flex-start;
+      }
+      .ui-cg-all {
+        grid-column: 1 / -1;
+        padding-bottom: 8px;
+        border-bottom: 1px dashed var(--border);
+        font-weight: 600;
+      }
+      .ui-check-text {
+        color: var(--text);
+        font-weight: 500;
+      }
+      .ui-check-desc {
+        display: block;
+        margin-top: 2px;
+        font-size: 12.5px;
+        color: var(--text-3);
+      }
+      @media (max-width: 639px) {
+        .ui-cg.is-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
     `,
   ],
 })
@@ -146,7 +195,11 @@ export class UiCheckboxGroupComponent<T = unknown> extends UiControlBase<T[]> {
   columns = input(0, { transform: numberAttribute });
   showSelectAll = input(false, { transform: booleanAttribute });
 
-  private enabled = computed(() => this.options().filter(o => !o.disabled).map(o => o.value));
+  private enabled = computed(() =>
+    this.options()
+      .filter(o => !o.disabled)
+      .map(o => o.value),
+  );
   allChecked = computed(() => this.enabled().length > 0 && this.enabled().every(v => (this.value() ?? []).includes(v)));
   someChecked = computed(() => !this.allChecked() && (this.value() ?? []).length > 0);
 

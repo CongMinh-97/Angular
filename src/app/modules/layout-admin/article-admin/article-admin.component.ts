@@ -66,8 +66,14 @@ export class ArticleAdminComponent {
   private fb = inject(NonNullableFormBuilder);
   private dialog = inject(UiDialogService);
 
-  readonly categories: UiOption<string>[] = ['Product updates', 'Engineering', 'Company news', 'Customer stories', 'Guides'].map(c => ({ label: c, value: c }));
-  readonly tagOptions: UiOption<string>[] = ['release', 'dashboard', 'import', 'editor', 'performance', 'security'].map(t => ({ label: t, value: t }));
+  readonly categories: UiOption<string>[] = ['Product updates', 'Engineering', 'Company news', 'Customer stories', 'Guides'].map(c => ({
+    label: c,
+    value: c,
+  }));
+  readonly tagOptions: UiOption<string>[] = ['release', 'dashboard', 'import', 'editor', 'performance', 'security'].map(t => ({
+    label: t,
+    value: t,
+  }));
   readonly visibilityOptions: UiOption<string>[] = [
     { label: 'Public', value: 'public', description: 'Anyone with the link' },
     { label: 'Members only', value: 'members', description: 'Signed-in users' },

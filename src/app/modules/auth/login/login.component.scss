@@ -16,18 +16,15 @@
   gap: 40px;
   padding: 40px 56px;
   color: #c4cbe0;
-  background:
-    radial-gradient(70% 55% at 85% 15%, rgba(47, 211, 176, 0.16), transparent 70%),
-    radial-gradient(50% 45% at 10% 95%, rgba(242, 100, 58, 0.12), transparent 70%),
-    var(--ink-950);
+  background: radial-gradient(70% 55% at 85% 15%, rgba(47, 211, 176, 0.16), transparent 70%),
+    radial-gradient(50% 45% at 10% 95%, rgba(242, 100, 58, 0.12), transparent 70%), var(--ink-950);
 
   // Chart-paper grid
   &::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
     background-size: 44px 44px;
     mask-image: radial-gradient(ellipse at 60% 40%, #000 30%, transparent 80%);

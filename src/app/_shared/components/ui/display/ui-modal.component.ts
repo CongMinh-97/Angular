@@ -1,5 +1,17 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, Directive, Injectable, TemplateRef, booleanAttribute, computed, contentChild, inject, input, model, output } from '@angular/core';
+import {
+  Component,
+  Directive,
+  Injectable,
+  TemplateRef,
+  booleanAttribute,
+  computed,
+  contentChild,
+  inject,
+  input,
+  model,
+  output,
+} from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
@@ -81,12 +93,43 @@ export class UiModalFooterDirective {
   `,
   styles: [
     `
-      .ui-md-head { display: flex; align-items: center; gap: 12px; }
-      .ui-md-icon { flex: none; width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; font-size: 16px; color: var(--jade-600); background: var(--jade-50); }
-      .ui-md-icon.is-danger { color: var(--danger); background: var(--danger-bg); }
-      .ui-md-title { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.3; }
-      .ui-md-sub { margin-top: 2px; font-size: 12.5px; font-weight: 500; color: var(--text-3); }
-      .ui-md-foot { display: flex; justify-content: flex-end; gap: 8px; }
+      .ui-md-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .ui-md-icon {
+        flex: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        font-size: 16px;
+        color: var(--jade-600);
+        background: var(--jade-50);
+      }
+      .ui-md-icon.is-danger {
+        color: var(--danger);
+        background: var(--danger-bg);
+      }
+      .ui-md-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.3;
+      }
+      .ui-md-sub {
+        margin-top: 2px;
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--text-3);
+      }
+      .ui-md-foot {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+      }
     `,
   ],
 })

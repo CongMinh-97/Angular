@@ -13,9 +13,15 @@
   gap: 16px;
 }
 
-.span-4 { grid-column: span 4; }
-.span-6 { grid-column: span 6; }
-.span-8 { grid-column: span 8; }
+.span-4 {
+  grid-column: span 4;
+}
+.span-6 {
+  grid-column: span 6;
+}
+.span-8 {
+  grid-column: span 8;
+}
 
 .donut {
   position: relative;
@@ -84,7 +90,9 @@
       height: 9px;
       border-radius: 50%;
       background: var(--dot);
-      box-shadow: 0 0 0 3px var(--surface), 0 0 0 4px var(--border);
+      box-shadow:
+        0 0 0 3px var(--surface),
+        0 0 0 4px var(--border);
     }
 
     &:not(:last-child)::after {
@@ -116,11 +124,21 @@
       color: var(--text-3);
     }
 
-    &[data-tone='jade'] { --dot: var(--jade-600); }
-    &[data-tone='violet'] { --dot: var(--violet-500); }
-    &[data-tone='ink'] { --dot: var(--ink-700); }
-    &[data-tone='coral'] { --dot: var(--coral-500); }
-    &[data-tone='amber'] { --dot: var(--amber-500); }
+    &[data-tone='jade'] {
+      --dot: var(--jade-600);
+    }
+    &[data-tone='violet'] {
+      --dot: var(--violet-500);
+    }
+    &[data-tone='ink'] {
+      --dot: var(--ink-700);
+    }
+    &[data-tone='coral'] {
+      --dot: var(--coral-500);
+    }
+    &[data-tone='amber'] {
+      --dot: var(--amber-500);
+    }
   }
 }
 
@@ -129,10 +147,16 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .span-4 { grid-column: span 6; }
-  .span-8 { grid-column: span 12; }
+  .span-4 {
+    grid-column: span 6;
+  }
+  .span-8 {
+    grid-column: span 12;
+  }
   // The 3rd of a 4-4-4 row would sit alone; let it fill the row.
-  .span-4:nth-of-type(7) { grid-column: span 12; }
+  .span-4:nth-of-type(7) {
+    grid-column: span 12;
+  }
 }
 
 @include below($breakpoint-md) {

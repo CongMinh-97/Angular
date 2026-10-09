@@ -122,7 +122,10 @@ export class ImportUserAdminComponent {
 
   sampleFor(idx: number | null): string {
     if (idx == null) return '—';
-    return this.dataRows().slice(0, 3).map(r => r[idx] || '∅').join(' · ');
+    return this.dataRows()
+      .slice(0, 3)
+      .map(r => r[idx] || '∅')
+      .join(' · ');
   }
 
   runImport(): void {

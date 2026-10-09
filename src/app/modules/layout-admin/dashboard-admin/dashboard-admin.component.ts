@@ -7,7 +7,16 @@ import { AuthService } from '@services/auth.service';
 import { ChartComponent, SERIES, SERIES_LIST, alpha, areaGradient } from '@shared/components/chart/chart.component';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
 import { StatCardComponent, Tone } from '@shared/components/stat-card/stat-card.component';
-import { UiAvatarComponent, UiButtonComponent, UiCardComponent, UiDialogService, UiOption, UiRadioGroupComponent, UiTagComponent, UiTone } from '@ui';
+import {
+  UiAvatarComponent,
+  UiButtonComponent,
+  UiCardComponent,
+  UiDialogService,
+  UiOption,
+  UiRadioGroupComponent,
+  UiTagComponent,
+  UiTone,
+} from '@ui';
 
 type Range = '7D' | '30D' | '12M';
 
@@ -71,7 +80,15 @@ export class DashboardAdminComponent {
     { label: 'Revenue', value: '₫2.48 tỷ', delta: 18.2, icon: 'wallet', tone: 'jade', series: [12, 14, 13, 17, 16, 19, 21, 24] },
     { label: 'Orders', value: '3,842', delta: 6.4, icon: 'shopping-cart', tone: 'coral', series: [30, 28, 34, 33, 36, 35, 39, 41] },
     { label: 'Active users', value: '12,480', delta: 3.1, icon: 'team', tone: 'violet', series: [80, 82, 81, 85, 84, 86, 88, 89] },
-    { label: 'Avg. resolution time', value: '3h 12m', delta: -8.5, icon: 'clock-circle', tone: 'amber', series: [5, 4.6, 4.8, 4.1, 3.9, 3.6, 3.4, 3.2], hint: 'faster than August' },
+    {
+      label: 'Avg. resolution time',
+      value: '3h 12m',
+      delta: -8.5,
+      icon: 'clock-circle',
+      tone: 'amber',
+      series: [5, 4.6, 4.8, 4.1, 3.9, 3.6, 3.4, 3.2],
+      hint: 'faster than August',
+    },
   ];
 
   // 1. Area line, two series, switchable range
@@ -108,7 +125,10 @@ export class DashboardAdminComponent {
   revenueOptions = computed<ChartOptions<'line'>>(() => {
     const unit = this.range() === '12M' ? ' tỷ' : ' tr';
     return {
-      plugins: { legend: { position: 'top', align: 'end' }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ₫${c.parsed.y}${unit}` } } },
+      plugins: {
+        legend: { position: 'top', align: 'end' },
+        tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ₫${c.parsed.y}${unit}` } },
+      },
       scales: { y: { ticks: { callback: v => `₫${v}${unit}` } } },
     };
   });
@@ -116,7 +136,9 @@ export class DashboardAdminComponent {
   // 2. Doughnut
   channelData: ChartData<'doughnut'> = {
     labels: ['Online store', 'Retail', 'Marketplace', 'Wholesale'],
-    datasets: [{ data: [46, 24, 19, 11], backgroundColor: [SERIES.jade, SERIES.coral, SERIES.violet, SERIES.amber], borderWidth: 0, hoverOffset: 6 }],
+    datasets: [
+      { data: [46, 24, 19, 11], backgroundColor: [SERIES.jade, SERIES.coral, SERIES.violet, SERIES.amber], borderWidth: 0, hoverOffset: 6 },
+    ],
   };
   channelOptions: ChartOptions<'doughnut'> = { cutout: '72%', plugins: { legend: { position: 'bottom' } } };
 
@@ -135,8 +157,28 @@ export class DashboardAdminComponent {
   mixedData: ChartData = {
     labels: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
     datasets: [
-      { type: 'bar', label: 'Sign-ups', data: [820, 940, 1010, 1180, 1250, 1420], backgroundColor: alpha(SERIES.ink, 0.85), borderRadius: 6, maxBarThickness: 32, yAxisID: 'y', order: 2 },
-      { type: 'line', label: 'Conversion %', data: [2.4, 2.7, 2.6, 3.1, 3.3, 3.6], borderColor: SERIES.coral, backgroundColor: SERIES.coral, tension: 0.35, borderWidth: 2.5, pointRadius: 3, yAxisID: 'y1', order: 1 },
+      {
+        type: 'bar',
+        label: 'Sign-ups',
+        data: [820, 940, 1010, 1180, 1250, 1420],
+        backgroundColor: alpha(SERIES.ink, 0.85),
+        borderRadius: 6,
+        maxBarThickness: 32,
+        yAxisID: 'y',
+        order: 2,
+      },
+      {
+        type: 'line',
+        label: 'Conversion %',
+        data: [2.4, 2.7, 2.6, 3.1, 3.3, 3.6],
+        borderColor: SERIES.coral,
+        backgroundColor: SERIES.coral,
+        tension: 0.35,
+        borderWidth: 2.5,
+        pointRadius: 3,
+        yAxisID: 'y1',
+        order: 1,
+      },
     ],
   };
   mixedOptions: ChartOptions = {
@@ -149,8 +191,22 @@ export class DashboardAdminComponent {
   radarData: ChartData<'radar'> = {
     labels: ['Speed', 'Quality', 'Response', 'Satisfaction', 'Accuracy', 'Upsell'],
     datasets: [
-      { label: 'Support A', data: [86, 78, 92, 88, 74, 60], borderColor: SERIES.jade, backgroundColor: alpha(SERIES.jade, 0.18), pointBackgroundColor: SERIES.jade, borderWidth: 2 },
-      { label: 'Support B', data: [70, 88, 74, 80, 90, 72], borderColor: SERIES.coral, backgroundColor: alpha(SERIES.coral, 0.14), pointBackgroundColor: SERIES.coral, borderWidth: 2 },
+      {
+        label: 'Support A',
+        data: [86, 78, 92, 88, 74, 60],
+        borderColor: SERIES.jade,
+        backgroundColor: alpha(SERIES.jade, 0.18),
+        pointBackgroundColor: SERIES.jade,
+        borderWidth: 2,
+      },
+      {
+        label: 'Support B',
+        data: [70, 88, 74, 80, 90, 72],
+        borderColor: SERIES.coral,
+        backgroundColor: alpha(SERIES.coral, 0.14),
+        pointBackgroundColor: SERIES.coral,
+        borderWidth: 2,
+      },
     ],
   };
 
@@ -164,16 +220,55 @@ export class DashboardAdminComponent {
   // 7. Pie
   pieData: ChartData<'pie'> = {
     labels: ['Organic search', 'Direct', 'Social', 'Email', 'Referral'],
-    datasets: [{ data: [38, 24, 18, 12, 8], backgroundColor: [SERIES.jade, SERIES.ink, SERIES.coral, SERIES.violet, SERIES.amber], borderColor: '#fff', borderWidth: 2 }],
+    datasets: [
+      {
+        data: [38, 24, 18, 12, 8],
+        backgroundColor: [SERIES.jade, SERIES.ink, SERIES.coral, SERIES.violet, SERIES.amber],
+        borderColor: '#fff',
+        borderWidth: 2,
+      },
+    ],
   };
   pieOptions: ChartOptions<'pie'> = { plugins: { legend: { position: 'bottom' } } };
 
   // 8. Bubble
   bubbleData: ChartData<'bubble'> = {
     datasets: [
-      { label: 'Enterprise', data: [{ x: 62, y: 420, r: 16 }, { x: 74, y: 510, r: 20 }, { x: 88, y: 640, r: 24 }, { x: 55, y: 360, r: 12 }], backgroundColor: alpha(SERIES.violet, 0.55), borderColor: SERIES.violet },
-      { label: 'Mid-market', data: [{ x: 32, y: 180, r: 10 }, { x: 40, y: 240, r: 13 }, { x: 46, y: 210, r: 9 }, { x: 28, y: 150, r: 8 }, { x: 52, y: 280, r: 14 }], backgroundColor: alpha(SERIES.jade, 0.55), borderColor: SERIES.jade },
-      { label: 'SMB', data: [{ x: 12, y: 40, r: 6 }, { x: 18, y: 65, r: 8 }, { x: 9, y: 30, r: 5 }, { x: 22, y: 90, r: 7 }, { x: 15, y: 55, r: 6 }], backgroundColor: alpha(SERIES.coral, 0.55), borderColor: SERIES.coral },
+      {
+        label: 'Enterprise',
+        data: [
+          { x: 62, y: 420, r: 16 },
+          { x: 74, y: 510, r: 20 },
+          { x: 88, y: 640, r: 24 },
+          { x: 55, y: 360, r: 12 },
+        ],
+        backgroundColor: alpha(SERIES.violet, 0.55),
+        borderColor: SERIES.violet,
+      },
+      {
+        label: 'Mid-market',
+        data: [
+          { x: 32, y: 180, r: 10 },
+          { x: 40, y: 240, r: 13 },
+          { x: 46, y: 210, r: 9 },
+          { x: 28, y: 150, r: 8 },
+          { x: 52, y: 280, r: 14 },
+        ],
+        backgroundColor: alpha(SERIES.jade, 0.55),
+        borderColor: SERIES.jade,
+      },
+      {
+        label: 'SMB',
+        data: [
+          { x: 12, y: 40, r: 6 },
+          { x: 18, y: 65, r: 8 },
+          { x: 9, y: 30, r: 5 },
+          { x: 22, y: 90, r: 7 },
+          { x: 15, y: 55, r: 6 },
+        ],
+        backgroundColor: alpha(SERIES.coral, 0.55),
+        borderColor: SERIES.coral,
+      },
     ],
   };
   bubbleOptions: ChartOptions<'bubble'> = {
@@ -187,7 +282,15 @@ export class DashboardAdminComponent {
   // 9. Horizontal bar
   productData: ChartData<'bar'> = {
     labels: ['Harbor Pro plan', 'Team seats', 'Onboarding pack', 'API add-on', 'Priority support'],
-    datasets: [{ label: 'Revenue (₫ tr)', data: [842, 615, 388, 296, 174], backgroundColor: [SERIES.jade, alpha(SERIES.jade, 0.8), alpha(SERIES.jade, 0.6), alpha(SERIES.jade, 0.45), alpha(SERIES.jade, 0.3)], borderRadius: 6, barThickness: 18 }],
+    datasets: [
+      {
+        label: 'Revenue (₫ tr)',
+        data: [842, 615, 388, 296, 174],
+        backgroundColor: [SERIES.jade, alpha(SERIES.jade, 0.8), alpha(SERIES.jade, 0.6), alpha(SERIES.jade, 0.45), alpha(SERIES.jade, 0.3)],
+        borderRadius: 6,
+        barThickness: 18,
+      },
+    ],
   };
   productOptions: ChartOptions<'bar'> = {
     indexAxis: 'y',
@@ -200,7 +303,26 @@ export class DashboardAdminComponent {
     datasets: [
       {
         label: 'Accounts',
-        data: [[8, 92], [14, 88], [20, 85], [26, 81], [31, 76], [36, 74], [42, 69], [48, 63], [55, 60], [60, 52], [12, 80], [24, 90], [38, 66], [50, 70], [58, 48], [18, 72], [44, 58], [33, 84]].map(([x, y]) => ({ x, y })),
+        data: [
+          [8, 92],
+          [14, 88],
+          [20, 85],
+          [26, 81],
+          [31, 76],
+          [36, 74],
+          [42, 69],
+          [48, 63],
+          [55, 60],
+          [60, 52],
+          [12, 80],
+          [24, 90],
+          [38, 66],
+          [50, 70],
+          [58, 48],
+          [18, 72],
+          [44, 58],
+          [33, 84],
+        ].map(([x, y]) => ({ x, y })),
         backgroundColor: alpha(SERIES.sky, 0.7),
         pointRadius: 5,
         pointHoverRadius: 7,
@@ -220,9 +342,33 @@ export class DashboardAdminComponent {
   latencyData: ChartData<'line'> = {
     labels: ['00h', '03h', '06h', '09h', '12h', '15h', '18h', '21h'],
     datasets: [
-      { label: 'p50', data: [120, 110, 118, 160, 185, 172, 150, 130], borderColor: SERIES.jade, backgroundColor: SERIES.jade, tension: 0.3, pointRadius: 0, borderWidth: 2 },
-      { label: 'p95', data: [260, 240, 255, 340, 410, 380, 320, 280], borderColor: SERIES.amber, backgroundColor: SERIES.amber, tension: 0.3, pointRadius: 0, borderWidth: 2 },
-      { label: 'p99', data: [410, 380, 400, 560, 690, 640, 520, 450], borderColor: SERIES.coral, backgroundColor: SERIES.coral, tension: 0.3, pointRadius: 0, borderWidth: 2 },
+      {
+        label: 'p50',
+        data: [120, 110, 118, 160, 185, 172, 150, 130],
+        borderColor: SERIES.jade,
+        backgroundColor: SERIES.jade,
+        tension: 0.3,
+        pointRadius: 0,
+        borderWidth: 2,
+      },
+      {
+        label: 'p95',
+        data: [260, 240, 255, 340, 410, 380, 320, 280],
+        borderColor: SERIES.amber,
+        backgroundColor: SERIES.amber,
+        tension: 0.3,
+        pointRadius: 0,
+        borderWidth: 2,
+      },
+      {
+        label: 'p99',
+        data: [410, 380, 400, 560, 690, 640, 520, 450],
+        borderColor: SERIES.coral,
+        backgroundColor: SERIES.coral,
+        tension: 0.3,
+        pointRadius: 0,
+        borderWidth: 2,
+      },
     ],
   };
   latencyOptions: ChartOptions<'line'> = { scales: { y: { ticks: { callback: v => `${v} ms` } } } };

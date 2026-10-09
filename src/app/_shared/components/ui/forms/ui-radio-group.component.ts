@@ -102,33 +102,124 @@ export type UiRadioVariant = 'default' | 'button' | 'card';
   `,
   styles: [
     `
-      :host { display: block; min-width: 0; }
-      .ui-rg { display: flex; flex-wrap: wrap; gap: 10px 20px; padding-top: 4px; }
-      .ui-rg.is-vertical { flex-direction: column; gap: 10px; }
-      .ui-rg label[nz-radio] { margin: 0; align-items: flex-start; }
-      .ui-rg:has(label[nz-radio-button]) { gap: 0; padding-top: 0; flex-wrap: nowrap; }
-      .ui-r-label { font-weight: 500; color: var(--text); }
-      .ui-r-desc { display: block; font-size: 12.5px; color: var(--text-3); margin-top: 2px; }
-
-      .ui-rc { display: grid; grid-template-columns: repeat(var(--ui-rc-cols), minmax(0, 1fr)); gap: 10px; }
-      .ui-rc-item {
-        position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
-        padding: 14px 14px 14px 16px; text-align: left; font: inherit; cursor: pointer;
-        border: 1.5px solid var(--border-strong); border-radius: var(--radius); background: var(--surface);
-        transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+      :host {
+        display: block;
+        min-width: 0;
       }
-      .ui-rc-item:hover:not(:disabled) { border-color: var(--jade-500); }
-      .ui-rc-item:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ant-primary-color-outline); }
-      .ui-rc-item.is-on { border-color: var(--jade-600); background: var(--jade-50); box-shadow: 0 0 0 1px var(--jade-600) inset; }
-      .ui-rc-item.is-invalid:not(.is-on) { border-color: var(--danger); }
-      .ui-rc-item:disabled { cursor: not-allowed; opacity: 0.55; }
-      .ui-rc-dot { position: absolute; top: 14px; right: 14px; width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--border-strong); background: var(--surface); }
-      .ui-rc-item.is-on .ui-rc-dot { border: 5px solid var(--jade-600); }
-      .ui-rc-icon { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; margin-bottom: 4px; font-size: 16px; color: var(--jade-600); background: var(--jade-50); }
-      .ui-rc-item.is-on .ui-rc-icon { background: var(--surface); }
-      .ui-rc-label { font-weight: 700; color: var(--text); padding-right: 22px; }
-      .ui-rc-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.45; }
-      @media (max-width: 639px) { .ui-rc { grid-template-columns: minmax(0, 1fr); } }
+      .ui-rg {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 20px;
+        padding-top: 4px;
+      }
+      .ui-rg.is-vertical {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .ui-rg label[nz-radio] {
+        margin: 0;
+        align-items: flex-start;
+      }
+      .ui-rg:has(label[nz-radio-button]) {
+        gap: 0;
+        padding-top: 0;
+        flex-wrap: nowrap;
+      }
+      .ui-r-label {
+        font-weight: 500;
+        color: var(--text);
+      }
+      .ui-r-desc {
+        display: block;
+        font-size: 12.5px;
+        color: var(--text-3);
+        margin-top: 2px;
+      }
+
+      .ui-rc {
+        display: grid;
+        grid-template-columns: repeat(var(--ui-rc-cols), minmax(0, 1fr));
+        gap: 10px;
+      }
+      .ui-rc-item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 14px 14px 14px 16px;
+        text-align: left;
+        font: inherit;
+        cursor: pointer;
+        border: 1.5px solid var(--border-strong);
+        border-radius: var(--radius);
+        background: var(--surface);
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s,
+          background 0.15s;
+      }
+      .ui-rc-item:hover:not(:disabled) {
+        border-color: var(--jade-500);
+      }
+      .ui-rc-item:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px var(--ant-primary-color-outline);
+      }
+      .ui-rc-item.is-on {
+        border-color: var(--jade-600);
+        background: var(--jade-50);
+        box-shadow: 0 0 0 1px var(--jade-600) inset;
+      }
+      .ui-rc-item.is-invalid:not(.is-on) {
+        border-color: var(--danger);
+      }
+      .ui-rc-item:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+      }
+      .ui-rc-dot {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 1.5px solid var(--border-strong);
+        background: var(--surface);
+      }
+      .ui-rc-item.is-on .ui-rc-dot {
+        border: 5px solid var(--jade-600);
+      }
+      .ui-rc-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 4px;
+        font-size: 16px;
+        color: var(--jade-600);
+        background: var(--jade-50);
+      }
+      .ui-rc-item.is-on .ui-rc-icon {
+        background: var(--surface);
+      }
+      .ui-rc-label {
+        font-weight: 700;
+        color: var(--text);
+        padding-right: 22px;
+      }
+      .ui-rc-desc {
+        font-size: 12.5px;
+        color: var(--text-2);
+        line-height: 1.45;
+      }
+      @media (max-width: 639px) {
+        .ui-rc {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
     `,
   ],
 })
@@ -155,7 +246,10 @@ export class UiRadioGroupComponent<T = unknown> extends UiControlBase<T> {
     if (!keys.includes(e.key)) return;
     e.preventDefault();
     const opts = this.options().filter(o => !o.disabled);
-    const i = Math.max(0, opts.findIndex(o => o.value === this.value()));
+    const i = Math.max(
+      0,
+      opts.findIndex(o => o.value === this.value()),
+    );
     const step = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : -1;
     const next = opts[(i + step + opts.length) % opts.length];
     this.select(next.value);

@@ -16,9 +16,23 @@ import { ApiRow, DOC } from '../doc.components';
 @Component({
   selector: 'section-choices',
   standalone: true,
-  imports: [...DOC, JsonPipe, UiCheckboxComponent, UiCheckboxGroupComponent, UiRadioGroupComponent, UiSwitchComponent, UiSliderComponent, UiUploadComponent],
+  imports: [
+    ...DOC,
+    JsonPipe,
+    UiCheckboxComponent,
+    UiCheckboxGroupComponent,
+    UiRadioGroupComponent,
+    UiSwitchComponent,
+    UiSliderComponent,
+    UiUploadComponent,
+  ],
   template: `
-    <doc-section anchor="checkbox" heading="Checkbox" selector="<ui-checkbox> · <ui-checkbox-group>" intro="A single yes/no (value: boolean) or several picks from a short list (value: array).">
+    <doc-section
+      anchor="checkbox"
+      heading="Checkbox"
+      selector="<ui-checkbox> · <ui-checkbox-group>"
+      intro="A single yes/no (value: boolean) or several picks from a short list (value: array)."
+    >
       <doc-example heading="Single checkbox" [code]="code.single" grid>
         <ui-checkbox [(value)]="agree" text="I agree to the terms of service" />
         <ui-checkbox text="Email me product news" description="About once a month. Unsubscribe any time." [value]="true" />
@@ -27,28 +41,50 @@ import { ApiRow, DOC } from '../doc.components';
         <ui-checkbox text="Required to continue" error="You need to accept the terms" />
       </doc-example>
 
-      <doc-example heading="Checkbox group" description="Order of the value follows the options, not the click order." [code]="code.group" stack>
+      <doc-example
+        heading="Checkbox group"
+        description="Order of the value follows the options, not the click order."
+        [code]="code.group"
+        stack
+      >
         <ui-checkbox-group label="Notify me by" [options]="channels" [(value)]="picked" />
         <ui-checkbox-group label="Permissions" [options]="perms" [columns]="3" showSelectAll />
         <ui-checkbox-group label="Vertical with descriptions" [options]="channelsDetailed" direction="vertical" />
       </doc-example>
-      <div class="out">agree = <code>{{ agree() }}</code> · picked = <code>{{ picked() | json }}</code></div>
+      <div class="out">
+        agree = <code>{{ agree() }}</code> · picked = <code>{{ picked() | json }}</code>
+      </div>
       <doc-api heading="ui-checkbox / ui-checkbox-group" [rows]="checkApi" />
     </doc-section>
 
-    <doc-section anchor="radio" heading="Radio group" selector="<ui-radio-group>" intro="Exactly one choice. Three looks: classic radios, segmented buttons for 2–4 short options, and cards when each option needs explaining.">
+    <doc-section
+      anchor="radio"
+      heading="Radio group"
+      selector="<ui-radio-group>"
+      intro="Exactly one choice. Three looks: classic radios, segmented buttons for 2–4 short options, and cards when each option needs explaining."
+    >
       <doc-example heading="Default and button" [code]="code.radio" stack>
         <ui-radio-group label="Billing cycle" [options]="cycles" [(value)]="cycle" />
         <ui-radio-group label="View" variant="button" [options]="views" [(value)]="view" />
         <ui-radio-group label="Small buttons" variant="button" size="sm" [options]="views" value="week" />
       </doc-example>
-      <doc-example heading="Cards" description="Arrow keys move between cards; only the selected card is in the tab order." [code]="code.cards" stack>
+      <doc-example
+        heading="Cards"
+        description="Arrow keys move between cards; only the selected card is in the tab order."
+        [code]="code.cards"
+        stack
+      >
         <ui-radio-group label="Plan" variant="card" [options]="plans" [(value)]="plan" />
       </doc-example>
       <doc-api heading="ui-radio-group" [rows]="radioApi" />
     </doc-section>
 
-    <doc-section anchor="switch" heading="Switch" selector="<ui-switch>" intro="For settings that turn something on or off. Use a checkbox instead when the choice only applies after pressing Save in a long form.">
+    <doc-section
+      anchor="switch"
+      heading="Switch"
+      selector="<ui-switch>"
+      intro="For settings that turn something on or off. Use a checkbox instead when the choice only applies after pressing Save in a long form."
+    >
       <doc-example heading="Variants" [code]="code.switch" grid>
         <ui-switch [(value)]="alerts" text="Email alerts" description="Daily summary at 08:00" />
         <ui-switch text="Small" size="sm" [value]="true" />
@@ -56,16 +92,31 @@ import { ApiRow, DOC } from '../doc.components';
         <ui-switch text="Saving…" [value]="true" loading />
         <ui-switch text="Disabled" disabled />
       </doc-example>
-      <doc-example heading="Settings list" description="placement=&quot;end&quot; puts the switch on the right, the usual pattern for preference pages." [code]="code.settings" stack>
+      <doc-example
+        heading="Settings list"
+        description='placement="end" puts the switch on the right, the usual pattern for preference pages.'
+        [code]="code.settings"
+        stack
+      >
         <div class="settings">
-          <ui-switch placement="end" text="Two-factor authentication" description="Ask for a code from your phone at sign-in" [value]="true" />
+          <ui-switch
+            placement="end"
+            text="Two-factor authentication"
+            description="Ask for a code from your phone at sign-in"
+            [value]="true"
+          />
           <ui-switch placement="end" text="Weekly report" description="Sent every Monday to all admins" />
           <ui-switch placement="end" text="Public profile" description="Anyone with the link can see your name and role" />
         </div>
       </doc-example>
     </doc-section>
 
-    <doc-section anchor="slider" heading="Slider" selector="<ui-slider>" intro="Choose a number, or a range with two handles, when the exact value matters less than the rough position.">
+    <doc-section
+      anchor="slider"
+      heading="Slider"
+      selector="<ui-slider>"
+      intro="Choose a number, or a range with two handles, when the exact value matters less than the rough position."
+    >
       <doc-example heading="Single, range and marks" [code]="code.slider" grid>
         <ui-slider label="Seats" [min]="1" [max]="200" [(value)]="seats" />
         <ui-slider label="Budget" range [min]="0" [max]="500" unit=" tr" [(value)]="budget" />
@@ -73,7 +124,12 @@ import { ApiRow, DOC } from '../doc.components';
       </doc-example>
     </doc-section>
 
-    <doc-section anchor="upload" heading="Upload" selector="<ui-upload>" intro="Choose files without sending them; the control value is the list of picked files (UiUploadFile[]). Size, type and count are checked before a file is accepted.">
+    <doc-section
+      anchor="upload"
+      heading="Upload"
+      selector="<ui-upload>"
+      intro="Choose files without sending them; the control value is the list of picked files (UiUploadFile[]). Size, type and count are checked before a file is accepted."
+    >
       <doc-example heading="Drop zone" [code]="code.drop" stack>
         <ui-upload label="Attachments" accept=".pdf,.docx,.xlsx,image/*" [maxFiles]="5" [maxSizeMb]="10" [(value)]="files" />
       </doc-example>
@@ -81,17 +137,34 @@ import { ApiRow, DOC } from '../doc.components';
         <ui-upload label="Contract" variant="button" accept=".pdf" [maxFiles]="1" buttonText="Choose PDF" />
         <ui-upload label="Product photos" variant="image" accept="image/*" [maxFiles]="4" [maxSizeMb]="5" />
       </doc-example>
-      <div class="out">files = <code>{{ fileSummary() | json }}</code></div>
+      <div class="out">
+        files = <code>{{ fileSummary() | json }}</code>
+      </div>
       <doc-api heading="ui-upload" [rows]="uploadApi" />
     </doc-section>
   `,
   styles: [
     `
-      .out { font-size: 12.5px; color: var(--text-3); }
-      code { font-family: 'JetBrains Mono', monospace; color: var(--text); }
-      .settings { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: var(--radius); }
-      .settings ui-switch { padding: 14px 16px; }
-      .settings ui-switch + ui-switch { border-top: 1px solid var(--border); }
+      .out {
+        font-size: 12.5px;
+        color: var(--text-3);
+      }
+      code {
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--text);
+      }
+      .settings {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+      }
+      .settings ui-switch {
+        padding: 14px 16px;
+      }
+      .settings ui-switch + ui-switch {
+        border-top: 1px solid var(--border);
+      }
     `,
   ],
 })
@@ -121,10 +194,12 @@ export class ChoicesSectionComponent {
     { label: 'Assignments', value: 'assign', description: 'A task or ticket is assigned to you' },
     { label: 'Billing', value: 'billing', description: 'Invoices and payment problems', disabled: true },
   ];
-  readonly perms: UiOption<string>[] = ['View users', 'Invite users', 'Edit users', 'Delete users', 'Export data', 'Manage billing'].map(p => ({
-    label: p,
-    value: p,
-  }));
+  readonly perms: UiOption<string>[] = ['View users', 'Invite users', 'Edit users', 'Delete users', 'Export data', 'Manage billing'].map(
+    p => ({
+      label: p,
+      value: p,
+    }),
+  );
   readonly cycles: UiOption<string>[] = [
     { label: 'Monthly', value: 'monthly' },
     { label: 'Yearly (save 20%)', value: 'yearly' },

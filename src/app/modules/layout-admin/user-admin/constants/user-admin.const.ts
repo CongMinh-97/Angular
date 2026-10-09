@@ -7,7 +7,16 @@ export const STATUS_TONE: Record<string, UiTone> = { active: 'success', invited:
 export const ROLE_TONE: Record<string, UiTone> = { Admin: 'neutral', Manager: 'violet', Editor: 'jade', Viewer: 'neutral' };
 
 export const USER_FIELDS: FieldConfig[] = [
-  { key: 'name', label: 'Full name', type: 'text', placeholder: 'Nguyễn Văn An', icon: 'user', required: true, minLength: 2, maxLength: 60 },
+  {
+    key: 'name',
+    label: 'Full name',
+    type: 'text',
+    placeholder: 'Nguyễn Văn An',
+    icon: 'user',
+    required: true,
+    minLength: 2,
+    maxLength: 60,
+  },
   { key: 'email', label: 'Work email', type: 'email', placeholder: 'an.nguyen@company.vn', icon: 'mail', required: true, span: 12 },
   {
     key: 'phone',
@@ -32,7 +41,14 @@ export const USER_FIELDS: FieldConfig[] = [
       { label: 'Viewer', value: 'Viewer', icon: 'eye', description: 'Read-only access' },
     ],
   },
-  { key: 'department', label: 'Department', type: 'select', required: true, span: 12, options: DEPARTMENTS.map(d => ({ label: d, value: d })) },
+  {
+    key: 'department',
+    label: 'Department',
+    type: 'select',
+    required: true,
+    span: 12,
+    options: DEPARTMENTS.map(d => ({ label: d, value: d })),
+  },
   {
     key: 'status',
     label: 'Account status',

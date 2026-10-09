@@ -9,13 +9,7 @@ import { DEPARTMENTS, ListQuery, USER_ROLES, UserRecord } from '@models/layout-a
 import { UserService } from '@services/layout-admin/user.service';
 import { CellDefDirective, DataTableComponent, TableColumn } from '@shared/components/data-table/data-table.component';
 import { PageHeaderComponent } from '@shared/components/page-header/page-header.component';
-import {
-  UiAvatarComponent,
-  UiButtonComponent,
-  UiDialogService,
-  UiMultiSelectComponent,
-  UiTagComponent,
-} from '@ui';
+import { UiAvatarComponent, UiButtonComponent, UiDialogService, UiMultiSelectComponent, UiTagComponent } from '@ui';
 import { ROLE_TONE, STATUS_LABEL, STATUS_TONE } from './constants/user-admin.const';
 import { UserFormModalComponent } from './modals/user-form-modal/user-form-modal.component';
 

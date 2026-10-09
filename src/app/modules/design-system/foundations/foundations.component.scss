@@ -72,7 +72,9 @@
   place-items: center;
   font-size: 18px;
   color: var(--text);
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
 
   &.on-dark {
     color: #fff;

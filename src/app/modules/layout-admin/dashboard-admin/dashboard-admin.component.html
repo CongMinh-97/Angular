@@ -1,25 +1,44 @@
-<app-page-header [eyebrow]="(today | date: 'EEEE, d MMMM y') ?? ''" [title]="greeting()" subtitle="Here is how the business is tracking. Figures update every 15 minutes.">
+<app-page-header
+  [eyebrow]="(today | date: 'EEEE, d MMMM y') ?? ''"
+  [title]="greeting()"
+  subtitle="Here is how the business is tracking. Figures update every 15 minutes."
+>
   <button ui-button icon="download" (click)="export()">Export report</button>
   <a ui-button variant="primary" icon="user-add" routerLink="/users">Invite people</a>
 </app-page-header>
 
 <section class="kpis">
   @for (k of kpis; track k.label) {
-    <app-stat-card [label]="k.label" [value]="k.value" [delta]="k.delta" [icon]="k.icon" [tone]="k.tone" [series]="k.series" [hint]="k.hint ?? 'vs last month'" />
+    <app-stat-card
+      [label]="k.label"
+      [value]="k.value"
+      [delta]="k.delta"
+      [icon]="k.icon"
+      [tone]="k.tone"
+      [series]="k.series"
+      [hint]="k.hint ?? 'vs last month'"
+    />
   }
 </section>
 
 <section class="grid">
   <!-- Area line -->
   <ui-card class="span-8" heading="Revenue" subtitle="Area line · current vs previous period">
-    <ui-radio-group uiCardActions variant="button" size="sm" [options]="rangeOptions" [value]="range()" (valueChange)="range.set($any($event))" />
+    <ui-radio-group
+      uiCardActions
+      variant="button"
+      size="sm"
+      [options]="rangeOptions"
+      [value]="range()"
+      (valueChange)="range.set($any($event))"
+    />
     <app-chart type="line" [data]="revenueData()" [options]="revenueOptions()" [height]="300" label="Revenue trend" />
   </ui-card>
 
   <!-- Doughnut -->
   <ui-card class="span-4" heading="Revenue by channel" subtitle="Doughnut · share of total, %">
     <div class="donut">
-    <app-chart type="doughnut" [data]="channelData" [options]="channelOptions" [height]="300" label="Revenue by channel" />
+      <app-chart type="doughnut" [data]="channelData" [options]="channelOptions" [height]="300" label="Revenue by channel" />
       <div class="donut-center">
         <strong class="num">46%</strong>
         <span>Online store</span>
@@ -77,43 +96,47 @@
   <ui-card class="span-8" padding="none" heading="Recent orders" subtitle="Latest 5 across all channels">
     <a uiCardActions ui-button variant="ghost" size="sm" iconRight="arrow-right" routerLink="/users">View all</a>
     <nz-table #ordersTable [nzData]="orders" [nzShowPagination]="false" [nzScroll]="{ x: '720px' }" nzSize="middle">
-        <thead>
+      <thead>
+        <tr>
+          <th nzWidth="110px">Order</th>
+          <th>Customer</th>
+          <th nzWidth="130px">Date</th>
+          <th nzWidth="130px" nzAlign="right">Amount</th>
+          <th nzWidth="120px">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (o of ordersTable.data; track o.id) {
           <tr>
-            <th nzWidth="110px">Order</th>
-            <th>Customer</th>
-            <th nzWidth="130px">Date</th>
-            <th nzWidth="130px" nzAlign="right">Amount</th>
-            <th nzWidth="120px">Status</th>
+            <td class="mono order-id">{{ o.id }}</td>
+            <td>
+              <div class="who">
+                <ui-avatar [name]="o.customer" size="sm" />
+                {{ o.customer }}
+              </div>
+            </td>
+            <td class="muted">{{ o.date | date: 'd MMM, HH:mm' }}</td>
+            <td nzAlign="right" class="num strong">{{ o.amount | currency: 'VND' : 'symbol-narrow' : '1.0-0' }}</td>
+            <td>
+              <ui-tag [tone]="statusTone[o.status]" dot>{{ o.status }}</ui-tag>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          @for (o of ordersTable.data; track o.id) {
-            <tr>
-              <td class="mono order-id">{{ o.id }}</td>
-              <td>
-                <div class="who">
-                  <ui-avatar [name]="o.customer" size="sm" />
-                  {{ o.customer }}
-                </div>
-              </td>
-              <td class="muted">{{ o.date | date: 'd MMM, HH:mm' }}</td>
-              <td nzAlign="right" class="num strong">{{ o.amount | currency: 'VND' : 'symbol-narrow' : '1.0-0' }}</td>
-              <td><ui-tag [tone]="statusTone[o.status]" dot>{{ o.status }}</ui-tag></td>
-            </tr>
-          }
-        </tbody>
-      </nz-table>
+        }
+      </tbody>
+    </nz-table>
   </ui-card>
 
   <!-- Activity -->
   <ui-card class="span-4" heading="Activity" subtitle="What your team did recently">
     <ol class="timeline">
-        @for (a of activity; track a.what) {
-          <li [attr.data-tone]="a.tone">
-            <p><strong>{{ a.who }}</strong> {{ a.what }}</p>
-            <span>{{ a.when }}</span>
-          </li>
-        }
-      </ol>
+      @for (a of activity; track a.what) {
+        <li [attr.data-tone]="a.tone">
+          <p>
+            <strong>{{ a.who }}</strong> {{ a.what }}
+          </p>
+          <span>{{ a.when }}</span>
+        </li>
+      }
+    </ol>
   </ui-card>
 </section>

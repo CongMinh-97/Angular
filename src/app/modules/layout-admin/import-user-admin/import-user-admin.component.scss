@@ -194,13 +194,17 @@
   &.is-ok {
     background: var(--success-bg);
 
-    > [nz-icon] { color: var(--success); }
+    > [nz-icon] {
+      color: var(--success);
+    }
   }
 
   &.is-bad {
     background: var(--danger-bg);
 
-    > [nz-icon] { color: var(--danger); }
+    > [nz-icon] {
+      color: var(--danger);
+    }
   }
 }
 

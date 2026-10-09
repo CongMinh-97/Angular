@@ -32,7 +32,9 @@
 
   @if (selected().size) {
     <div class="bulkbar">
-      <span><strong class="num">{{ selected().size }}</strong> selected</span>
+      <span
+        ><strong class="num">{{ selected().size }}</strong> selected</span
+      >
       <button ui-button variant="link" size="sm" (click)="clearSelection()">Clear</button>
       <div class="bulk-actions"><ng-content select="[bulk]" /></div>
     </div>
@@ -58,7 +60,14 @@
     <thead>
       <tr>
         @if (selectable()) {
-          <th nzWidth="48px" [nzLeft]="pinLeft()" [nzChecked]="allChecked()" [nzIndeterminate]="someChecked()" (nzCheckedChange)="toggleAll($event)" aria-label="Select page"></th>
+          <th
+            nzWidth="48px"
+            [nzLeft]="pinLeft()"
+            [nzChecked]="allChecked()"
+            [nzIndeterminate]="someChecked()"
+            (nzCheckedChange)="toggleAll($event)"
+            aria-label="Select page"
+          ></th>
         }
         @for (col of visibleColumns(); track col.key) {
           @if (col.filters) {
@@ -94,7 +103,12 @@
       @for (row of table.data; track row.id; let i = $index) {
         <tr [class.is-selected]="selected().has(row.id)">
           @if (selectable()) {
-            <td [nzLeft]="pinLeft()" [nzChecked]="selected().has(row.id)" (nzCheckedChange)="toggleRow(row.id, $event)" [attr.aria-label]="'Select row ' + (i + 1)"></td>
+            <td
+              [nzLeft]="pinLeft()"
+              [nzChecked]="selected().has(row.id)"
+              (nzCheckedChange)="toggleRow(row.id, $event)"
+              [attr.aria-label]="'Select row ' + (i + 1)"
+            ></td>
           }
           @for (col of visibleColumns(); track col.key) {
             <td [nzAlign]="col.align ?? null" [nzLeft]="pinLeft(col)" [nzRight]="col.fixed === 'right'">

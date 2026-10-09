@@ -22,14 +22,48 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   `,
   styles: [
     `
-      :host { display: block; scroll-margin-top: calc(var(--topbar-h) + 16px); padding-bottom: 40px; margin-bottom: 40px; border-bottom: 1px solid var(--border); }
-      :host:last-child { border-bottom: 0; }
-      .ds-head { margin-bottom: 18px; }
-      .ds-title-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-      h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.015em; }
-      .ds-selector { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 3px 8px; border-radius: 6px; color: var(--jade-700); background: var(--jade-50); }
-      p { margin: 6px 0 0; max-width: 72ch; color: var(--text-2); }
-      .ds-body { display: flex; flex-direction: column; gap: 16px; }
+      :host {
+        display: block;
+        scroll-margin-top: calc(var(--topbar-h) + 16px);
+        padding-bottom: 40px;
+        margin-bottom: 40px;
+        border-bottom: 1px solid var(--border);
+      }
+      :host:last-child {
+        border-bottom: 0;
+      }
+      .ds-head {
+        margin-bottom: 18px;
+      }
+      .ds-title-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      h2 {
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: -0.015em;
+      }
+      .ds-selector {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        padding: 3px 8px;
+        border-radius: 6px;
+        color: var(--jade-700);
+        background: var(--jade-50);
+      }
+      p {
+        margin: 6px 0 0;
+        max-width: 72ch;
+        color: var(--text-2);
+      }
+      .ds-body {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
     `,
   ],
 })
@@ -80,21 +114,115 @@ export class DocSectionComponent {
   `,
   styles: [
     `
-      :host { display: block; min-width: 0; }
-      .dx { border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); overflow: hidden; }
-      .dx-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-      h3 { font-size: 14px; font-weight: 700; }
-      .dx-head p { margin: 2px 0 0; font-size: 12.5px; color: var(--text-3); max-width: 70ch; }
-      .dx-tabs { display: inline-flex; padding: 3px; border-radius: 9px; background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--border); }
-      .dx-tabs button { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border: 0; border-radius: 7px; background: none; font: inherit; font-size: 12.5px; font-weight: 600; color: var(--text-2); cursor: pointer; }
-      .dx-tabs button.on { background: var(--surface); color: var(--text); box-shadow: var(--shadow-xs); }
-      .dx-preview { padding: 20px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-      .dx-preview.is-stack { flex-direction: column; align-items: stretch; gap: 20px; }
-      .dx-preview.is-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); align-items: start; gap: 16px 20px; }
-      .dx-code { position: relative; background: var(--ink-950); }
-      pre { margin: 0; padding: 18px 16px; overflow-x: auto; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12.5px; line-height: 1.65; color: #d5dbeb; }
-      .dx-copy { position: absolute; top: 10px; right: 10px; display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border: 0; border-radius: 7px; font: inherit; font-size: 12px; font-weight: 600; color: #c4cbe0; background: rgba(255, 255, 255, 0.08); cursor: pointer; }
-      .dx-copy:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
+      :host {
+        display: block;
+        min-width: 0;
+      }
+      .dx {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        background: var(--surface);
+        overflow: hidden;
+      }
+      .dx-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border);
+        flex-wrap: wrap;
+      }
+      h3 {
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .dx-head p {
+        margin: 2px 0 0;
+        font-size: 12.5px;
+        color: var(--text-3);
+        max-width: 70ch;
+      }
+      .dx-tabs {
+        display: inline-flex;
+        padding: 3px;
+        border-radius: 9px;
+        background: var(--surface-2);
+        box-shadow: inset 0 0 0 1px var(--border);
+      }
+      .dx-tabs button {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        height: 28px;
+        padding: 0 10px;
+        border: 0;
+        border-radius: 7px;
+        background: none;
+        font: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--text-2);
+        cursor: pointer;
+      }
+      .dx-tabs button.on {
+        background: var(--surface);
+        color: var(--text);
+        box-shadow: var(--shadow-xs);
+      }
+      .dx-preview {
+        padding: 20px 16px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+      }
+      .dx-preview.is-stack {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+      }
+      .dx-preview.is-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
+        align-items: start;
+        gap: 16px 20px;
+      }
+      .dx-code {
+        position: relative;
+        background: var(--ink-950);
+      }
+      pre {
+        margin: 0;
+        padding: 18px 16px;
+        overflow-x: auto;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 12.5px;
+        line-height: 1.65;
+        color: #d5dbeb;
+      }
+      .dx-copy {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        height: 28px;
+        padding: 0 10px;
+        border: 0;
+        border-radius: 7px;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        color: #c4cbe0;
+        background: rgba(255, 255, 255, 0.08);
+        cursor: pointer;
+      }
+      .dx-copy:hover {
+        background: rgba(255, 255, 255, 0.14);
+        color: #fff;
+      }
     `,
   ],
 })
@@ -148,9 +276,15 @@ export interface ApiRow {
           <tbody>
             @for (r of rows(); track r.name) {
               <tr>
-                <td><code>{{ r.name }}</code></td>
-                <td><code class="t">{{ r.type }}</code></td>
-                <td><code class="d">{{ r.default ?? '—' }}</code></td>
+                <td>
+                  <code>{{ r.name }}</code>
+                </td>
+                <td>
+                  <code class="t">{{ r.type }}</code>
+                </td>
+                <td>
+                  <code class="d">{{ r.default ?? '—' }}</code>
+                </td>
                 <td>{{ r.description }}</td>
               </tr>
             }
@@ -161,18 +295,66 @@ export interface ApiRow {
   `,
   styles: [
     `
-      :host { display: block; min-width: 0; }
-      .da { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); }
-      .da-title { padding: 10px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); background: var(--surface-2); border-bottom: 1px solid var(--border); }
-      .da-scroll { overflow-x: auto; }
-      table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 13px; }
-      th { text-align: left; padding: 8px 14px; font-size: 11.5px; font-weight: 700; color: var(--text-3); border-bottom: 1px solid var(--border); }
-      td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-2); }
-      tr:last-child td { border-bottom: 0; }
-      td:first-child { white-space: nowrap; }
-      code { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text); }
-      code.t { color: #5a42d6; }
-      code.d { color: var(--text-3); }
+      :host {
+        display: block;
+        min-width: 0;
+      }
+      .da {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        background: var(--surface);
+      }
+      .da-title {
+        padding: 10px 14px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-3);
+        background: var(--surface-2);
+        border-bottom: 1px solid var(--border);
+      }
+      .da-scroll {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        min-width: 640px;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      th {
+        text-align: left;
+        padding: 8px 14px;
+        font-size: 11.5px;
+        font-weight: 700;
+        color: var(--text-3);
+        border-bottom: 1px solid var(--border);
+      }
+      td {
+        padding: 9px 14px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+        color: var(--text-2);
+      }
+      tr:last-child td {
+        border-bottom: 0;
+      }
+      td:first-child {
+        white-space: nowrap;
+      }
+      code {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        color: var(--text);
+      }
+      code.t {
+        color: #5a42d6;
+      }
+      code.d {
+        color: var(--text-3);
+      }
     `,
   ],
 })
@@ -184,20 +366,34 @@ export class DocApiComponent {
 export const DOC = [DocSectionComponent, DocExampleComponent, DocApiComponent] as const;
 
 export const COMMON_CONTROL_API: ApiRow[] = [
-  { name: 'formControlName / formControl / ngModel', type: 'directive', description: 'Bind to a form. Validators drive the required mark and the error message automatically.' },
+  {
+    name: 'formControlName / formControl / ngModel',
+    type: 'directive',
+    description: 'Bind to a form. Validators drive the required mark and the error message automatically.',
+  },
   { name: '[(value)]', type: 'T | null', default: 'null', description: 'Two-way binding for use without a form.' },
   { name: 'label', type: 'string', default: "''", description: 'Field label. Clicking it focuses the control.' },
   { name: 'hint', type: 'string', default: "''", description: 'Helper text under the control; replaced by the error when invalid.' },
   { name: 'tooltip', type: 'string', default: "''", description: 'Adds a ? icon after the label with this tooltip.' },
   { name: 'placeholder', type: 'string', default: "''", description: 'Placeholder text.' },
   { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Height 30 / 38 / 46 px.' },
-  { name: 'layout', type: "'vertical' | 'horizontal'", default: "'vertical'", description: 'Label above, or in a left column (stacks again on phones).' },
+  {
+    name: 'layout',
+    type: "'vertical' | 'horizontal'",
+    default: "'vertical'",
+    description: 'Label above, or in a left column (stacks again on phones).',
+  },
   { name: 'labelWidth', type: 'string', default: "'160px'", description: 'Label column width for the horizontal layout.' },
   { name: 'required', type: 'boolean', default: 'false', description: 'Force the required mark (auto-detected from Validators.required).' },
   { name: 'disabled', type: 'boolean', default: 'false', description: 'Disable the control. In forms prefer control.disable().' },
   { name: 'readonly', type: 'boolean', default: 'false', description: 'Value visible and selectable but not editable.' },
   { name: 'error', type: 'string | null', default: 'null', description: 'Show an error without a form (async checks, standalone use).' },
-  { name: 'errorMessages', type: 'Record<string, string | fn>', default: '{}', description: 'Override messages per validator key for this field.' },
+  {
+    name: 'errorMessages',
+    type: 'Record<string, string | fn>',
+    default: '{}',
+    description: 'Override messages per validator key for this field.',
+  },
   { name: 'inputId', type: 'string', default: 'auto', description: 'id of the inner input (for the label and tests).' },
   { name: '(blurred)', type: 'void', description: 'Emits when the control loses focus.' },
   { name: 'uiLabelExtra', type: 'content slot', description: 'Element with this attribute is shown on the right of the label row.' },

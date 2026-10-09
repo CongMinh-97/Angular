@@ -79,7 +79,12 @@ export type UiInputType = 'text' | 'email' | 'password' | 'tel' | 'url' | 'searc
         <span class="ui-count num">{{ length() }}/{{ maxChars() }}</span>
       }
       @if (type() === 'password') {
-        <button type="button" class="ui-affix-btn" (click)="reveal.set(!reveal())" [attr.aria-label]="reveal() ? 'Hide password' : 'Show password'">
+        <button
+          type="button"
+          class="ui-affix-btn"
+          (click)="reveal.set(!reveal())"
+          [attr.aria-label]="reveal() ? 'Hide password' : 'Show password'"
+        >
           <span nz-icon [nzType]="reveal() ? 'eye-invisible' : 'eye'"></span>
         </button>
       }
@@ -124,7 +129,8 @@ export class UiInputComponent extends UiControlBase<string> implements OnDestroy
   showClear = computed(() => this.clearable() && !!this.value() && !this.isDisabled() && !this.readonly());
   hasPrefix = computed(() => !!(this.prefixIcon() || this.prefix()));
   hasSuffix = computed(
-    () => this.clearable() || (this.showCount() && !!this.maxChars()) || this.type() === 'password' || !!this.suffixIcon() || !!this.suffix(),
+    () =>
+      this.clearable() || (this.showCount() && !!this.maxChars()) || this.type() === 'password' || !!this.suffixIcon() || !!this.suffix(),
   );
 
   onInput(e: Event): void {

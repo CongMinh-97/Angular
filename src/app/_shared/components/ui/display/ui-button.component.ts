@@ -28,7 +28,9 @@ export type UiButtonVariant = 'primary' | 'secondary' | 'soft' | 'ghost' | 'dark
   },
   template: `
     @if (loading()) {
-      <svg class="ui-btn-spin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="42 100" /></svg>
+      <svg class="ui-btn-spin" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="42 100" />
+      </svg>
     } @else if (icon()) {
       <span nz-icon [nzType]="icon()" class="ui-btn-icon"></span>
     }
@@ -42,45 +44,163 @@ export type UiButtonVariant = 'primary' | 'secondary' | 'soft' | 'ghost' | 'dark
   styles: [
     `
       :host {
-        --h: 38px; --px: 16px; --fs: 14px; --r: var(--radius);
-        position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-        height: var(--h); padding: 0 var(--px); border: 1px solid transparent; border-radius: var(--r);
-        font: inherit; font-size: var(--fs); font-weight: 600; line-height: 1; white-space: nowrap;
-        text-decoration: none; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
-        transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s, transform 0.05s;
+        --h: 38px;
+        --px: 16px;
+        --fs: 14px;
+        --r: var(--radius);
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: var(--h);
+        padding: 0 var(--px);
+        border: 1px solid transparent;
+        border-radius: var(--r);
+        font: inherit;
+        font-size: var(--fs);
+        font-weight: 600;
+        line-height: 1;
+        white-space: nowrap;
+        text-decoration: none;
+        cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        transition:
+          background 0.15s,
+          border-color 0.15s,
+          color 0.15s,
+          box-shadow 0.15s,
+          transform 0.05s;
       }
-      :host:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ant-primary-color-outline); }
-      :host:active:not([disabled]):not([aria-disabled='true']) { transform: translateY(1px); }
-      :host([disabled]), :host([aria-disabled='true']) { cursor: not-allowed; opacity: 0.5; box-shadow: none; }
-      :host([aria-busy='true']) { cursor: progress; opacity: 0.85; }
+      :host:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px var(--ant-primary-color-outline);
+      }
+      :host:active:not([disabled]):not([aria-disabled='true']) {
+        transform: translateY(1px);
+      }
+      :host([disabled]),
+      :host([aria-disabled='true']) {
+        cursor: not-allowed;
+        opacity: 0.5;
+        box-shadow: none;
+      }
+      :host([aria-busy='true']) {
+        cursor: progress;
+        opacity: 0.85;
+      }
 
-      :host(.s-sm) { --h: 30px; --px: 10px; --fs: 12.5px; --r: var(--radius-sm); gap: 6px; }
-      :host(.s-lg) { --h: 46px; --px: 22px; --fs: 15px; }
-      :host(.is-icon) { width: var(--h); padding: 0; }
-      :host(.is-block) { display: flex; width: 100%; }
-      :host(.is-pill) { --r: 999px; }
+      :host(.s-sm) {
+        --h: 30px;
+        --px: 10px;
+        --fs: 12.5px;
+        --r: var(--radius-sm);
+        gap: 6px;
+      }
+      :host(.s-lg) {
+        --h: 46px;
+        --px: 22px;
+        --fs: 15px;
+      }
+      :host(.is-icon) {
+        width: var(--h);
+        padding: 0;
+      }
+      :host(.is-block) {
+        display: flex;
+        width: 100%;
+      }
+      :host(.is-pill) {
+        --r: 999px;
+      }
 
-      :host(.v-primary) { background: var(--jade-600); color: #fff; box-shadow: 0 1px 0 rgba(255,255,255,.15) inset, 0 4px 12px -4px rgba(13,138,116,.55); }
-      :host(.v-primary:hover:not([disabled])) { background: var(--jade-500); color: #fff; }
-      :host(.v-secondary) { background: var(--surface); color: var(--text); border-color: var(--border-strong); }
-      :host(.v-secondary:hover:not([disabled])) { border-color: var(--jade-500); color: var(--jade-700); background: var(--jade-50); }
-      :host(.v-soft) { background: var(--jade-50); color: var(--jade-700); }
-      :host(.v-soft:hover:not([disabled])) { background: var(--jade-100); }
-      :host(.v-ghost) { background: transparent; color: var(--text-2); }
-      :host(.v-ghost:hover:not([disabled])) { background: var(--surface-2); color: var(--text); }
-      :host(.v-dark) { background: var(--ink-900); color: #fff; }
-      :host(.v-dark:hover:not([disabled])) { background: var(--ink-700); }
-      :host(.v-danger) { background: var(--danger); color: #fff; }
-      :host(.v-danger:hover:not([disabled])) { background: #d43a3f; }
-      :host(.v-danger-soft) { background: var(--danger-bg); color: var(--danger); }
-      :host(.v-danger-soft:hover:not([disabled])) { background: #fbd9da; }
-      :host(.v-link) { height: auto; padding: 0; background: none; color: var(--jade-600); border: 0; }
-      :host(.v-link:hover:not([disabled])) { color: var(--jade-700); text-decoration: underline; }
+      :host(.v-primary) {
+        background: var(--jade-600);
+        color: #fff;
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.15) inset,
+          0 4px 12px -4px rgba(13, 138, 116, 0.55);
+      }
+      :host(.v-primary:hover:not([disabled])) {
+        background: var(--jade-500);
+        color: #fff;
+      }
+      :host(.v-secondary) {
+        background: var(--surface);
+        color: var(--text);
+        border-color: var(--border-strong);
+      }
+      :host(.v-secondary:hover:not([disabled])) {
+        border-color: var(--jade-500);
+        color: var(--jade-700);
+        background: var(--jade-50);
+      }
+      :host(.v-soft) {
+        background: var(--jade-50);
+        color: var(--jade-700);
+      }
+      :host(.v-soft:hover:not([disabled])) {
+        background: var(--jade-100);
+      }
+      :host(.v-ghost) {
+        background: transparent;
+        color: var(--text-2);
+      }
+      :host(.v-ghost:hover:not([disabled])) {
+        background: var(--surface-2);
+        color: var(--text);
+      }
+      :host(.v-dark) {
+        background: var(--ink-900);
+        color: #fff;
+      }
+      :host(.v-dark:hover:not([disabled])) {
+        background: var(--ink-700);
+      }
+      :host(.v-danger) {
+        background: var(--danger);
+        color: #fff;
+      }
+      :host(.v-danger:hover:not([disabled])) {
+        background: #d43a3f;
+      }
+      :host(.v-danger-soft) {
+        background: var(--danger-bg);
+        color: var(--danger);
+      }
+      :host(.v-danger-soft:hover:not([disabled])) {
+        background: #fbd9da;
+      }
+      :host(.v-link) {
+        height: auto;
+        padding: 0;
+        background: none;
+        color: var(--jade-600);
+        border: 0;
+      }
+      :host(.v-link:hover:not([disabled])) {
+        color: var(--jade-700);
+        text-decoration: underline;
+      }
 
-      .ui-btn-icon { font-size: 1.1em; display: inline-flex; }
-      .ui-btn-label:empty { display: none; }
-      .ui-btn-spin { width: 1.05em; height: 1.05em; animation: ui-spin 0.8s linear infinite; }
-      @keyframes ui-spin { to { transform: rotate(360deg); } }
+      .ui-btn-icon {
+        font-size: 1.1em;
+        display: inline-flex;
+      }
+      .ui-btn-label:empty {
+        display: none;
+      }
+      .ui-btn-spin {
+        width: 1.05em;
+        height: 1.05em;
+        animation: ui-spin 0.8s linear infinite;
+      }
+      @keyframes ui-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
     `,
   ],
 })

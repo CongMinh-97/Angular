@@ -39,7 +39,11 @@ export interface TableColumn {
 }
 
 function stableKey(o: Record<string, string[]>): string {
-  return JSON.stringify(Object.keys(o).sort().map(k => [k, [...o[k]].sort()]));
+  return JSON.stringify(
+    Object.keys(o)
+      .sort()
+      .map(k => [k, [...o[k]].sort()]),
+  );
 }
 
 /** Custom cell renderer: `<ng-template appCell="status" let-row>…</ng-template>` */
@@ -104,7 +108,13 @@ export class DataTableComponent<T extends { id: number | string }> implements Af
   constructor() {
     effect(
       () => {
-        this.hiddenKeys.set(new Set(this.columns().filter(c => c.hidden).map(c => c.key)));
+        this.hiddenKeys.set(
+          new Set(
+            this.columns()
+              .filter(c => c.hidden)
+              .map(c => c.key),
+          ),
+        );
       },
       { allowSignalWrites: true },
     );
@@ -132,7 +142,11 @@ export class DataTableComponent<T extends { id: number | string }> implements Af
   onQueryParams(p: NzTableQueryParams): void {
     const sort = p.sort.find(s => s.value);
     const prev = this.query();
-    const ownKeys = new Set(this.columns().filter(c => c.filters).map(c => c.key));
+    const ownKeys = new Set(
+      this.columns()
+        .filter(c => c.filters)
+        .map(c => c.key),
+    );
     // Keep filters applied from outside the table (e.g. a toolbar select).
     const filters: Record<string, string[]> = Object.fromEntries(Object.entries(prev.filters ?? {}).filter(([k]) => !ownKeys.has(k)));
     for (const f of p.filter) {
@@ -149,8 +163,11 @@ export class DataTableComponent<T extends { id: number | string }> implements Af
     };
     // nz-table re-emits when its own inputs change; ignore echoes so the parent doesn't fetch twice.
     const same =
-      !filtersChanged && next.page === prev.page && next.pageSize === prev.pageSize &&
-      next.sortField === (prev.sortField ?? null) && next.sortOrder === (prev.sortOrder ?? null);
+      !filtersChanged &&
+      next.page === prev.page &&
+      next.pageSize === prev.pageSize &&
+      next.sortField === (prev.sortField ?? null) &&
+      next.sortOrder === (prev.sortOrder ?? null);
     if (!same) {
       this.query.set(next);
     }
@@ -166,7 +183,13 @@ export class DataTableComponent<T extends { id: number | string }> implements Af
   }
 
   resetColumns(): void {
-    this.hiddenKeys.set(new Set(this.columns().filter(c => c.hidden).map(c => c.key)));
+    this.hiddenKeys.set(
+      new Set(
+        this.columns()
+          .filter(c => c.hidden)
+          .map(c => c.key),
+      ),
+    );
   }
 
   toggleRow(id: T['id'], checked: boolean): void {

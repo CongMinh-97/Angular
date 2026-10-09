@@ -49,15 +49,54 @@ export function toneOf(name: string): string {
   `,
   styles: [
     `
-      :host { position: relative; display: inline-flex; flex: none; width: var(--s); height: var(--s); border-radius: 50%; vertical-align: middle; }
-      :host(.is-square) { border-radius: calc(var(--s) * 0.28); }
-      img, .ui-av-init { width: 100%; height: 100%; border-radius: inherit; object-fit: cover; }
-      .ui-av-init { display: grid; place-items: center; color: #fff; font-weight: 800; font-size: calc(var(--s) * 0.36); letter-spacing: 0.01em; }
-      .ui-av-st { position: absolute; right: -1px; bottom: -1px; width: max(8px, calc(var(--s) * 0.28)); height: max(8px, calc(var(--s) * 0.28)); border-radius: 50%; border: 2px solid var(--surface); }
-      [data-st='online'] { background: var(--success); }
-      [data-st='away'] { background: var(--amber-500); }
-      [data-st='busy'] { background: var(--danger); }
-      [data-st='offline'] { background: var(--text-3); }
+      :host {
+        position: relative;
+        display: inline-flex;
+        flex: none;
+        width: var(--s);
+        height: var(--s);
+        border-radius: 50%;
+        vertical-align: middle;
+      }
+      :host(.is-square) {
+        border-radius: calc(var(--s) * 0.28);
+      }
+      img,
+      .ui-av-init {
+        width: 100%;
+        height: 100%;
+        border-radius: inherit;
+        object-fit: cover;
+      }
+      .ui-av-init {
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-weight: 800;
+        font-size: calc(var(--s) * 0.36);
+        letter-spacing: 0.01em;
+      }
+      .ui-av-st {
+        position: absolute;
+        right: -1px;
+        bottom: -1px;
+        width: max(8px, calc(var(--s) * 0.28));
+        height: max(8px, calc(var(--s) * 0.28));
+        border-radius: 50%;
+        border: 2px solid var(--surface);
+      }
+      [data-st='online'] {
+        background: var(--success);
+      }
+      [data-st='away'] {
+        background: var(--amber-500);
+      }
+      [data-st='busy'] {
+        background: var(--danger);
+      }
+      [data-st='offline'] {
+        background: var(--text-3);
+      }
     `,
   ],
 })
@@ -94,10 +133,28 @@ export class UiAvatarComponent {
   `,
   styles: [
     `
-      :host { display: inline-flex; align-items: center; }
-      :host > * { margin-left: -8px; box-shadow: 0 0 0 2px var(--surface); border-radius: 50%; }
-      :host > *:first-child { margin-left: 0; }
-      .ui-avg-more { width: var(--s); height: var(--s); display: grid; place-items: center; font-size: calc(var(--s) * 0.34); font-weight: 700; color: var(--text-2); background: var(--surface-2); }
+      :host {
+        display: inline-flex;
+        align-items: center;
+      }
+      :host > * {
+        margin-left: -8px;
+        box-shadow: 0 0 0 2px var(--surface);
+        border-radius: 50%;
+      }
+      :host > *:first-child {
+        margin-left: 0;
+      }
+      .ui-avg-more {
+        width: var(--s);
+        height: var(--s);
+        display: grid;
+        place-items: center;
+        font-size: calc(var(--s) * 0.34);
+        font-weight: 700;
+        color: var(--text-2);
+        background: var(--surface-2);
+      }
     `,
   ],
 })
@@ -108,6 +165,11 @@ export class UiAvatarGroupComponent {
 
   visible = computed(() => this.people().slice(0, this.max()));
   rest = computed(() => this.people().length - this.visible().length);
-  restNames = computed(() => this.people().slice(this.max()).map(p => p.name).join(', '));
+  restNames = computed(() =>
+    this.people()
+      .slice(this.max())
+      .map(p => p.name)
+      .join(', '),
+  );
   px = computed(() => (typeof this.size() === 'number' ? (this.size() as number) : SIZES[this.size() as keyof typeof SIZES]));
 }

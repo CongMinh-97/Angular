@@ -1,6 +1,31 @@
 import { DEPARTMENTS, USER_ROLES, UserRecord, UserStatus } from '@models/layout-admin/user.model';
 
-const FIRST = ['Linh', 'Minh', 'An', 'Bảo', 'Châu', 'Duy', 'Giang', 'Hà', 'Huy', 'Khánh', 'Lan', 'Long', 'Mai', 'Nam', 'Ngọc', 'Phúc', 'Quân', 'Sơn', 'Tâm', 'Thảo', 'Trang', 'Tú', 'Vy', 'Yến'];
+const FIRST = [
+  'Linh',
+  'Minh',
+  'An',
+  'Bảo',
+  'Châu',
+  'Duy',
+  'Giang',
+  'Hà',
+  'Huy',
+  'Khánh',
+  'Lan',
+  'Long',
+  'Mai',
+  'Nam',
+  'Ngọc',
+  'Phúc',
+  'Quân',
+  'Sơn',
+  'Tâm',
+  'Thảo',
+  'Trang',
+  'Tú',
+  'Vy',
+  'Yến',
+];
 const LAST = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Võ', 'Đặng', 'Bùi', 'Đỗ', 'Huỳnh'];
 const MIDDLE = ['Văn', 'Thị', 'Minh', 'Gia', 'Quốc', 'Thanh', 'Hoài'];
 

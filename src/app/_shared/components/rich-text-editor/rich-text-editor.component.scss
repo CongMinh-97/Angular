@@ -66,9 +66,15 @@
       margin: 1.2em 0 0.4em;
     }
 
-    h2 { font-size: 24px; }
-    h3 { font-size: 19px; }
-    h4 { font-size: 16px; }
+    h2 {
+      font-size: 24px;
+    }
+    h3 {
+      font-size: 19px;
+    }
+    h4 {
+      font-size: 16px;
+    }
 
     blockquote {
       border-left: 4px solid var(--jade-500);

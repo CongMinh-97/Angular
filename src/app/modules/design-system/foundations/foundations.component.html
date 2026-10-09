@@ -1,4 +1,8 @@
-<app-page-header eyebrow="Design system" title="Foundations" subtitle="The tokens every component is built from. They are CSS variables in src/styles/_tokens.scss, so a rebrand is one file.">
+<app-page-header
+  eyebrow="Design system"
+  title="Foundations"
+  subtitle="The tokens every component is built from. They are CSS variables in src/styles/_tokens.scss, so a rebrand is one file."
+>
   <a ui-button variant="primary" iconRight="arrow-right" routerLink="/components">Browse components</a>
 </app-page-header>
 
@@ -31,8 +35,17 @@
     <div class="type">
       @for (t of typeScale; track t.label) {
         <div class="type-row">
-          <span class="type-meta"><strong>{{ t.label }}</strong><span class="num">{{ t.size }} px / {{ t.weight }}</span></span>
-          <span class="type-sample" [style.font-size.px]="t.size" [style.font-weight]="t.weight" [style.letter-spacing]="t.label === 'Eyebrow' ? '0.08em' : null">{{ t.sample }}</span>
+          <span class="type-meta"
+            ><strong>{{ t.label }}</strong
+            ><span class="num">{{ t.size }} px / {{ t.weight }}</span></span
+          >
+          <span
+            class="type-sample"
+            [style.font-size.px]="t.size"
+            [style.font-weight]="t.weight"
+            [style.letter-spacing]="t.label === 'Eyebrow' ? '0.08em' : null"
+            >{{ t.sample }}</span
+          >
         </div>
       }
     </div>
@@ -66,7 +79,11 @@
     </div>
   </ui-card>
 
-  <ui-card class="span-2" heading="Control heights" subtitle="Every input, select, picker and button uses the same three sizes, so they line up in a row">
+  <ui-card
+    class="span-2"
+    heading="Control heights"
+    subtitle="Every input, select, picker and button uses the same three sizes, so they line up in a row"
+  >
     <div class="heights">
       @for (h of heights; track h.size) {
         <div class="height">

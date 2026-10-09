@@ -45,7 +45,15 @@ function themeFor(type: ChartType): ChartOptions {
     plugins: {
       legend: {
         position: 'bottom',
-        labels: { usePointStyle: true, pointStyle: 'circle', boxWidth: 8, boxHeight: 8, padding: 16, color: '#586178', font: { weight: 600 } },
+        labels: {
+          usePointStyle: true,
+          pointStyle: 'circle',
+          boxWidth: 8,
+          boxHeight: 8,
+          padding: 16,
+          color: '#586178',
+          font: { weight: 600 },
+        },
       },
       tooltip: {
         backgroundColor: '#161b31',

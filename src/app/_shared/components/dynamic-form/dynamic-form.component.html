@@ -3,40 +3,148 @@
     <div [class.span-24]="(f.span ?? 24) === 24">
       @switch (f.type) {
         @case ('textarea') {
-          <ui-textarea [formControlName]="f.key" [inputId]="idPrefix() + '-' + f.key" [label]="f.label" [placeholder]="f.placeholder ?? ''" [hint]="f.hint ?? ''" [tooltip]="f.tooltip ?? ''" [maxChars]="f.maxLength ?? 0" [showCount]="!!f.maxLength" [errorMessages]="f.errorMessages ?? {}" [layout]="layout()" />
+          <ui-textarea
+            [formControlName]="f.key"
+            [inputId]="idPrefix() + '-' + f.key"
+            [label]="f.label"
+            [placeholder]="f.placeholder ?? ''"
+            [hint]="f.hint ?? ''"
+            [tooltip]="f.tooltip ?? ''"
+            [maxChars]="f.maxLength ?? 0"
+            [showCount]="!!f.maxLength"
+            [errorMessages]="f.errorMessages ?? {}"
+            [layout]="layout()"
+          />
         }
         @case ('number') {
-          <ui-number [formControlName]="f.key" [inputId]="idPrefix() + '-' + f.key" [label]="f.label" [placeholder]="f.placeholder ?? ''" [hint]="f.hint ?? ''" [tooltip]="f.tooltip ?? ''" [min]="f.min ?? -9007199254740991" [max]="f.max ?? 9007199254740991" [errorMessages]="f.errorMessages ?? {}" [layout]="layout()" />
+          <ui-number
+            [formControlName]="f.key"
+            [inputId]="idPrefix() + '-' + f.key"
+            [label]="f.label"
+            [placeholder]="f.placeholder ?? ''"
+            [hint]="f.hint ?? ''"
+            [tooltip]="f.tooltip ?? ''"
+            [min]="f.min ?? -9007199254740991"
+            [max]="f.max ?? 9007199254740991"
+            [errorMessages]="f.errorMessages ?? {}"
+            [layout]="layout()"
+          />
         }
         @case ('currency') {
-          <ui-number [formControlName]="f.key" [inputId]="idPrefix() + '-' + f.key" [label]="f.label" format="currency" [placeholder]="f.placeholder ?? ''" [hint]="f.hint ?? ''" [tooltip]="f.tooltip ?? ''" [min]="f.min ?? 0" [errorMessages]="f.errorMessages ?? {}" [layout]="layout()" />
+          <ui-number
+            [formControlName]="f.key"
+            [inputId]="idPrefix() + '-' + f.key"
+            [label]="f.label"
+            format="currency"
+            [placeholder]="f.placeholder ?? ''"
+            [hint]="f.hint ?? ''"
+            [tooltip]="f.tooltip ?? ''"
+            [min]="f.min ?? 0"
+            [errorMessages]="f.errorMessages ?? {}"
+            [layout]="layout()"
+          />
         }
         @case ('select') {
-          <ui-select [formControlName]="f.key" [inputId]="idPrefix() + '-' + f.key" [label]="f.label" [options]="f.options ?? []" [placeholder]="f.placeholder ?? ''" [hint]="f.hint ?? ''" [tooltip]="f.tooltip ?? ''" [searchable]="(f.options?.length ?? 0) > 6" [errorMessages]="f.errorMessages ?? {}" [layout]="layout()" />
+          <ui-select
+            [formControlName]="f.key"
+            [inputId]="idPrefix() + '-' + f.key"
+            [label]="f.label"
+            [options]="f.options ?? []"
+            [placeholder]="f.placeholder ?? ''"
+            [hint]="f.hint ?? ''"
+            [tooltip]="f.tooltip ?? ''"
+            [searchable]="(f.options?.length ?? 0) > 6"
+            [errorMessages]="f.errorMessages ?? {}"
+            [layout]="layout()"
+          />
         }
         @case ('multiselect') {
-          <ui-multi-select [formControlName]="f.key" [inputId]="idPrefix() + '-' + f.key" [label]="f.label" [options]="f.options ?? []" [placeholder]="f.placeholder ?? ''" [hint]="f.hint ?? ''" [tooltip]="f.tooltip ?? ''" [errorMessages]="f.errorMessages ?? {}" [layout]="layout()" />
+          <ui-multi-select
+            [formControlName]="f.key"
+            [inputId]="idPrefix() + '-' + f.key"
+            [label]="f.label"
+            [options]="f.options ?? []"
+            [placeholder]="f.placeholder ?? ''"
+            [hint]="f.hint ?? ''"
+            [tooltip]="f.tooltip ?? ''"
+            [errorMessages]="f.errorMessages ?? {}"
+            [layout]="layout()"
+          />
         }
         @case ('radio') {
-          <ui-radio-group [formControlName]="f.key" [label]="f.label" [options]="f.options ?? []" [variant]="f.variant ?? 'button'" [hint]="f.hint ?? ''" [tooltip]="f.tooltip ?? ''" [errorMessages]="f.errorMessages ?? {}" [layout]="layout()" />
+          <ui-radio-group
+            [formControlName]="f.key"
+            [label]="f.label"
+            [options]="f.options ?? []"
+            [variant]="f.variant ?? 'button'"
+            [hint]="f.hint ?? ''"
+            [tooltip]="f.tooltip ?? ''"
+            [errorMessages]="f.errorMessages ?? {}"
+            [layout]="layout()"
+          />
         }
         @case ('checkbox') {
-          <ui-checkbox [formControlName]="f.key" [inputId]="idPrefix() + '-' + f.key" [text]="f.text ?? f.label" [hint]="f.hint ?? ''" [errorMessages]="f.errorMessages ?? {}" />
+          <ui-checkbox
+            [formControlName]="f.key"
+            [inputId]="idPrefix() + '-' + f.key"
+            [text]="f.text ?? f.label"
+            [hint]="f.hint ?? ''"
+            [errorMessages]="f.errorMessages ?? {}"
+          />
         }
         @case ('switch') {
-          <ui-switch [formControlName]="f.key" [inputId]="idPrefix() + '-' + f.key" [text]="f.text ?? f.label" [description]="f.hint ?? ''" />
+          <ui-switch
+            [formControlName]="f.key"
+            [inputId]="idPrefix() + '-' + f.key"
+            [text]="f.text ?? f.label"
+            [description]="f.hint ?? ''"
+          />
         }
         @case ('date') {
-          <ui-date-picker [formControlName]="f.key" [inputId]="idPrefix() + '-' + f.key" [label]="f.label" [placeholder]="f.placeholder ?? ''" [hint]="f.hint ?? ''" [tooltip]="f.tooltip ?? ''" [errorMessages]="f.errorMessages ?? {}" [layout]="layout()" />
+          <ui-date-picker
+            [formControlName]="f.key"
+            [inputId]="idPrefix() + '-' + f.key"
+            [label]="f.label"
+            [placeholder]="f.placeholder ?? ''"
+            [hint]="f.hint ?? ''"
+            [tooltip]="f.tooltip ?? ''"
+            [errorMessages]="f.errorMessages ?? {}"
+            [layout]="layout()"
+          />
         }
         @case ('daterange') {
-          <ui-date-range-picker [formControlName]="f.key" [inputId]="idPrefix() + '-' + f.key" [label]="f.label" [hint]="f.hint ?? ''" [tooltip]="f.tooltip ?? ''" [errorMessages]="f.errorMessages ?? {}" [layout]="layout()" />
+          <ui-date-range-picker
+            [formControlName]="f.key"
+            [inputId]="idPrefix() + '-' + f.key"
+            [label]="f.label"
+            [hint]="f.hint ?? ''"
+            [tooltip]="f.tooltip ?? ''"
+            [errorMessages]="f.errorMessages ?? {}"
+            [layout]="layout()"
+          />
         }
         @case ('time') {
-          <ui-time-picker [formControlName]="f.key" [inputId]="idPrefix() + '-' + f.key" [label]="f.label" [placeholder]="f.placeholder ?? ''" [hint]="f.hint ?? ''" [errorMessages]="f.errorMessages ?? {}" [layout]="layout()" />
+          <ui-time-picker
+            [formControlName]="f.key"
+            [inputId]="idPrefix() + '-' + f.key"
+            [label]="f.label"
+            [placeholder]="f.placeholder ?? ''"
+            [hint]="f.hint ?? ''"
+            [errorMessages]="f.errorMessages ?? {}"
+            [layout]="layout()"
+          />
         }
         @case ('upload') {
-          <ui-upload [formControlName]="f.key" [inputId]="idPrefix() + '-' + f.key" [label]="f.label" [accept]="f.accept ?? ''" [maxFiles]="f.maxFiles ?? 5" [hint]="f.hint ?? ''" [errorMessages]="f.errorMessages ?? {}" [layout]="layout()" />
+          <ui-upload
+            [formControlName]="f.key"
+            [inputId]="idPrefix() + '-' + f.key"
+            [label]="f.label"
+            [accept]="f.accept ?? ''"
+            [maxFiles]="f.maxFiles ?? 5"
+            [hint]="f.hint ?? ''"
+            [errorMessages]="f.errorMessages ?? {}"
+            [layout]="layout()"
+          />
         }
         @default {
           <ui-input

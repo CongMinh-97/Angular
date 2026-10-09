@@ -22,7 +22,11 @@ import { USER_FIELDS } from '../../constants/user-admin.const';
       [(open)]="open"
       size="lg"
       [heading]="user() ? 'Edit user' : 'Add user'"
-      [subtitle]="user() ? 'Member since ' + (user()!.createdAt | date: 'MMMM y') : 'They get an email invitation and can sign in once they set a password.'"
+      [subtitle]="
+        user()
+          ? 'Member since ' + (user()!.createdAt | date: 'MMMM y')
+          : 'They get an email invitation and can sign in once they set a password.'
+      "
       [icon]="user() ? 'edit' : 'user-add'"
       [okText]="user() ? 'Save changes' : 'Add and invite'"
       [okIcon]="user() ? 'save' : 'send'"

@@ -59,7 +59,9 @@ export type UiNumberFormat = 'plain' | 'thousands' | 'currency' | 'percent';
       </nz-input-number-group>
     </ui-field>
   `,
-  styles: [':host{display:block;min-width:0} :host ::ng-deep .ant-input-number-group-wrapper, :host ::ng-deep .ant-input-number{width:100%}'],
+  styles: [
+    ':host{display:block;min-width:0} :host ::ng-deep .ant-input-number-group-wrapper, :host ::ng-deep .ant-input-number{width:100%}',
+  ],
 })
 export class UiNumberComponent extends UiControlBase<number> {
   min = input(Number.MIN_SAFE_INTEGER, { transform: numberAttribute });
@@ -90,7 +92,11 @@ export class UiNumberComponent extends UiControlBase<number> {
   // ng-zorro converts the returned string to a number.
   parser = (s: string): string => {
     const group = new Intl.NumberFormat(this.locale()).format(1111).replace(/\d/g, '');
-    return s.split(group).join('').replace(/[^\d.,-]/g, '').replace(',', '.');
+    return s
+      .split(group)
+      .join('')
+      .replace(/[^\d.,-]/g, '')
+      .replace(',', '.');
   };
 
   protected override normalize(v: unknown): number | null {

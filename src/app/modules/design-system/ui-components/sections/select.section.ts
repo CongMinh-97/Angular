@@ -23,29 +23,74 @@ const ROLES: UiOption<string>[] = [
   { label: 'Guest', value: 'Guest', icon: 'user', description: 'Invite pending approval', disabled: true },
 ];
 
-const PEOPLE = ['Nguyễn Minh Anh', 'Trần Thảo Vy', 'Lê Quốc Bảo', 'Phạm Gia Huy', 'Hoàng Ngọc Lan', 'Võ Thanh Sơn', 'Đỗ Minh Khánh', 'Bùi Thanh Tâm', 'Đặng Yến', 'Huỳnh Phúc'];
+const PEOPLE = [
+  'Nguyễn Minh Anh',
+  'Trần Thảo Vy',
+  'Lê Quốc Bảo',
+  'Phạm Gia Huy',
+  'Hoàng Ngọc Lan',
+  'Võ Thanh Sơn',
+  'Đỗ Minh Khánh',
+  'Bùi Thanh Tâm',
+  'Đặng Yến',
+  'Huỳnh Phúc',
+];
 
-const SKILLS: UiOption<string>[] = ['Angular', 'TypeScript', 'RxJS', 'Node.js', 'PostgreSQL', 'Figma', 'Docker', 'Kubernetes', 'Go', 'Python'].map(s => ({ label: s, value: s }));
+const SKILLS: UiOption<string>[] = [
+  'Angular',
+  'TypeScript',
+  'RxJS',
+  'Node.js',
+  'PostgreSQL',
+  'Figma',
+  'Docker',
+  'Kubernetes',
+  'Go',
+  'Python',
+].map(s => ({ label: s, value: s }));
 
 @Component({
   selector: 'section-select',
   standalone: true,
   imports: [...DOC, JsonPipe, UiSelectComponent, UiMultiSelectComponent],
   template: `
-    <doc-section anchor="select" heading="Select" selector="<ui-select>" intro="Pick one value from a list. Options can carry an icon, a description line, a group heading, and a disabled flag.">
+    <doc-section
+      anchor="select"
+      heading="Select"
+      selector="<ui-select>"
+      intro="Pick one value from a list. Options can carry an icon, a description line, a group heading, and a disabled flag."
+    >
       <doc-example heading="Basic, searchable and clearable" [code]="code.basic" grid>
         <ui-select label="City" [options]="cities" [(value)]="city" placeholder="Choose a city" />
         <ui-select label="Searchable" [options]="cities" searchable placeholder="Type to filter" />
         <ui-select label="Clearable" [options]="cities" clearable [(value)]="city2" />
       </doc-example>
 
-      <doc-example heading="Groups, icons and descriptions" description="Grouped by the option's group field. Disabled options stay visible so people understand they exist." [code]="code.rich" grid>
+      <doc-example
+        heading="Groups, icons and descriptions"
+        description="Grouped by the option's group field. Disabled options stay visible so people understand they exist."
+        [code]="code.rich"
+        grid
+      >
         <ui-select label="Region" [options]="cities" searchable placeholder="Grouped by region" />
         <ui-select label="Role" [options]="roles" [(value)]="role" hint="What this person is allowed to do" />
       </doc-example>
 
-      <doc-example heading="Remote search" description="serverSearch turns off local filtering; (search) fires with the query and you set [options] and [loading]." [code]="code.remote" grid>
-        <ui-select label="Assign to" serverSearch [options]="remoteOptions()" [loading]="remoteLoading()" (search)="findPeople($event)" placeholder="Type a name" emptyText="Type at least 1 letter" />
+      <doc-example
+        heading="Remote search"
+        description="serverSearch turns off local filtering; (search) fires with the query and you set [options] and [loading]."
+        [code]="code.remote"
+        grid
+      >
+        <ui-select
+          label="Assign to"
+          serverSearch
+          [options]="remoteOptions()"
+          [loading]="remoteLoading()"
+          (search)="findPeople($event)"
+          placeholder="Type a name"
+          emptyText="Type at least 1 letter"
+        />
       </doc-example>
 
       <doc-example heading="Sizes and states" [code]="code.states" grid>
@@ -58,23 +103,46 @@ const SKILLS: UiOption<string>[] = ['Angular', 'TypeScript', 'RxJS', 'Node.js', 
       <doc-api heading="ui-select properties (plus the common control properties)" [rows]="selectApi" />
     </doc-section>
 
-    <doc-section anchor="multi-select" heading="Multi-select" selector="<ui-multi-select>" intro="Pick several values. The value is always an array. Long selections collapse into “+N more”.">
+    <doc-section
+      anchor="multi-select"
+      heading="Multi-select"
+      selector="<ui-multi-select>"
+      intro="Pick several values. The value is always an array. Long selections collapse into “+N more”."
+    >
       <doc-example heading="Basic and Select all" [code]="code.multi" grid>
         <ui-multi-select label="Cities" [options]="cities" [(value)]="multi" />
         <ui-multi-select label="With Select all" [options]="cities" showSelectAll [maxTagCount]="2" />
       </doc-example>
 
-      <doc-example heading="Create tags and limit selection" description="allowCreate lets people type new values (Enter or comma). maxSelected stops further picks." [code]="code.tags" grid>
+      <doc-example
+        heading="Create tags and limit selection"
+        description="allowCreate lets people type new values (Enter or comma). maxSelected stops further picks."
+        [code]="code.tags"
+        grid
+      >
         <ui-multi-select label="Tags" allowCreate [(value)]="tags" placeholder="Type and press Enter" />
         <ui-multi-select label="Top 3 skills" [options]="skills" [maxSelected]="3" hint="Choose up to 3" />
         <ui-multi-select label="Error" [options]="skills" error="Choose at least one skill" />
       </doc-example>
-      <div class="out">cities = <code>{{ multi() | json }}</code> · tags = <code>{{ tags() | json }}</code></div>
+      <div class="out">
+        cities = <code>{{ multi() | json }}</code> · tags = <code>{{ tags() | json }}</code>
+      </div>
 
       <doc-api heading="ui-multi-select properties" [rows]="multiApi" />
     </doc-section>
   `,
-  styles: [`.out { font-size: 12.5px; color: var(--text-3); } code { font-family: 'JetBrains Mono', monospace; color: var(--text); }`],
+  styles: [
+    `
+      .out {
+        font-size: 12.5px;
+        color: var(--text-3);
+      }
+      code {
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--text);
+      }
+    `,
+  ],
 })
 export class SelectSectionComponent {
   readonly cities = CITIES;

@@ -101,12 +101,41 @@ import { groupOptions } from './ui-select.component';
   `,
   styles: [
     `
-      :host { display: block; min-width: 0; }
-      nz-select { width: 100%; }
-      .ui-ms-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 12px 4px; margin-top: 4px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-3); }
-      .ui-ms-actions { display: flex; gap: 4px; }
-      .ui-ms-actions button { border: 0; background: none; padding: 2px 6px; border-radius: 6px; font: inherit; font-weight: 600; color: var(--jade-600); cursor: pointer; }
-      .ui-ms-actions button:hover { background: var(--jade-50); }
+      :host {
+        display: block;
+        min-width: 0;
+      }
+      nz-select {
+        width: 100%;
+      }
+      .ui-ms-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 8px 12px 4px;
+        margin-top: 4px;
+        border-top: 1px solid var(--border);
+        font-size: 12px;
+        color: var(--text-3);
+      }
+      .ui-ms-actions {
+        display: flex;
+        gap: 4px;
+      }
+      .ui-ms-actions button {
+        border: 0;
+        background: none;
+        padding: 2px 6px;
+        border-radius: 6px;
+        font: inherit;
+        font-weight: 600;
+        color: var(--jade-600);
+        cursor: pointer;
+      }
+      .ui-ms-actions button:hover {
+        background: var(--jade-50);
+      }
     `,
   ],
 })
@@ -144,9 +173,11 @@ export class UiMultiSelectComponent<T = unknown> extends UiControlBase<T[]> {
 
 /** Validator factories for array values: Validators.compose([minSelected(1), maxSelected(3)]) */
 export function minSelected(min: number) {
-  return (c: { value: unknown }) => (Array.isArray(c.value) && c.value.length < min ? { minSelected: { min, actual: c.value.length } } : null);
+  return (c: { value: unknown }) =>
+    Array.isArray(c.value) && c.value.length < min ? { minSelected: { min, actual: c.value.length } } : null;
 }
 
 export function maxSelected(max: number) {
-  return (c: { value: unknown }) => (Array.isArray(c.value) && c.value.length > max ? { maxSelected: { max, actual: c.value.length } } : null);
+  return (c: { value: unknown }) =>
+    Array.isArray(c.value) && c.value.length > max ? { maxSelected: { max, actual: c.value.length } } : null;
 }

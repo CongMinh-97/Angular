@@ -20,7 +20,11 @@ const ICONS: Record<UiAlertTone, string> = {
   selector: 'ui-alert',
   standalone: true,
   imports: [NzIconModule],
-  host: { '[class]': '"t-" + tone() + " v-" + variant()', '[attr.role]': "tone() === 'danger' ? 'alert' : 'status'", '[hidden]': 'dismissed()' },
+  host: {
+    '[class]': '"t-" + tone() + " v-" + variant()',
+    '[attr.role]': "tone() === 'danger' ? 'alert' : 'status'",
+    '[hidden]': 'dismissed()',
+  },
   template: `
     <span nz-icon [nzType]="iconName()" nzTheme="fill" class="ui-al-icon"></span>
     <div class="ui-al-body">
@@ -38,21 +42,84 @@ const ICONS: Record<UiAlertTone, string> = {
   `,
   styles: [
     `
-      :host { --c: var(--info); --bg: var(--info-bg); display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 13.5px; line-height: 1.5; }
-      :host(.v-outline) { background: var(--surface); box-shadow: inset 0 0 0 1px var(--c); }
-      :host(.v-accent) { background: var(--surface); box-shadow: inset 3px 0 0 var(--c), inset 0 0 0 1px var(--border); }
-      :host(.t-success) { --c: var(--success); --bg: var(--success-bg); }
-      :host(.t-warning) { --c: var(--warning); --bg: var(--warning-bg); }
-      :host(.t-danger) { --c: var(--danger); --bg: var(--danger-bg); }
-      .ui-al-icon { flex: none; margin-top: 3px; color: var(--c); font-size: 15px; }
-      .ui-al-body { flex: 1; min-width: 0; }
-      strong { display: block; font-weight: 700; }
-      .ui-al-text { color: var(--text-2); }
-      .ui-al-text:empty { display: none; }
-      .ui-al-actions { display: flex; gap: 8px; margin-top: 8px; }
-      .ui-al-actions:empty { display: none; }
-      .ui-al-x { flex: none; width: 24px; height: 24px; margin: -2px -4px 0 0; border: 0; border-radius: 6px; background: none; color: var(--text-3); cursor: pointer; }
-      .ui-al-x:hover { color: var(--text); background: rgba(0, 0, 0, 0.05); }
+      :host {
+        --c: var(--info);
+        --bg: var(--info-bg);
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 12px 14px;
+        border-radius: var(--radius);
+        background: var(--bg);
+        color: var(--text);
+        font-size: 13.5px;
+        line-height: 1.5;
+      }
+      :host(.v-outline) {
+        background: var(--surface);
+        box-shadow: inset 0 0 0 1px var(--c);
+      }
+      :host(.v-accent) {
+        background: var(--surface);
+        box-shadow:
+          inset 3px 0 0 var(--c),
+          inset 0 0 0 1px var(--border);
+      }
+      :host(.t-success) {
+        --c: var(--success);
+        --bg: var(--success-bg);
+      }
+      :host(.t-warning) {
+        --c: var(--warning);
+        --bg: var(--warning-bg);
+      }
+      :host(.t-danger) {
+        --c: var(--danger);
+        --bg: var(--danger-bg);
+      }
+      .ui-al-icon {
+        flex: none;
+        margin-top: 3px;
+        color: var(--c);
+        font-size: 15px;
+      }
+      .ui-al-body {
+        flex: 1;
+        min-width: 0;
+      }
+      strong {
+        display: block;
+        font-weight: 700;
+      }
+      .ui-al-text {
+        color: var(--text-2);
+      }
+      .ui-al-text:empty {
+        display: none;
+      }
+      .ui-al-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .ui-al-actions:empty {
+        display: none;
+      }
+      .ui-al-x {
+        flex: none;
+        width: 24px;
+        height: 24px;
+        margin: -2px -4px 0 0;
+        border: 0;
+        border-radius: 6px;
+        background: none;
+        color: var(--text-3);
+        cursor: pointer;
+      }
+      .ui-al-x:hover {
+        color: var(--text);
+        background: rgba(0, 0, 0, 0.05);
+      }
     `,
   ],
 })

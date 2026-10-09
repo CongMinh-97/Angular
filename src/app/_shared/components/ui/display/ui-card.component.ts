@@ -37,24 +37,92 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   `,
   styles: [
     `
-      :host { --pad: 20px; display: flex; flex-direction: column; min-width: 0; background: var(--surface); border-radius: var(--radius-lg); }
-      :host(.v-default) { border: 1px solid var(--border); box-shadow: var(--shadow-xs); }
-      :host(.v-elevated) { box-shadow: var(--shadow-md); }
-      :host(.v-flat) { background: var(--surface-2); }
-      :host(.p-none) { --pad: 0px; }
-      :host(.p-sm) { --pad: 14px; }
-      :host(.p-lg) { --pad: 28px; }
-      .ui-card-head { display: flex; align-items: center; gap: 12px; padding: 18px 20px 0; }
-      :host(.p-none) .ui-card-head { padding: 16px 16px 12px; }
-      .ui-card-icon { flex: none; width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; color: var(--jade-600); background: var(--jade-50); }
-      .ui-card-titles { flex: 1; min-width: 0; }
-      h3 { margin: 0; font-size: 15px; font-weight: 700; }
-      p { margin: 2px 0 0; font-size: 12.5px; color: var(--text-3); }
-      .ui-card-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-      .ui-card-actions:empty { display: none; }
-      .ui-card-body { flex: 1; min-width: 0; padding: var(--pad); }
-      .ui-card-foot { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--border); }
-      .ui-card-foot:empty { display: none; }
+      :host {
+        --pad: 20px;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+      }
+      :host(.v-default) {
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-xs);
+      }
+      :host(.v-elevated) {
+        box-shadow: var(--shadow-md);
+      }
+      :host(.v-flat) {
+        background: var(--surface-2);
+      }
+      :host(.p-none) {
+        --pad: 0px;
+      }
+      :host(.p-sm) {
+        --pad: 14px;
+      }
+      :host(.p-lg) {
+        --pad: 28px;
+      }
+      .ui-card-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 18px 20px 0;
+      }
+      :host(.p-none) .ui-card-head {
+        padding: 16px 16px 12px;
+      }
+      .ui-card-icon {
+        flex: none;
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        color: var(--jade-600);
+        background: var(--jade-50);
+      }
+      .ui-card-titles {
+        flex: 1;
+        min-width: 0;
+      }
+      h3 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 700;
+      }
+      p {
+        margin: 2px 0 0;
+        font-size: 12.5px;
+        color: var(--text-3);
+      }
+      .ui-card-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .ui-card-actions:empty {
+        display: none;
+      }
+      .ui-card-body {
+        flex: 1;
+        min-width: 0;
+        padding: var(--pad);
+      }
+      .ui-card-foot {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        padding: 12px 20px;
+        border-top: 1px solid var(--border);
+      }
+      .ui-card-foot:empty {
+        display: none;
+      }
     `,
   ],
 })
