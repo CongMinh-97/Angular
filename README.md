@@ -15,6 +15,28 @@ Sign in with **admin@harbor.vn / password123** (or press **Fill in** on the logi
 npm run build        # production build → dist/angular-base
 ```
 
+### Tests and checks
+
+```bash
+npm run test:ci        # Karma + Jasmine, headless (set CHROME_BIN if Chrome isn't installed)
+npm run test:coverage  # + coverage/ report
+npm run typecheck      # app + specs
+npm run format         # Prettier
+npm run verify         # typecheck + format check + tests + build
+```
+
+Specs live next to the code (`*.spec.ts`), and shared fixtures live in `src/testing/`.
+
+### Claude Code
+
+`CLAUDE.md` and `.claude/` set up Claude Code for this repo:
+- Slash commands: `/task`, `/fix-bug`, `/review`, `/test`, `/new-module`, `/commit`, `/pr`.
+- Subagents: reviewer, debugger, test engineer, security reviewer.
+- Path-scoped rules.
+- Hooks: auto-format, a pre-commit typecheck and safety guards.
+
+The guide (Vietnamese) is in [`.claude/README.md`](.claude/README.md). Ready-to-copy kits for C# and PHP projects are in [`claude-kits/`](claude-kits/README.md).
+
 > The production build sets `mockApi: false` (`src/environments/environment.prod.ts`). Turn it on there if you want to deploy the demo without a backend.
 
 ## Folder structure
